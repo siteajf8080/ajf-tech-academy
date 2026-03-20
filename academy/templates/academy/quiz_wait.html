@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Tann yon ti moman | AJF-Tech</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .wait-card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); max-width: 450px; text-align: center; }
+        .icon { font-size: 60px; margin-bottom: 20px; }
+        h1 { color: #e67e22; margin-bottom: 10px; }
+        .timer { font-size: 28px; font-weight: bold; color: #2c3e50; margin: 25px 0; background: #fef5e7; padding: 15px; border-radius: 10px; border: 1px dashed #e67e22; }
+        .btn { display: inline-block; text-decoration: none; background: #3498db; color: white; padding: 12px 25px; border-radius: 8px; font-weight: bold; transition: 0.3s; }
+        .btn:hover { background: #2980b9; }
+    </style>
+</head>
+<body>
+    <div class="wait-card">
+        <div class="icon">⏳</div>
+        <h1>Pasyans!</h1>
+        <p>Ou te fè yon tantativ deja sou quiz sa a. Règleman sekirite AJF-Tech mande pou w tann 12 èdtan pou w ka refè l.</p>
+        <div class="timer">Rete: {{ heures }}h {{ minutes }}min</div>
+        <p style="font-size: 14px; color: #95a5a6;">Pwofite tan sa a pou w byen re-etidye leson yo!</p>
+        <a href="{% url 'course_detail' course.id %}" class="btn">Tounen nan Kou a</a>
+    </div>
+</body>
+</html>

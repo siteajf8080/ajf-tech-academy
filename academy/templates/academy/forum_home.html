@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold"><i class="fas fa-comments text-primary"></i> Fowòm AJF-Tech</h2>
+        <span class="badge bg-info text-dark">Echanj ak Pataje</span>
+    </div>
+
+    <div class="list-group shadow-sm">
+        {% for topic in topics %}
+        <a href="{% url 'topic_detail' topic.id %}" class="list-group-item list-group-item-action p-4 mb-2 border-0 shadow-sm" style="border-radius: 10px;">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1 fw-bold text-dark">{{ topic.title }}</h5>
+                <small class="text-muted">{{ topic.created_at|timesince }} de sa</small>
+            </div>
+            <p class="mb-1 text-muted">{{ topic.description|truncatewords:15 }}</p>
+            <small class="text-primary"><i class="fas fa-user-circle"></i> {{ topic.creator.username }}</small>
+            <span class="badge rounded-pill bg-light text-dark float-end">{{ topic.posts.count }} repons</span>
+        </a>
+        {% empty %}
+        <p class="text-center py-5">Pa gen diskisyon ko kòmanse. Se ou ki pou kòmanse l nan Admin!</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

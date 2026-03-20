@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enskripsyon | AJF-Tech</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .signup-container { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        h2 { text-align: center; color: #2c3e50; margin-bottom: 30px; }
+        form p { margin-bottom: 15px; }
+        input { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background-color: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background 0.3s; }
+        button:hover { background-color: #219150; }
+        .footer-links { text-align: center; margin-top: 20px; }
+        .footer-links a { color: #3498db; text-decoration: none; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="signup-container">
+    <h2>Kreye Kont AJF-Tech</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Kòmanse Aprann</button>
+    </form>
+
+    <div class="footer-links">
+        <a href="{% url 'login' %}">Ou gen yon kont deja? Konekte w</a>
+    </div>
+</div>
+
+</body>
+</html>

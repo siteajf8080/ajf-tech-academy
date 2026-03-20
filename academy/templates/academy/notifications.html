@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold"><i class="fas fa-bell me-2 text-primary"></i>Notifikasyon Ou Yo</h2>
+                {% if notifications %}
+                    <span class="badge bg-primary rounded-pill">{{ notifications.count }} mesaj</span>
+                {% endif %}
+            </div>
+
+            {% if notifications %}
+                <div class="list-group shadow-sm">
+                    {% for notification in notifications %}
+                        <div class="list-group-item list-group-item-action p-3 {% if not notification.is_read %}border-start border-4 border-primary bg-light{% endif %}" style="transition: 0.3s;">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1 fw-bold">{{ notification.title }}</h5>
+                                <small class="text-muted">{{ notification.created_at|timesince }} de sa</small>
+                            </div>
+                            <p class="mb-2 text-secondary">{{ notification.message }}</p>
+                            
+                            {% if notification.url %}
+                                <a href="{{ notification.url }}" class="btn btn-sm btn-outline-primary mt-2">
+                                    <i class="fas fa-external-link-alt me-1"></i> Ale wè sa
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-5 bg-white rounded shadow-sm">
+                    <i class="fas fa-bell-slash fa-4x text-light mb-3"></i>
+                    <h4 class="text-muted">Ou pa gen okenn notifikasyon pou kounye a.</h4>
+                    <a href="{% url 'dashboard' %}" class="btn btn-primary mt-3">Tounen nan Dashboard</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .list-group-item:hover {
+        background-color: #f8f9fa !important;
+        transform: translateX(5px);
+    }
+</style>
+{% endblock %}

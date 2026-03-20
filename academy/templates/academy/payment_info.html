@@ -1,0 +1,58 @@
+
+
+<div style="max-width: 650px; margin: 40px auto; font-family: 'Segoe UI', Arial, sans-serif;">
+    
+    <div style="padding: 30px; background: white; border: 2px solid #2ecc71; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+        
+        <h1 style="text-align: center; color: #2c3e50; margin-bottom: 10px; font-size: 24px;">Peman pou: {{ course.title }}</h1>
+        <p style="text-align: center; color: #7f8c8d; font-size: 18px;">Pri fòmasyon an: <b style="color: #27ae60;">{{ course.price }} HTG</b></p>
+
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+
+        <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 25px; border-left: 5px solid #2ecc71;">
+            <p style="margin: 0 0 10px 0; font-weight: bold; color: #333;">Voye kòb la sou youn nan nimewo sa yo:</p>
+            <p style="margin: 5px 0;">📲 <b>MonCash:</b> 509 3465-9454</p>
+            <p style="margin: 5px 0;">📲 <b>Natcash:</b> 509 4087-1795</p>
+            <small style="color: #e67e22;"><i>Apre transfè a, pran yon screenshot pou w voye l isit la oubyen sou numero WhatsApp 3465-9454.</i></small>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #2c3e50;">
+                    Chwazi foto screenshot la:
+                </label>
+                <input type="file" name="screenshot" accept="image/*" required 
+                       style="display: block !important; visibility: visible !important; width: 100%; padding: 15px; border: 2px solid #2ecc71; border-radius: 8px; background: #fdfdfd; cursor: pointer;">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #2c3e50;">
+                    Nimewo telefòn ou oswa yon mesaj:
+                </label>
+                <textarea name="message" rows="3" placeholder="Ekri nimewo ki fè transfè a oswa yon ti nòt..." 
+                          style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px; box-sizing: border-box;"></textarea>
+            </div>
+
+            <button type="submit" style="width: 100%; padding: 15px; background: #2ecc71; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s;">
+                VOYE PRÈV LA KOUNYE A
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="{% url 'dashboard' %}" style="color: #95a5a6; text-decoration: none; font-size: 14px;">← Tounen nan Dashboard</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    input[type="file"] {
+        display: block !important;
+        opacity: 1 !important;
+        height: auto !important;
+    }
+    button:hover {
+        background: #27ae60 !important;
+    }
+</style>

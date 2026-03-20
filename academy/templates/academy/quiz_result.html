@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rezilta Quiz | AJF-Tech</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f7f6; margin: 0; padding: 20px; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .result-card { max-width: 500px; width: 100%; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: center; }
+        .icon { font-size: 80px; margin-bottom: 20px; }
+        .score-circle { width: 120px; height: 120px; border-radius: 50%; border: 8px solid #eee; display: flex; align-items: center; justify-content: center; margin: 20px auto; font-size: 28px; font-weight: bold; color: #2c3e50; }
+        .status-pass { color: #27ae60; }
+        .status-fail { color: #e74c3c; }
+        .btn { display: inline-block; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 20px; transition: 0.3s; }
+        .btn-primary { background: #3498db; color: white; }
+        .btn-secondary { background: #95a5a6; color: white; margin-left: 10px; }
+        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+
+    <div class="result-card">
+        {% if passed %}
+            <div class="icon">🎉</div>
+            <h1 class="status-pass">FÉLICITATIONS !</h1>
+            <p>Ou pase egzamen an avèk siksè. Ou se yon chanpyon!</p>
+        {% else %}
+            <div class="icon">😞</div>
+            <h1 class="status-fail">Ou pa pase...</h1>
+            <p>Malerezman, ou pa rive fè nòt pasaj la. Pa dekouraje, ou mèt re-etidye leson yo epi refè l.</p>
+        {% endif %}
+
+        <div class="score-circle" style="border-color: {% if passed %}#27ae60{% else %}#e74c3c{% endif %};">
+            {{ score }}%
+        </div>
+
+        <div class="actions">
+            {% if passed %}
+                <a href="{% url 'view_certificate' course.id %}" class="btn btn-primary">Wè Sètifika m 🎓</a>
+            {% else %}
+                <a href="{% url 'take_quiz' course.id %}" class="btn btn-primary">Refè Quiz la 🔄</a>
+            {% endif %}
+            <a href="{% url 'course_detail' course.id %}" class="btn btn-secondary">Tounen nan Kou a</a>
+        </div>
+    </div>
+
+</body>
+</html>

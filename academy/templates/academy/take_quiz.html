@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz: {{ quiz.course.title }} | AJF-Tech</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f7f6; margin: 0; padding: 20px; }
+        .quiz-container { max-width: 800px; margin: 40px auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .quiz-header { border-bottom: 2px solid #eee; margin-bottom: 30px; padding-bottom: 20px; text-align: center; }
+        .question-block { margin-bottom: 35px; padding: 20px; border: 1px solid #f0f0f0; border-radius: 10px; background: #fafafa; }
+        .question-text { font-size: 18px; font-weight: 600; color: #2c3e50; margin-bottom: 15px; }
+        .choice-item { display: block; margin-bottom: 10px; padding: 12px; background: white; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .choice-item:hover { border-color: #3498db; background: #ebf5fb; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        .btn-submit { 
+            display: block; width: 100%; background: #27ae60; color: white; padding: 15px; 
+            border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; 
+        }
+        .btn-submit:hover { background: #219150; transform: translateY(-2px); }
+        .back-link { text-decoration: none; color: #7f8c8d; font-size: 14px; display: inline-block; margin-bottom: 20px; }
+        .badge-info { background: #3498db; color: white; padding: 5px 10px; border-radius: 5px; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <a href="{% url 'course_detail' quiz.course.id %}" class="back-link">← Anile, tounen nan kou a</a>
+        
+        <div class="quiz-header">
+            <h1 style="color: #2c3e50;">📝 Quiz: {{ quiz.course.title }}</h1>
+            <p style="color: #7f8c8d;">Ou dwe fè omwen <span class="badge-info">{{ quiz.pass_score }}%</span> pou w ka jwenn sètifika ou.</p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            {% for question in questions %}
+            <input type="hidden" name="displayed_questions" value="{{ question.id }}">
+            
+            <div class="question-block">
+                <div class="question-text">{{ forloop.counter }}. {{ question.text }}</div>
+                
+                {% for choice in question.choices.all %}
+                <label class="choice-item">
+                    <input type="radio" name="question_{{ question.id }}" value="{{ choice.id }}" required>
+                    {{ choice.text }}
+                </label>
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+            <button type="submit" class="btn-submit">Voye Repons yo ✅</button>
+        </form>
+    </div>
+
+</body>
+</html>

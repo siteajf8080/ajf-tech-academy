@@ -1,0 +1,83 @@
+:root {
+    --primary: #002D62; /* Ble AJF-Tech */
+    --secondary: #FFD700; /* Jòn/Lò */
+    --dark: #1a1a1a;
+    --light: #ffffff;
+    --bg: #f8f9fa;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background-color: var(--bg);
+    color: var(--dark);
+}
+
+/* Header & Navigation */
+header {
+    background: var(--primary);
+    padding: 15px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.logo img {
+    height: 60px; /* Ajiste selon logo w lan */
+    object-fit: contain;
+}
+
+nav a {
+    color: var(--light);
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: var(--secondary);
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(rgba(0,45,98,0.8), rgba(0,45,98,0.8)), url('../img/hero-bg.jpg');
+    background-size: cover;
+    color: white;
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.hero h1 { font-size: 3rem; margin-bottom: 10px; }
+
+/* Grid de Formations */
+.container {
+    max-width: 1200px;
+    margin: 50px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 0 20px;
+}
+
+.course-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    border-bottom: 4px solid var(--secondary);
+}
+
+.course-card .info { padding: 25px; }
+
+.btn-main {
+    background: var(--primary);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 50px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 15px;
+    font-weight: bold;
+}

@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ course.title }} | AJF-Tech</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f7f6; margin: 0; padding: 0; }
+        
+        /* Banner Style */
+        .course-banner { 
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); 
+            color: white; 
+            padding: 60px 20px; 
+            text-align: center; 
+        }
+        .container { max-width: 900px; margin: -40px auto 40px; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        
+        .back-link { color: #bdc3c7; text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .back-link:hover { color: white; }
+
+        .price-tag { 
+            background: #2ecc71; 
+            color: white; 
+            padding: 5px 15px; 
+            border-radius: 20px; 
+            font-weight: bold; 
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        /* Lis Leson Style */
+        .lesson-list { margin-top: 30px; }
+        .lesson-item { 
+            display: flex; 
+            align-items: center; 
+            background: #fff; 
+            padding: 15px 20px; 
+            border-radius: 10px; 
+            margin-bottom: 12px; 
+            border: 1px solid #eee; 
+            text-decoration: none; 
+            color: #2c3e50; 
+            transition: 0.3s; 
+        }
+        .lesson-item:hover { 
+            border-color: #3498db; 
+            transform: scale(1.01); 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+        }
+        
+        .play-icon { 
+            width: 40px; 
+            height: 40px; 
+            background: #3498db; 
+            color: white; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin-right: 20px; 
+            font-size: 18px;
+        }
+        
+        .lesson-info { flex-grow: 1; }
+        .lesson-info h4 { margin: 0; font-size: 17px; }
+        .lesson-info p { margin: 5px 0 0; color: #7f8c8d; font-size: 13px; }
+
+        .btn-start { 
+            background: #3498db; 
+            color: white; 
+            padding: 8px 15px; 
+            border-radius: 5px; 
+            font-size: 13px; 
+            font-weight: bold; 
+        }
+
+        /* Seksyon Quiz Style */
+        .quiz-card {
+            margin-top: 50px;
+            padding: 30px;
+            background: #f8f9fa;
+            border: 2px dashed #3498db;
+            border-radius: 15px;
+            text-align: center;
+        }
+        .btn-quiz {
+            display: inline-block;
+            background: #e67e22;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 15px;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+        }
+        .btn-quiz:hover {
+            background: #d35400;
+            transform: translateY(-3px);
+        }
+
+        .btn-cert {
+            display: inline-block;
+            background: #27ae60;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 15px;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+        .btn-cert:hover {
+            background: #219150;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        }
+
+        .badge-info {
+            background: #34495e;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .success-msg { color: #27ae60; font-weight: bold; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="course-banner">
+        <a href="{% url 'dashboard' %}" class="back-link">← Tounen nan Dashboard</a>
+        <h1 style="margin: 20px 0 10px;">{{ course.title }}</h1>
+        <div class="price-tag">PRIX: {{ course.price }} HTG</div>
+    </div>
+
+    <div class="container">
+        <div style="margin-bottom: 30px;">
+            <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; display: inline-block;">Deskripsyon Kou a</h3>
+            <p style="color: #34495e; line-height: 1.8;">{{ course.description }}</p>
+        </div>
+
+        <div class="lesson-list">
+            <h3 style="color: #2c3e50; margin-bottom: 20px;">Lis Leson yo ({{ course.lessons.count }})</h3>
+            
+            {% for lesson in course.lessons.all %}
+            <a href="{% url 'lesson_detail' lesson.id %}" class="lesson-item">
+                <div class="play-icon">▶</div>
+                <div class="lesson-info">
+                    <h4>{{ lesson.title }}</h4>
+                    <p>Klike pou n kòmanse aprann</p>
+                </div>
+                <div class="btn-start">Gade Leson</div>
+            </a>
+            {% empty %}
+            <div style="text-align: center; padding: 40px; color: #95a5a6; background: #f9f9f9; border-radius: 10px;">
+                <p>Poko gen leson disponib pou kou sa a. Rete branche!</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if quiz_exists %}
+        <div class="quiz-card">
+            {% if has_passed %}
+                <div class="success-msg">🎉 Felisitasyon! Ou pase egzamen sa a avèk siksè.</div>
+                <h2 style="color: #2c3e50; margin: 10px 0;">Diplòm ou pare!</h2>
+                <p style="color: #7f8c8d; max-width: 600px; margin: 0 auto;">
+                    Ou ka telechaje sètifika ofisyèl ou kounye a pou w pataje siksè ou ak rès mond lan.
+                </p>
+                <a href="{% url 'view_certificate' course.id %}" class="btn-cert">
+                    🎓 Telechaje Sètifika m
+                </a>
+            {% else %}
+                <span class="badge-info">ÉTAPE FINALE</span>
+                <h2 style="color: #2c3e50; margin: 10px 0;">🎓 Jwenn Sètifika AJF-Tech ou!</h2>
+                <p style="color: #7f8c8d; max-width: 600px; margin: 0 auto;">
+                    Ou fin gade tout leson yo? Li lè pou w valide konesans ou. 
+                    Pase egzamen final la pou w ka jenere sètifika ofisyèl ou.
+                </p>
+                <a href="{% url 'take_quiz' course.id %}" class="btn-quiz">
+                    📝 Kòmanse Egzamen an
+                </a>
+                <p style="font-size: 12px; color: #bdc3c7; margin-top: 15px;">
+                    Egzamen sa a mande omwen {{ course.quiz.pass_score }}% pou w pase.
+                </p>
+            {% endif %}
+        </div>
+        {% endif %}
+
+    </div>
+
+    <footer style="text-align: center; padding: 40px 0; color: #bdc3c7; font-size: 14px;">
+        &copy; 2026 AJF-Tech - Tout dwa rezève
+    </footer>
+
+</body>
+</html>

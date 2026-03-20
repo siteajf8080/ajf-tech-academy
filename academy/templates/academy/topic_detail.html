@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="card border-0 shadow-sm mb-4" style="border-radius: 15px; background: #f8f9fa;">
+        <div class="card-body p-4">
+            <h2 class="fw-bold">{{ topic.title }}</h2>
+            <p class="lead text-muted">{{ topic.description }}</p>
+            <hr>
+            <small>Kòmanse pa <strong>{{ topic.creator.username }}</strong> le {{ topic.created_at|date:"d M Y" }}</small>
+        </div>
+    </div>
+
+    <div class="chat-box mb-4">
+        {% for post in posts %}
+        <div class="card mb-3 border-0 shadow-sm {% if post.user == request.user %}ms-auto bg-primary text-white{% endif %}" style="max-width: 80%; border-radius: 15px;">
+            <div class="card-body p-3">
+                <small class="fw-bold d-block mb-1">{{ post.user.username }}</small>
+                <p class="mb-0">{{ post.message }}</p>
+                <small class="{% if post.user == request.user %}text-white-50{% else %}text-muted{% endif %} d-block text-end" style="font-size: 0.75rem;">
+                    {{ post.created_at|time:"H:i" }}
+                </small>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="reply-section sticky-bottom bg-white p-3 shadow-lg" style="border-radius: 20px;">
+        <form method="POST" class="d-flex gap-2">
+            {% csrf_token %}
+            <textarea name="message" class="form-control border-0 bg-light" placeholder="Ekri yon repons..." rows="1" style="border-radius: 10px;"></textarea>
+            <button type="submit" class="btn btn-primary px-4" style="border-radius: 10px;">Voye</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
