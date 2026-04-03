@@ -1,5 +1,7 @@
 from django.urls import path
 from academy import views
+
+
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -11,6 +13,6 @@ urlpatterns = [
     path('profile/edit/', views.edit_profile, name='edit_profile'),
     path('certificate/<int:course_id>/', views.view_certificate, name='view_certificate'),
     path('notifications/', views.notifications_view, name='notifications'),
+    # urls.py
+    path('instructor/dashboard/', views.instructor_dashboard, name='instructor_dashboard'),
 ]
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

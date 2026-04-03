@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
@@ -29,4 +31,14 @@ urlpatterns = [
     path('profile/edit/', views.edit_profile, name='edit_profile'),
     path('notifications/', views.notifications_view, name='notifications'),
     path('signup/', views.signup, name='signup'),
+    # urls.py
+    path('instructor/dashboard/', views.instructor_dashboard, name='instructor_dashboard'),
+    path('instructor/add-lesson/', views.add_lesson, name='add_lesson'),
+    path('instructor/add-quiz/', views.add_quiz, name='add_quiz'),
+    path('instructor/quiz/<int:quiz_id>/add-question/', views.add_question, name='add_question'),
 ]
+
+# Liy sa a enpòtan anpil pou Django ka afiche siyati ak foto ou upload yo
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

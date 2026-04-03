@@ -28,7 +28,12 @@
             --light-gray: #f5f7fa;
         }
 
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f5f7fa; scroll-behavior: smooth; transition: background 0.4s, color 0.4s; }
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background: #f5f7fa; 
+            scroll-behavior: smooth; 
+            transition: background 0.4s, color 0.4s; 
+        }
 
         /* NAVBAR GLASSMORPHISM */
         .navbar { 
@@ -176,10 +181,23 @@
                         </li>
                         <li class="nav-item dropdown ms-lg-4">
                             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" data-bs-toggle="dropdown">
-                                <img src="{{ user.profile.photo.url }}" style="width:35px;height:35px;border-radius:50%; border: 2px solid var(--gold);" class="me-2">
+                                {% if user.profile.photo %}
+                                    <img src="{{ user.profile.photo.url }}" style="width:35px;height:35px;border-radius:50%; border: 2px solid var(--gold);" class="me-2">
+                                {% else %}
+                                    <i class="fas fa-user-circle fs-4 me-2 text-warning"></i>
+                                {% endif %}
                                 <span>Mon Compte</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                                {% if user.is_superuser %}
+                                <li>
+                                    <a class="dropdown-item fw-bold text-danger" href="/admin/auth/user/" target="_blank">
+                                        <i class="fas fa-user-shield me-2"></i> Administration
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                {% endif %}
+
                                 <li><a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a></li>
                                 <li><a class="dropdown-item" href="{% url 'profile' %}">Mon Profil</a></li>
                                 <li><hr class="dropdown-divider"></li>

@@ -4,11 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sètifika {{ user.username }} | AJF-Tech</title>
+    <title>Certificat {{ user.get_full_name|default:user.username }} | AJF-Tech</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     
     <style>
+        /* RESET POU ENPRIMANT */
+        @page {
+            size: letter landscape;
+            margin: 0;
+        }
+
         body { 
             background: #f0f0f0; 
             display: flex; 
@@ -19,145 +25,161 @@
             font-family: 'Montserrat', sans-serif;
         }
 
-        /* Kat Sètifika a */
+        /* DIMANSYON 11 x 8.5 POUS */
         .certificate-container {
-            width: 850px;
-            padding: 50px 70px;
+            width: 960px; /* 11 pous nan 72dpi/96dpi */
+            height: 720px; /* 8.5 pous */
+            padding: 40px 60px;
             background: white;
-            border: 18px solid #2c3e50;
+            border: 15px solid #0b1c2c; 
             position: relative;
             text-align: center;
             box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-            overflow: hidden;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        /* Bòdi anndan an vèt */
         .certificate-container::after {
             content: '';
             position: absolute;
-            top: 8px; left: 8px; right: 8px; bottom: 8px;
-            border: 3px solid #2ecc71;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 2px solid #f39c12; 
             pointer-events: none;
             z-index: 2;
         }
 
-        /* Watermark Logo AJF-Tech */
         .watermark {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 480px;
-            opacity: 0.04;
+            width: 400px;
+            opacity: 0.05;
             z-index: 0;
             pointer-events: none;
         }
 
-        .logo-box { position: relative; z-index: 5; margin-bottom: 20px; }
-        .cert-logo { max-width: 150px; height: auto; }
+        .logo-box { position: relative; z-index: 5; margin-bottom: 10px; }
+        .cert-logo { max-width: 120px; height: auto; }
 
         h2 { 
-            font-family: 'Montserrat', sans-serif; 
             text-transform: uppercase; 
-            letter-spacing: 6px; 
+            letter-spacing: 5px; 
             color: #7f8c8d; 
-            font-size: 16px; 
-            margin-bottom: 20px; 
+            font-size: 14px; 
+            margin-bottom: 10px; 
             position: relative; z-index: 5; 
         }
         
         h1 { 
             font-family: 'Playfair Display', serif; 
-            font-size: 52px; 
-            color: #2c3e50; 
-            margin: 10px 0; 
+            font-size: 40px; 
+            color: #0b1c2c; 
+            margin: 5px 0; 
             position: relative; z-index: 5; 
         }
 
         .student-name { 
             font-family: 'Great Vibes', cursive; 
-            font-size: 50px; 
-            color: #27ae60; 
-            margin: 20px 0; 
+            font-size: 48px; 
+            color: #0d6efd; 
+            margin: 10px 0; 
             border-bottom: 2px solid #f1f1f1; 
             display: inline-block; 
-            padding: 0 60px;
+            padding: 0 50px;
             position: relative; z-index: 5;
         }
 
         .course-title { 
             font-weight: bold; 
-            font-size: 26px; 
+            font-size: 24px; 
             color: #34495e; 
-            margin: 15px 0; 
-            text-decoration: underline #2ecc71; 
+            margin: 10px 0; 
+            text-decoration: underline #f39c12; 
             position: relative; z-index: 5; 
         }
 
         .description { 
-            max-width: 620px; 
-            margin: 0 auto; 
-            line-height: 1.6; 
+            max-width: 650px; 
+            margin: 5px auto; 
+            line-height: 1.5; 
             color: #555; 
-            font-size: 14.5px; 
+            font-size: 13.5px; 
             position: relative; z-index: 5; 
         }
 
         .date { 
-            margin-top: 35px; 
+            margin-top: 20px; 
             font-style: italic; 
             color: #95a5a6; 
-            font-size: 13px; 
+            font-size: 12px; 
             position: relative; z-index: 5; 
         }
 
-        /* Pati QR Code (Gòch anba) */
+        /* QR CODE */
         .qr-section {
             position: absolute;
-            bottom: 45px;
-            left: 65px;
+            bottom: 40px;
+            left: 50px;
             text-align: center;
             z-index: 5;
         }
         
         .qr-image {
-            width: 90px;
-            height: 90px;
-            border: 1px solid #ddd;
-            padding: 4px;
+            width: 75px;
+            height: 75px;
+            border: 1px solid #eee;
             background: #fff;
-            display: block;
         }
 
         .qr-label {
             display: block;
-            font-size: 9px;
+            font-size: 7px;
             font-weight: bold;
             color: #2c3e50;
-            margin-top: 6px;
-            letter-spacing: 0.5px;
+            margin-top: 3px;
         }
 
-        /* Pati Siyati (Dwat anba) */
+        /* SIYATI */
         .signature-section {
             display: flex;
             justify-content: flex-end;
-            margin-top: 50px;
+            margin-top: 25px;
             gap: 40px;
             position: relative;
             z-index: 5;
-            padding-right: 10px;
+            padding-right: 20px;
         }
 
-        .sig-box {
-            border-top: 2px solid #333;
-            width: 190px;
-            padding-top: 8px;
+        .sig-container {
+            width: 170px;
+            text-align: center;
+        }
+
+        .sig-image {
+            max-width: 120px;
+            max-height: 60px;
+            margin-bottom: -10px; 
+            filter: contrast(1.1);
+        }
+
+        .sig-line {
+            border-top: 1.5px solid #333;
+            padding-top: 5px;
             font-weight: bold;
             color: #2c3e50;
-            font-size: 12px;
+            font-size: 10px;
+            text-transform: uppercase;
         }
 
-        /* Bouton Enprime a */
+        .sig-name {
+            font-size: 10px;
+            color: #7f8c8d;
+            margin-top: 2px;
+            font-weight: 600;
+        }
+
         .print-btn-container {
             position: fixed;
             bottom: 30px;
@@ -166,25 +188,14 @@
         }
 
         .btn-action {
-            background: #2ecc71;
+            background: #0b1c2c;
             color: white;
             border: none;
-            padding: 16px 32px;
+            padding: 12px 24px;
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 16px;
-            box-shadow: 0 10px 25px rgba(46, 204, 113, 0.4);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-action:hover {
-            background: #27ae60;
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(46, 204, 113, 0.5);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
         @media print {
@@ -192,10 +203,9 @@
             .print-btn-container { display: none; }
             .certificate-container { 
                 box-shadow: none; 
-                border: 15px solid #2c3e50; 
-                margin: 0 auto; 
+                border: 12px solid #0b1c2c; 
+                margin: 0 auto;
             }
-            .cert-logo, .qr-image { -webkit-print-color-adjust: exact; }
         }
     </style>
 </head>
@@ -209,38 +219,52 @@
         </div>
 
         <h2>Attestation de Réussite</h2>
+        <h1>CERTIFICAT</h1>
         <p>Cette distinction honorifique est décernée à :</p>
         
         <div class="student-name">
             {{ user.first_name|default:user.username }} {{ user.last_name }}
         </div>
         
-        <p class="description">Pour avoir complété avec succès et démontré une maîtrise technique approfondie lors de la formation professionnelle de haut niveau sur :</p>
+        <p class="description">Pour avoir complété avec succès et démontré une maîtrise technique approfondie lors de la formation professionnelle sur :</p>
         
         <div class="course-title">{{ course.title }}</div>
         
-        <p class="description">Ce certificat atteste que le récipiendaire possède les compétences nécessaires validées par l'Alliance de Jeunes Formateurs en Technologie (AJF-Tech).</p>
+        <p class="description">Ce certificat atteste que le récipiendaire possède les compétences techniques validées par l'Alliance de Jeunes Formateurs en Technologie (AJF-Tech).</p>
         
-        <div class="date">Délivré à Les Cayes, le : {% now "d F Y" %}</div>
+        <div class="date">Délivré à Les Cayes, le : {{ date_today|date:"d F Y" }}</div>
 
         <div class="qr-section">
-            {% if qr_code %}
-                <img src="data:image/png;base64,{{ qr_code }}" class="qr-image" alt="QR Verify">
-            {% else %}
-                <img src="https://chart.googleapis.com/chart?chs=100x100&cht=qr&chl={{ request.build_absolute_uri|urlencode }}&choe=UTF-8" class="qr-image" alt="QR Verify">
-            {% endif %}
+            <img src="data:image/png;base64,{{ qr_code }}" class="qr-image" alt="QR Verify">
             <span class="qr-label">VÉRIFIER L'AUTHENTICITÉ</span>
         </div>
 
         <div class="signature-section">
-            <div class="sig-box">Direction AJF-Tech</div>
-            <div class="sig-box">Le Formateur Principal</div>
+            <div class="sig-container">
+                {% if ceo_signature %}
+                    <img src="{{ ceo_signature.url }}" class="sig-image" alt="Paraf CEO">
+                {% else %}
+                    <div style="height: 50px;"></div>
+                {% endif %}
+                <div class="sig-line">Direction AJF-Tech</div>
+                <div class="sig-name">Jonathan F. Alcena</div>
+            </div>
+
+            <div class="sig-container">
+                {% if instructor_signature %}
+                    <img src="{{ instructor_signature.url }}" class="sig-image" alt="Paraf Professeur">
+                {% else %}
+                    <div style="height: 50px;"></div>
+                {% endif %}
+                <div class="sig-line">Le Formateur Principal</div>
+                <div class="sig-name">{{ course.instructor.get_full_name|default:"Instructeur Qualifié" }}</div>
+            </div>
         </div>
     </div>
 
     <div class="print-btn-container">
         <button onclick="window.print()" class="btn-action">
-            <span>🖨️</span> Télécharger en PDF
+            <span>🖨️</span> Imprimer en PDF
         </button>
     </div>
 

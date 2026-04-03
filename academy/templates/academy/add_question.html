@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Ajoute Kesyon pou: {{ quiz.title }}</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label class="fw-bold">Tèks Kesyon an:</label>
+                            {{ q_form.text }}
+                        </div>
+
+                        <hr>
+                        <h5 class="mb-3 text-secondary">Chwa repons yo (Koche bòn repons lan):</h5>
+                        
+                        {% for i in "0123" %}
+                        <div class="input-group mb-2">
+                            <div class="input-group-text">
+                                <input class="form-check-input mt-0" type="checkbox" name="is_correct" value="{{ forloop.counter0 }}">
+                            </div>
+                            <input type="text" name="choice_text" class="form-control" placeholder="Opsyon {{ forloop.counter }}">
+                        </div>
+                        {% endfor %}
+
+                        <div class="d-flex gap-2 mt-4">
+                            <button type="submit" name="add_another" class="btn btn-outline-primary">
+                                Sove epi ajoute yon lòt
+                            </button>
+                            <button type="submit" class="btn btn-success">
+                                Sove epi Fini
+                            </button>
+                            <a href="{% url 'instructor_dashboard' %}" class="btn btn-light">Anile</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="max-width: 700px; margin: 50px auto; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+    <h2 style="color: #2c3e50; margin-bottom: 25px;"><i class="fas fa-plus-circle"></i> Ajoute yon Leson</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; font-weight: bold; margin-bottom: 5px;">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <small style="color: red;">{{ field.errors }}</small>
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button type="submit" class="btn-study" style="flex: 2; border: none; cursor: pointer; padding: 12px;">
+                Anrejistre Leson an
+            </button>
+            <a href="{% url 'instructor_dashboard' %}" style="flex: 1; text-align: center; background: #95a5a6; color: white; text-decoration: none; padding: 12px; border-radius: 6px;">
+                Anile
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

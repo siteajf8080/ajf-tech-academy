@@ -1,36 +1,31 @@
-from pathlib import Path
 import os
+from pathlib import Path
+from django.contrib.messages import constants as messages
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# 1. PATHS
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# 2. SECURITY (Pa bliye chanje SECRET_KEY sa si w ap mete l an liy)
 SECRET_KEY = 'django-insecure-28r_kco--lgm_hh%yfy!%yqfl8e663_(((#o!6erh3y)@$t6b!'
+DEBUG = True
+ALLOWED_HOSTS = ['*']
 
-# SECURITY WARNING: don't run with debug turned on in production!
-# Nou mete l sou False pou pèfòmans ak sekirite sou Render
-DEBUG = False
-
-# Adrès ki gen pèmisyon pou ouvri sit la
-ALLOWED_HOSTS = ['ajf-tech-academy.onrender.com', 'ajftech.tech', 'www.ajftech.tech', 'localhost', '127.0.0.1']
-
-# Application definition
+# 3. APPLICATIONS
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'whitenoise.runserver_nostatic', # Pou WhiteNoise jere static menm nan devlopman
     'django.contrib.staticfiles',
     
-    # App pa ou la
+    # App AJF-Tech la
     'academy', 
 ]
 
+# 4. MIDDLEWARE
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # Trè enpòtan pou Render
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -41,6 +36,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
+# 5. TEMPLATES
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -52,6 +48,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # Sa a enpòtan pou foto (signatures, screenshots) ka parèt
                 'django.template.context_processors.media',
             ],
         },
@@ -60,9 +57,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Database
-# Nòmalman sou Render w ap bezwen PostgreSQL pou done yo pa efase,
-# men pou kounye a n ap itilize SQLite jan w te genyen l lan.
+# 6. DATABASE (Pou kòmanse, SQLite3 bon nèt)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -70,7 +65,7 @@ DATABASES = {
     }
 }
 
-# Password validation
+# 7. PASSWORD VALIDATION
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -78,38 +73,27 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Internationalization
+# 8. INTERNATIONALIZATION (Konfigirasyon Ayiti)
 LANGUAGE_CODE = 'fr' 
-TIME_ZONE = 'America/Port-au-Prince'
+TIME_ZONE = 'America/Port-au-Prince' 
 USE_I18N = True
 USE_TZ = True
 
-# --- STATIC FILES (CSS, JS) ---
+# 9. STATIC FILES (CSS, JS, Images pwojè a)
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-    BASE_DIR / "academy" / "static",
-]
-# Kote Render ap rasanble tout static yo
+STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Konfigirasyon WhiteNoise pou konpresyon ak kach (cache)
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# --- MEDIA FILES (Foto, Screenshots) ---
+# 10. MEDIA FILES (Foto pwofil, Siyati, Screenshot peman)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# --- AUTHENTICATION CONFIG ---
+# 11. AUTHENTICATION CONFIG
 LOGIN_URL = 'login' 
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'home'
 
-# --- DEFAULT AUTO FIELD ---
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# --- MESSAGE TAGS ---
-from django.contrib.messages import constants as messages
+# 12. MESSAGE TAGS (Pou Bootstrap alerts)
 MESSAGE_TAGS = {
     messages.DEBUG: 'secondary',
     messages.INFO: 'info',
@@ -117,3 +101,15 @@ MESSAGE_TAGS = {
     messages.WARNING: 'warning',
     messages.ERROR: 'danger',
 }
+
+# 13. EMAIL CONFIGURATION (Gmail SMTP pou sètifika yo)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'ajftech.infos@gmail.com' 
+EMAIL_HOST_PASSWORD = 'afgx hmnv lamy iknj' # App Password ou an
+DEFAULT_FROM_EMAIL = 'AJF-Tech <ajftech.infos@gmail.com>'
+
+# 14. DEFAULT AUTO FIELD
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
