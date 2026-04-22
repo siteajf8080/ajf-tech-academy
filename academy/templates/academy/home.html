@@ -70,11 +70,19 @@
         .hero-content {
             position: relative;
             z-index: 2;
-            padding: 26px 0 110px;
+            padding: 120px 0 110px;
         }
 
         .main-nav {
-            padding: 0.4rem 0 1rem;
+            padding: 0.7rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1050;
+            background: rgba(8, 27, 51, 0.88);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .brand-badge {
@@ -85,14 +93,35 @@
         }
 
         .brand-icon {
-            width: 46px;
-            height: 46px;
+            width: 56px;
+            height: 56px;
             display: grid;
             place-items: center;
-            border-radius: 16px;
-            background: linear-gradient(135deg, var(--ajf-gold), #ffe08a);
-            color: var(--ajf-navy);
-            font-weight: 800;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 16px 36px rgba(8, 27, 51, 0.18);
+            padding: 8px;
+        }
+
+        .brand-icon img,
+        .footer-logo-shell img,
+        .about-photo-shell img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .brand-copy strong {
+            display: block;
+            font-size: 1rem;
+            letter-spacing: 0.02em;
+        }
+
+        .brand-copy small {
+            color: rgba(255, 255, 255, 0.7) !important;
+            font-size: 0.74rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
         }
 
         .hero-nav-link {
@@ -206,6 +235,41 @@
 
         .section {
             padding: 84px 0;
+        }
+
+        .about-shell {
+            padding: 32px;
+        }
+
+        .about-photo-shell {
+            width: min(100%, 360px);
+            aspect-ratio: 1 / 1;
+            border-radius: 34px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: var(--ajf-shadow);
+            margin-inline: auto;
+        }
+
+        .about-list {
+            display: grid;
+            gap: 14px;
+            margin-top: 1.5rem;
+        }
+
+        .about-list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px 18px;
+            border-radius: 20px;
+            background: var(--ajf-surface-soft);
+        }
+
+        .about-list-item i {
+            color: var(--ajf-sky);
+            font-size: 1.1rem;
+            margin-top: 3px;
         }
 
         .section-heading {
@@ -329,6 +393,47 @@
             padding: 30px 0;
         }
 
+        .footer-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .footer-logo-shell {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #fff;
+            padding: 8px;
+            display: grid;
+            place-items: center;
+            box-shadow: 0 12px 26px rgba(8, 27, 51, 0.22);
+        }
+
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .social-link {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            transition: 0.25s ease;
+        }
+
+        .social-link:hover {
+            background: #fff;
+            color: var(--ajf-navy);
+        }
+
         @media (max-width: 991px) {
             .metric-grid,
             .service-grid,
@@ -338,7 +443,7 @@
             }
 
             .hero-content {
-                padding-bottom: 72px;
+                padding: 104px 0 72px;
             }
         }
     </style>
@@ -348,8 +453,10 @@
         <div class="container hero-content">
             <nav class="navbar navbar-expand-lg main-nav">
                 <a class="navbar-brand brand-badge" href="{% url 'home' %}">
-                    <span class="brand-icon">A</span>
-                    <span>
+                    <span class="brand-icon">
+                        <img src="{% static 'images/logo_ajf_tech.png' %}" alt="Logo AJF-Tech">
+                    </span>
+                    <span class="brand-copy">
                         <strong class="d-block">AJF-Tech</strong>
                         <small class="text-white-50">Academy & Services</small>
                     </span>
@@ -359,6 +466,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="landingNav">
                     <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                        <li class="nav-item"><a class="nav-link hero-nav-link" href="#apropos">Apropos</a></li>
                         <li class="nav-item"><a class="nav-link hero-nav-link" href="#courses">Kou yo</a></li>
                         <li class="nav-item"><a class="nav-link hero-nav-link" href="#services">Sèvis</a></li>
                         <li class="nav-item"><a class="nav-link hero-nav-link" href="#seminars">Seminè</a></li>
@@ -454,6 +562,52 @@
                     <div class="service-icon"><i class="fas fa-pen-ruler"></i></div>
                     <h4>Design & branding</h4>
                     <p class="text-muted mb-0">Canva, Photoshop, ak idantite vizyèl pou elèv ak ti biznis kap devlope.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section pt-0" id="apropos">
+        <div class="container">
+            <div class="surface-card about-shell">
+                <div class="row align-items-center g-5">
+                    <div class="col-lg-5">
+                        <div class="about-photo-shell">
+                            <img src="{% static 'academy/img/ceo.jpeg' %}" alt="Foto fondatè AJF-Tech">
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="section-heading mb-0">
+                            <h2>Apropos AJF-Tech</h2>
+                            <p>
+                                AJF-Tech se yon pwojè ak yon vizyon klè: ede moun aprann teknoloji,
+                                devlope konpetans pwofesyonèl, epi jwenn sèvis teknik yo ka fè konfyans.
+                            </p>
+                        </div>
+                        <div class="about-list">
+                            <div class="about-list-item">
+                                <i class="fas fa-user-tie"></i>
+                                <div>
+                                    <strong class="d-block">Yon figi reyèl dèyè mak la</strong>
+                                    <span class="text-muted">Nou mete foto w pou sit la santi l pi imen, pi serye, epi pi kredib pou nouvo vizitè yo.</span>
+                                </div>
+                            </div>
+                            <div class="about-list-item">
+                                <i class="fas fa-bullseye"></i>
+                                <div>
+                                    <strong class="d-block">Misyon an klè</strong>
+                                    <span class="text-muted">Fòmasyon pratik, sèvis teknik, ak yon direksyon ki ka ede jèn ak pwofesyonèl avanse toutbon.</span>
+                                </div>
+                            </div>
+                            <div class="about-list-item">
+                                <i class="fas fa-people-group"></i>
+                                <div>
+                                    <strong class="d-block">Yon kominote kap grandi</strong>
+                                    <span class="text-muted">Platfòm la la pou bati relasyon ak elèv, kliyan, ak patnè ki bezwen yon espas serye pou evolye.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -581,11 +735,19 @@
 
     <footer>
         <div class="container d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
-            <div>
+            <div class="footer-brand">
+                <div class="footer-logo-shell">
+                    <img src="{% static 'images/logo_ajf_tech.png' %}" alt="Logo AJF-Tech">
+                </div>
+                <div>
                 <strong class="text-white d-block">AJF-Tech</strong>
                 <span>Fòmasyon teknoloji, sèvis teknik, ak kominote pwofesyonèl.</span>
+                </div>
             </div>
-            <div class="d-flex gap-3">
+            <div class="social-links">
+                <a class="social-link" href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a class="social-link" href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a class="social-link" href="#" aria-label="X"><i class="fab fa-x-twitter"></i></a>
                 <a class="text-white" href="https://wa.me/50934659454" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp me-1"></i>WhatsApp</a>
                 <a class="text-white" href="{% url 'forum_home' %}"><i class="fas fa-users me-1"></i>Forum</a>
             </div>
