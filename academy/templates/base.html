@@ -4,149 +4,362 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}AJF-Tech | Edikasyon Teknoloji{% endblock %}</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <title>{% block title %}AJF-Tech | Platfom edikasyon teknoloji{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #f4f7f6; min-height: 100vh; display: flex; flex-direction: column; }
-        main { flex: 1; }
-        .navbar { background-color: #ffffff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 15px 0; }
-        .nav-link { color: #333; font-weight: 500; transition: 0.3s; padding: 0.5rem 1rem !important; }
-        .nav-link:hover, .nav-link.active { color: #0d6efd; }
-        
-        /* --- STYLE CHATBOT AI AJF-TECH --- */
+        :root {
+            --ajf-navy: #081b33;
+            --ajf-navy-soft: #102a4d;
+            --ajf-sky: #1f75ff;
+            --ajf-gold: #f4b942;
+            --ajf-ink: #10233e;
+            --ajf-muted: #64748b;
+            --ajf-surface: #ffffff;
+            --ajf-surface-soft: #f5f8fc;
+            --ajf-border: rgba(8, 27, 51, 0.09);
+            --ajf-shadow: 0 18px 60px rgba(8, 27, 51, 0.12);
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            color: var(--ajf-ink);
+            background:
+                radial-gradient(circle at top left, rgba(31, 117, 255, 0.08), transparent 26%),
+                linear-gradient(180deg, #f9fbfe 0%, #eef4fb 100%);
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .site-shell {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 1050;
+            backdrop-filter: blur(14px);
+            background: rgba(8, 27, 51, 0.88);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .brand-mark {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, var(--ajf-gold), #ffd883);
+            color: var(--ajf-navy);
+            font-weight: 800;
+            box-shadow: 0 10px 24px rgba(244, 185, 66, 0.22);
+        }
+
+        .brand-copy {
+            line-height: 1.05;
+        }
+
+        .brand-copy strong {
+            color: #fff;
+            font-size: 1rem;
+            letter-spacing: 0.02em;
+        }
+
+        .brand-copy span {
+            color: rgba(255, 255, 255, 0.66);
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .site-nav .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 600;
+            padding: 0.8rem 1rem !important;
+            border-radius: 999px;
+            transition: 0.25s ease;
+        }
+
+        .site-nav .nav-link:hover,
+        .site-nav .nav-link:focus {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .site-action,
+        .site-action-outline {
+            border-radius: 999px;
+            padding: 0.78rem 1.2rem;
+            font-weight: 700;
+            border: 0;
+        }
+
+        .site-action {
+            background: linear-gradient(135deg, var(--ajf-sky), #4f95ff);
+            color: #fff;
+            box-shadow: 0 12px 30px rgba(31, 117, 255, 0.22);
+        }
+
+        .site-action-outline {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .user-pill {
+            border-radius: 999px;
+            padding: 0.45rem 0.75rem;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+        }
+
+        .user-pill .avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--ajf-gold), #ffe9b2);
+            color: var(--ajf-navy);
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+        }
+
+        .notification-chip {
+            position: relative;
+        }
+
+        .notification-chip .badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+        }
+
+        .page-wrap {
+            flex: 1;
+            padding: 28px 0 48px;
+        }
+
+        .page-card {
+            background: rgba(255, 255, 255, 0.88);
+            border: 1px solid var(--ajf-border);
+            box-shadow: var(--ajf-shadow);
+            border-radius: 28px;
+        }
+
+        .site-footer {
+            background: var(--ajf-navy);
+            color: rgba(255, 255, 255, 0.68);
+            padding: 28px 0;
+        }
+
+        .site-footer a {
+            color: rgba(255, 255, 255, 0.82);
+        }
+
         #chat-window {
-            display: none; 
-            width: 350px; 
-            height: 500px; 
-            background: white; 
-            border-radius: 20px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
-            flex-direction: column; 
-            overflow: hidden; 
+            display: none;
+            width: 360px;
+            height: 520px;
+            background: #fff;
+            border-radius: 26px;
+            box-shadow: 0 30px 60px rgba(8, 27, 51, 0.28);
+            flex-direction: column;
+            overflow: hidden;
             position: fixed;
             bottom: 100px;
-            right: 30px;
+            right: 26px;
             z-index: 3000;
-            border: 1px solid #e0e0e0;
-        }
-        
-        .ai-msg { background: #f0f2f5; color: #333; align-self: flex-start; border-bottom-left-radius: 2px; }
-        .user-msg { background: #0d6efd; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
-        .msg-common { padding: 12px 16px; border-radius: 18px; font-size: 13.5px; max-width: 85%; line-height: 1.4; word-wrap: break-word; margin-bottom: 5px; }
-        
-        #chat-content { flex: 1; padding: 20px; overflow-y: auto; background: #ffffff; display: flex; flex-direction: column; gap: 12px; }
-        
-        footer { background-color: #2c3e50; color: white; padding: 40px 0; margin-top: 50px; }
-
-        @media (max-width: 500px) {
-            #chat-window { width: 90vw; right: 5vw; bottom: 90px; }
+            border: 1px solid rgba(8, 27, 51, 0.1);
         }
 
-        #chat-content::-webkit-scrollbar { width: 5px; }
-        #chat-content::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+        #chat-content {
+            flex: 1;
+            padding: 18px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: linear-gradient(180deg, #f8fbff, #eef4fb);
+        }
+
+        .msg-common {
+            padding: 12px 14px;
+            border-radius: 18px;
+            font-size: 0.92rem;
+            max-width: 86%;
+            line-height: 1.45;
+        }
+
+        .ai-msg {
+            background: #ffffff;
+            color: var(--ajf-ink);
+            align-self: flex-start;
+            border-bottom-left-radius: 6px;
+            box-shadow: 0 8px 24px rgba(8, 27, 51, 0.08);
+        }
+
+        .user-msg {
+            background: linear-gradient(135deg, var(--ajf-sky), #4e91ff);
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 6px;
+        }
+
+        #chat-toggle {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 68px;
+            height: 68px;
+            border: 0;
+            border-radius: 50%;
+            color: #fff;
+            background: linear-gradient(135deg, var(--ajf-sky), #4d91ff);
+            box-shadow: 0 20px 34px rgba(31, 117, 255, 0.34);
+            z-index: 3001;
+        }
+
+        @media (max-width: 991px) {
+            .page-wrap {
+                padding-top: 18px;
+            }
+
+            .page-card {
+                border-radius: 22px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            #chat-window {
+                width: calc(100vw - 20px);
+                right: 10px;
+                bottom: 92px;
+                height: 70vh;
+            }
+        }
     </style>
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
-
-    <nav class="navbar navbar-expand-lg sticky-top mb-4">
-        <div class="container">
-            <a class="navbar-brand fw-bold text-dark fs-3" href="{% url 'home' %}">
-                <span class="text-primary">AJF</span>-Tech
-            </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Akey</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'news_list' %}">Aktyalite</a></li>
-                    
-                    {% if user.is_authenticated %}
-                        <li class="nav-item"><a class="nav-link text-primary fw-bold" href="{% url 'forum_home' %}"><i class="fas fa-users me-1"></i>Fowòm</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a></li>
-                        
-                        <li class="nav-item dropdown ms-2">
-                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-user-circle fa-lg me-2"></i>
-                                <span class="d-none d-md-inline text-capitalize">{{ user.username }}</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2">
-                                <li><a class="dropdown-item rounded" href="{% url 'profile' %}"><i class="fas fa-user me-2 small"></i> Pwofil mwen</a></li>
-                                
-                                {% if user.courses_taught.exists %}
-                                    <li><a class="dropdown-item rounded text-primary fw-bold" href="{% url 'instructor_dashboard' %}">
-                                        <i class="fas fa-chalkboard-teacher me-2 small"></i> Dashboard Pwofesè
-                                    </a></li>
-                                {% endif %}
-
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <form method="post" action="{% url 'logout' %}">
-                                        {% csrf_token %}
-                                        <button type="submit" class="dropdown-item text-danger fw-bold rounded">
-                                            <i class="fas fa-sign-out-alt me-2 small"></i> Dekonekte
-                                        </button>
-                                    </form>
+    <div class="site-shell">
+        <header class="site-header">
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <div class="container">
+                    <a class="navbar-brand d-flex align-items-center gap-3 me-4" href="{% url 'home' %}">
+                        <div class="brand-mark">A</div>
+                        <div class="brand-copy">
+                            <strong>AJF-Tech</strong>
+                            <span>Tech Academy Platform</span>
+                        </div>
+                    </a>
+                    <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="mainNav">
+                        <ul class="navbar-nav ms-auto align-items-lg-center site-nav">
+                            <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Akey</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'news_list' %}">Nouvèl</a></li>
+                            {% if user.is_authenticated %}
+                                <li class="nav-item"><a class="nav-link" href="{% url 'forum_home' %}">Forum</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a></li>
+                                <li class="nav-item">
+                                    <a class="nav-link notification-chip" href="{% url 'notifications' %}">
+                                        Notifikasyon
+                                        {% if unread_notifications_count %}
+                                            <span class="badge rounded-pill text-bg-danger">{{ unread_notifications_count }}</span>
+                                        {% endif %}
+                                    </a>
                                 </li>
-                            </ul>
-                        </li>
-                    {% else %}
-                        <li class="nav-item ms-lg-3"><a class="btn btn-outline-primary px-4 rounded-pill" href="{% url 'login' %}">Konekte</a></li>
-                        <li class="nav-item ms-lg-2"><a class="btn btn-primary px-4 rounded-pill text-white" href="{% url 'signup' %}">Enskri</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
+                                <li class="nav-item dropdown ms-lg-3">
+                                    <a class="nav-link dropdown-toggle user-pill d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                                        <span class="avatar">{{ user.username|first|upper }}</span>
+                                        <span class="d-none d-md-inline text-capitalize">{{ user.username }}</span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2 rounded-4">
+                                        <li><a class="dropdown-item rounded-3 py-2" href="{% url 'profile' %}"><i class="fas fa-user me-2"></i>Pwofil mwen</a></li>
+                                        <li><a class="dropdown-item rounded-3 py-2" href="{% url 'edit_profile' %}"><i class="fas fa-pen me-2"></i>Modifye pwofil</a></li>
+                                        {% if user.courses_taught.exists %}
+                                            <li><a class="dropdown-item rounded-3 py-2" href="{% url 'instructor_dashboard' %}"><i class="fas fa-chalkboard-teacher me-2"></i>Espace pwofesè</a></li>
+                                        {% endif %}
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <form method="post" action="{% url 'logout' %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="dropdown-item rounded-3 py-2 text-danger">
+                                                    <i class="fas fa-sign-out-alt me-2"></i>Dekonekte
+                                                </button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </li>
+                            {% else %}
+                                <li class="nav-item ms-lg-3 mt-3 mt-lg-0"><a class="site-action-outline d-inline-block" href="{% url 'login' %}">Konekte</a></li>
+                                <li class="nav-item ms-lg-2 mt-3 mt-lg-0"><a class="site-action d-inline-block" href="{% url 'signup' %}">Kreye kont</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
 
-    <main class="container">
-        {% block content %}{% endblock %}
-    </main>
-
-    {% if user.is_authenticated %}
-    <div id="ai-chat-container">
-        <div id="chat-window">
-            <div style="background: #0d6efd; color: white; padding: 18px; font-weight: 600; display: flex; justify-content: space-between; align-items: center;">
-                <span><i class="fas fa-robot me-2"></i> AJF-Tech Tutor AI</span>
-                <button onclick="toggleChat()" style="background: none; border: none; color: white; cursor: pointer; font-size: 1.2rem;">✕</button>
+        <main class="page-wrap">
+            <div class="container">
+                {% block content %}{% endblock %}
             </div>
-            
-            <div id="chat-content">
-                <div class="msg-common ai-msg">
-                    Bonjou <strong>{{ user.username }}</strong>! 👋 Mwen se asistan AI AJF-Tech la. Kijan mwen ka ede w ak kous ou yo jodi a?
+        </main>
+
+        <footer class="site-footer">
+            <div class="container d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <strong class="text-white d-block">AJF-Tech</strong>
+                    <span>Platfom fòmasyon, sèvis, ak akonpayman teknik pou jenerasyon kap vini an.</span>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <a href="https://wa.me/50934659454" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp me-1"></i>WhatsApp</a>
+                    <a href="mailto:ajftech.infos@gmail.com"><i class="fas fa-envelope me-1"></i>Email</a>
                 </div>
             </div>
+        </footer>
+    </div>
 
-            <div style="padding: 15px; border-top: 1px solid #eee; display: flex; gap: 8px; background: white;">
-                <input type="text" id="user-input" placeholder="Ekri mesaj ou a..." style="flex: 1; border: 1px solid #ddd; padding: 10px 15px; border-radius: 25px; outline: none;">
-                <button id="send-btn" style="background: #0d6efd; color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer;">
+    {% if user.is_authenticated %}
+        <div id="chat-window">
+            <div class="d-flex align-items-center justify-content-between px-4 py-3 text-white" style="background: linear-gradient(135deg, var(--ajf-navy), var(--ajf-navy-soft));">
+                <div>
+                    <strong class="d-block">AJF-Tech Tutor AI</strong>
+                    <small style="opacity: 0.78;">Asistan pou kestyon teknik ak kou yo</small>
+                </div>
+                <button onclick="toggleChat()" class="btn btn-sm btn-light rounded-circle" type="button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="chat-content">
+                <div class="msg-common ai-msg">
+                    Bonjou <strong>{{ user.username }}</strong>. Mwen la pou ede w ak kestyon sou kou yo, egzamen yo, oswa teknoloji an jeneral.
+                </div>
+            </div>
+            <div class="p-3 border-top bg-white d-flex gap-2">
+                <input type="text" id="user-input" class="form-control rounded-pill px-3" placeholder="Ekri kestyon ou la...">
+                <button id="send-btn" class="btn text-white rounded-circle" style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--ajf-sky), #4d91ff);" type="button">
                     <i class="fas fa-paper-plane"></i>
                 </button>
             </div>
         </div>
-
-        <button id="chat-toggle" style="position: fixed; bottom: 30px; right: 30px; background: #0d6efd; color: white; border: none; width: 65px; height: 65px; border-radius: 50%; cursor: pointer; box-shadow: 0 8px 25px rgba(13,110,253,0.4); font-size: 28px; z-index: 3001;" onclick="toggleChat()">
+        <button id="chat-toggle" onclick="toggleChat()" type="button">
             <i class="fas fa-comment-dots"></i>
         </button>
-    </div>
     {% endif %}
 
-    <footer>
-        <div class="container text-center">
-            <p>&copy; 2026 AJF-Tech. Tout dwa rezève.</p>
-            <div class="d-flex justify-content-center gap-3">
-                <a href="https://wa.me/50938446051" class="text-white fs-4"><i class="fab fa-whatsapp"></i></a>
-            </div>
-        </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     {% if user.is_authenticated %}
     <script>
         const chatWindow = document.getElementById('chat-window');
@@ -155,7 +368,16 @@
         const sendBtn = document.getElementById('send-btn');
 
         function toggleChat() {
-            chatWindow.style.display = (chatWindow.style.display === 'none' || chatWindow.style.display === '') ? 'flex' : 'none';
+            chatWindow.style.display = (chatWindow.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function appendMessage(sender, text) {
+            const div = document.createElement('div');
+            div.className = `msg-common ${sender === 'user' ? 'user-msg' : 'ai-msg'}`;
+            div.innerHTML = text;
+            chatContent.appendChild(div);
+            chatContent.scrollTop = chatContent.scrollHeight;
+            return div;
         }
 
         async function sendMessage() {
@@ -165,7 +387,7 @@
             appendMessage('user', message);
             userInput.value = '';
 
-            const loadingDiv = appendMessage('ai', '<i class="fas fa-spinner fa-spin"></i> M ap reflechi...');
+            const loadingDiv = appendMessage('ai', '<i class="fas fa-spinner fa-spin me-1"></i>M ap prepare repons la...');
 
             try {
                 const response = await fetch('/ai/chat/', {
@@ -178,32 +400,18 @@
                 });
 
                 const data = await response.json();
-                
-                if (data.reply) {
-                    loadingDiv.innerHTML = data.reply.replace(/\n/g, '<br>');
-                } else if (data.error) {
-                    loadingDiv.innerHTML = "<strong>Erè:</strong> " + data.error;
-                } else {
-                    loadingDiv.innerHTML = "Eskize m, sèvè a pa voye yon repons valab.";
-                }
+                loadingDiv.innerHTML = data.reply ? data.reply.replace(/\n/g, '<br>') : 'Pa gen repons disponib pou moman an.';
             } catch (error) {
-                loadingDiv.innerHTML = "Erè koneksyon. Tcheke si VeePN ou limen sou USA.";
+                loadingDiv.innerHTML = 'Gen yon pwoblem koneksyon. Eseye ankò nan yon ti moman.';
             }
-            chatContent.scrollTop = chatContent.scrollHeight;
-        }
-
-        function appendMessage(sender, text) {
-            const div = document.createElement('div');
-            div.className = `msg-common ${sender === 'user' ? 'user-msg' : 'ai-msg'}`;
-            div.innerHTML = text;
-            chatContent.appendChild(div);
-            chatContent.scrollTop = chatContent.scrollHeight;
-            return div;
         }
 
         sendBtn.addEventListener('click', sendMessage);
-        userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+        userInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') sendMessage();
+        });
     </script>
     {% endif %}
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

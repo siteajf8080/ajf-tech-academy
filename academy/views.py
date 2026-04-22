@@ -158,6 +158,7 @@ def send_certificate_email(user, course, qr_code_base64, ceo_signature, instruct
 
 def home(request):
     courses = Course.objects.all().order_by('-id')[:6]
+    recent_posts = Post.objects.all().order_by('-created_at')[:3]
     periode_filter = request.GET.get('periode')
     if periode_filter:
         seminars = Seminar.objects.filter(period=periode_filter, is_active=True).order_by('-date_event')
@@ -168,6 +169,7 @@ def home(request):
     
     return render(request, 'academy/home.html', {
         'courses': courses,
+        'recent_posts': recent_posts,
         'seminars': seminars,
         'all_periods': all_periods,
         'selected_period': periode_filter
@@ -184,11 +186,16 @@ def instructor_dashboard(request):
     )
     
     total_instructor_revenue = Decimal('0.0')
+    total_students = 0
     for course in my_courses:
-        total_instructor_revenue += (course.total_students * course.price) * Decimal('0.5')
+        course.gross_revenue = course.total_students * course.price
+        course.instructor_share = course.gross_revenue * Decimal('0.5')
+        total_students += course.total_students
+        total_instructor_revenue += course.instructor_share
 
     return render(request, 'academy/instructor_dashboard.html', {
         'courses': my_courses,
+        'total_students': total_students,
         'total_revenue': total_instructor_revenue,
         'instructor_share_pct': 50,
         'ajf_share_pct': 50

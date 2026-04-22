@@ -1,174 +1,267 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<div class="container-fluid mt-4">
-    <div class="row">
-        <div class="col-md-3 mb-4">
-            <div class="card shadow-sm border-0 pt-3">
-                <div class="text-center">
-                    {% if user.profile.photo %}
-                        <img src="{{ user.profile.photo.url }}" class="rounded-circle border" width="100" height="100" style="object-fit: cover;">
-                    {% else %}
-                        <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center text-white" style="width: 100px; height: 100px; font-size: 2rem;">
-                            {{ user.username|first|upper }}
-                        </div>
-                    {% endif %}
-                    <h5 class="mt-3 fw-bold">{{ user.first_name }} {{ user.last_name }}</h5>
-                    <p class="text-muted small">Enstriktè AJF-Tech</p>
-                </div>
-                <hr>
-                <div class="list-group list-group-flush">
-                    <a href="{% url 'instructor_dashboard' %}" class="list-group-item list-group-item-action active border-0">
-                        <i class="fas fa-chart-line me-2"></i> Rezime Jeneral
-                    </a>
-                    <a href="{% url 'add_lesson' %}" class="list-group-item list-group-item-action border-0">
-                        <i class="fas fa-plus-circle me-2 text-success"></i> Ajoute yon Leson
-                    </a>
-                    <a href="{% url 'add_quiz' %}" class="list-group-item list-group-item-action border-0">
-                         <i class="fas fa-question-circle me-2 text-warning"></i> Kreye yon Quiz
-                    </a>
-                    <a href="{% url 'edit_profile' %}" class="list-group-item list-group-item-action border-0">
-                        <i class="fas fa-user-edit me-2"></i> Mizajou Profil/Siyati
-                    </a>
-                </div>
-            </div>
+{% block title %}Dashboard Pwofesè | AJF-Tech{% endblock %}
 
-            <div class="card shadow-sm border-0 mt-4 p-3 bg-light">
-                <h6 class="fw-bold mb-3">Aksyon Rapid</h6>
-                <a href="{% url 'add_lesson' %}" class="btn btn-success w-100 mb-2 text-start">
-                    <i class="fas fa-video me-2"></i> Kreye Leson
-                </a>
-                <a href="{% url 'add_quiz' %}" class="btn btn-warning w-100 mb-2 text-start">
-                    <i class="fas fa-pen-alt me-2"></i> Kreye Quiz
-                </a>
-                <p class="small text-muted text-center mt-2">Ajoute kontni ak tès pou elèv yo ka evalye tèt yo.</p>
+{% block extra_head %}
+<style>
+    .instructor-shell {
+        display: grid;
+        grid-template-columns: 300px minmax(0, 1fr);
+        gap: 24px;
+    }
+
+    .side-panel,
+    .main-panel {
+        background: rgba(255, 255, 255, 0.94);
+        border: 1px solid rgba(8, 27, 51, 0.08);
+        border-radius: 28px;
+        box-shadow: 0 20px 56px rgba(8, 27, 51, 0.1);
+    }
+
+    .side-panel {
+        padding: 26px;
+        position: sticky;
+        top: 110px;
+        height: fit-content;
+    }
+
+    .main-panel {
+        padding: 28px;
+    }
+
+    .profile-head {
+        background: linear-gradient(135deg, #081b33, #16365d);
+        color: #fff;
+        border-radius: 24px;
+        padding: 22px;
+        margin-bottom: 22px;
+    }
+
+    .profile-head img,
+    .profile-avatar {
+        width: 88px;
+        height: 88px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .profile-avatar {
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, #f4b942, #ffe39d);
+        color: #081b33;
+        font-weight: 800;
+        font-size: 2rem;
+    }
+
+    .quick-links a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+        border-radius: 18px;
+        color: #42546c;
+        font-weight: 700;
+        margin-bottom: 10px;
+        background: #f7faff;
+        border: 1px solid rgba(8, 27, 51, 0.06);
+    }
+
+    .hero-strip {
+        padding: 28px;
+        border-radius: 26px;
+        background: linear-gradient(135deg, #0a203c, #16365d);
+        color: #fff;
+        margin-bottom: 22px;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .stat-card {
+        padding: 22px;
+        border-radius: 22px;
+        background: #fff;
+        border: 1px solid rgba(8, 27, 51, 0.08);
+        box-shadow: 0 18px 36px rgba(8, 27, 51, 0.08);
+    }
+
+    .stat-card small {
+        display: block;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .stat-card strong {
+        font-size: 1.8rem;
+        color: #081b33;
+    }
+
+    .courses-table {
+        overflow: hidden;
+        border-radius: 24px;
+        border: 1px solid rgba(8, 27, 51, 0.08);
+    }
+
+    .courses-table table {
+        margin-bottom: 0;
+    }
+
+    .courses-table thead th {
+        background: #f6f9fd;
+        color: #5d6e85;
+        text-transform: uppercase;
+        font-size: 0.76rem;
+        letter-spacing: 0.06em;
+        font-weight: 800;
+        border-bottom: 1px solid rgba(8, 27, 51, 0.06);
+    }
+
+    .courses-table tbody td {
+        vertical-align: middle;
+        padding-top: 18px;
+        padding-bottom: 18px;
+    }
+
+    @media (max-width: 1100px) {
+        .instructor-shell {
+            grid-template-columns: 1fr;
+        }
+
+        .side-panel {
+            position: static;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .side-panel,
+        .main-panel {
+            padding: 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="instructor-shell">
+    <aside class="side-panel">
+        <div class="profile-head">
+            <div class="d-flex align-items-center gap-3">
+                {% if user.profile.photo %}
+                    <img src="{{ user.profile.photo.url }}" alt="{{ user.username }}">
+                {% else %}
+                    <div class="profile-avatar">{{ user.username|first|upper }}</div>
+                {% endif %}
+                <div>
+                    <small class="text-warning text-uppercase fw-bold">Espace pwofesè</small>
+                    <h3 class="h5 fw-bold mb-1 mt-1">{{ user.first_name|default:user.username }} {{ user.last_name }}</h3>
+                    <p class="mb-0 text-white-50">Jere kou ou yo, quiz yo, ak revni estime yo.</p>
+                </div>
             </div>
         </div>
 
-        <div class="col-md-9">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3 class="fw-bold text-dark m-0">Tablo de bò pwofesè</h3>
-                <div class="btn-group shadow-sm">
-                    <a href="{% url 'add_lesson' %}" class="btn btn-primary">
-                        <i class="fas fa-plus me-1"></i> Nouvo Leson
-                    </a>
-                    <a href="{% url 'add_quiz' %}" class="btn btn-outline-primary">
-                        <i class="fas fa-question me-1"></i> Nouvo Quiz
-                    </a>
-                </div>
-            </div>
-            
-            <div class="row g-3 mb-4">
-                <div class="col-md-6">
-                    <div class="card bg-primary text-white border-0 shadow-sm p-3 h-100">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-uppercase mb-1" style="opacity: 0.8;">Kòb ou fè (50%)</h6>
-                                <h2 class="fw-bold mb-0">{{ total_revenue }} HTG</h2>
-                            </div>
-                            <i class="fas fa-wallet fa-3x opacity-50"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card bg-dark text-white border-0 shadow-sm p-3 h-100">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-uppercase mb-1" style="opacity: 0.8;">Total Elèv Aktif</h6>
-                                <h2 class="fw-bold mb-0">
-                                    {% if courses %}
-                                        {% with total=0 %}
-                                            {% for c in courses %}{{ c.total_students }}{% endfor %}
-                                        {% endwith %}
-                                    {% else %}0{% endif %}
-                                </h2>
-                            </div>
-                            <i class="fas fa-users fa-3x opacity-50"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="quick-links">
+            <a href="{% url 'instructor_dashboard' %}"><i class="fas fa-chart-line"></i>Rezime jeneral</a>
+            <a href="{% url 'add_lesson' %}"><i class="fas fa-circle-plus"></i>Ajoute leson</a>
+            <a href="{% url 'add_quiz' %}"><i class="fas fa-file-circle-question"></i>Kreye quiz</a>
+            <a href="{% url 'edit_profile' %}"><i class="fas fa-pen"></i>Mizajou pwofil</a>
+        </div>
+    </aside>
 
-            <div class="card shadow-sm border-0">
-                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
-                    <h5 class="mb-0 fw-bold">Kou w ap anseye yo</h5>
-                    <span class="badge bg-soft-primary text-primary border border-primary px-3">{{ courses|length }} Kou</span>
+    <section class="main-panel">
+        <div class="hero-strip">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <small class="text-uppercase fw-bold text-warning">Kontwòl kontni</small>
+                    <h1 class="h3 fw-bold mt-2 mb-2">Dashboard pwofesè AJF-Tech</h1>
+                    <p class="mb-0 text-white-50">Isit la ou wè kou ou yo, kantite elèv aktif, ak sa pwojè a deja ka jenere pou ou.</p>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="bg-light text-muted small text-uppercase">
+                <div class="d-flex gap-2 flex-wrap">
+                    <a href="{% url 'add_lesson' %}" class="btn btn-warning rounded-pill px-4 fw-bold">Nouvo leson</a>
+                    <a href="{% url 'add_quiz' %}" class="btn btn-outline-light rounded-pill px-4 fw-bold">Nouvo quiz</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <small>Total kou</small>
+                <strong>{{ courses|length }}</strong>
+            </div>
+            <div class="stat-card">
+                <small>Total elèv aktif</small>
+                <strong>{{ total_students }}</strong>
+            </div>
+            <div class="stat-card">
+                <small>Revni pwofesè</small>
+                <strong>{{ total_revenue }} HTG</strong>
+            </div>
+        </div>
+
+        <div class="courses-table">
+            <div class="d-flex justify-content-between align-items-center p-4 pb-0 flex-wrap gap-2">
+                <div>
+                    <h3 class="h5 fw-bold mb-1">Kou w ap anseye yo</h3>
+                    <p class="text-muted mb-0">Tablo sa a montre kantite elèv, revni brit, ak pati pwofesè a.</p>
+                </div>
+                <span class="badge rounded-pill text-bg-light border px-3 py-2">{{ courses|length }} kou</span>
+            </div>
+            <div class="table-responsive mt-3">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th class="ps-4">Kou</th>
+                            <th>Pri</th>
+                            <th>Elèv aktif</th>
+                            <th>Revni brit</th>
+                            <th>Pataj pwofesè</th>
+                            <th class="text-end pe-4">Aksyon</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for course in courses %}
                             <tr>
-                                <th class="ps-3">Kou</th>
-                                <th>Pri Inite</th>
-                                <th>Elèv</th>
-                                <th>Jenere (100%)</th>
-                                <th class="text-end pe-3">Pataj ou (50%)</th>
-                                <th class="text-center">Aksyon Quiz</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for course in courses %}
-                            <tr>
-                                <td class="ps-3">
-                                    <div class="d-flex align-items-center">
-                                        <div class="bg-light rounded p-2 me-2">
-                                            <i class="fas fa-book text-primary"></i>
-                                        </div>
-                                        <span class="fw-bold">{{ course.title }}</span>
-                                    </div>
+                                <td class="ps-4">
+                                    <strong class="d-block">{{ course.title }}</strong>
+                                    <span class="text-muted small">{{ course.lessons.count }} leson</span>
                                 </td>
                                 <td>{{ course.price }} HTG</td>
-                                <td>
-                                    <span class="badge bg-info text-dark">{{ course.total_students }} Elèv</span>
-                                </td>
-                                <td>
-                                    <span class="text-muted">{% widthratio course.total_students 1 course.price %} HTG</span>
-                                </td>
-                                <td class="text-end pe-3">
-                                    <span class="fw-bold text-success">
-                                        {% widthratio course.total_students 2 course.price %} HTG
-                                    </span>
-                                </td>
-                                <td class="text-center">
+                                <td><span class="badge text-bg-info">{{ course.total_students }}</span></td>
+                                <td>{{ course.gross_revenue }} HTG</td>
+                                <td class="fw-bold text-success">{{ course.instructor_share }} HTG</td>
+                                <td class="text-end pe-4">
                                     {% if course.quiz %}
-                                        <a href="{% url 'add_question' course.quiz.id %}" class="btn btn-sm btn-outline-warning" title="Ajoute Kesyon nan Quiz la">
-                                            <i class="fas fa-plus-circle"></i> + Kesyon
-                                        </a>
+                                        <a href="{% url 'add_question' course.quiz.id %}" class="btn btn-sm btn-outline-warning rounded-pill px-3">Ajoute kestyon</a>
                                     {% else %}
-                                        <span class="text-muted small italic">Pa gen quiz</span>
+                                        <span class="text-muted small">Kreye quiz an premye</span>
                                     {% endif %}
                                 </td>
                             </tr>
-                            {% empty %}
+                        {% empty %}
                             <tr>
                                 <td colspan="6" class="text-center py-5">
                                     <i class="fas fa-folder-open fa-3x text-muted mb-3 d-block"></i>
-                                    <p class="text-muted">Ou poko gen okenn kou ki anrejistre nan non ou.</p>
-                                    <a href="#" class="btn btn-sm btn-outline-primary">Kontakte Administratè</a>
+                                    <h4 class="fw-bold">Pa gen kou nan kont pwofesè sa a ankò</h4>
+                                    <p class="text-muted">Sa pa vle di pwojè a pa bon; li sèlman vle di admin nan bezwen asosye oswa kreye kou yo.</p>
                                 </td>
                             </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                {% if courses %}
-                <div class="card-footer bg-light py-3 border-0">
-                    <div class="d-flex justify-content-end align-items-center">
-                        <span class="me-3 text-muted">Total Revni Enstriktè:</span>
-                        <h4 class="fw-bold text-dark m-0">{{ total_revenue }} HTG</h4>
-                    </div>
-                </div>
-                {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
-    </div>
+    </section>
 </div>
-
-<style>
-    .bg-soft-primary { background-color: #e7f1ff; }
-    .list-group-item.active { background-color: #0d6efd !important; }
-    .table thead th { font-weight: 600; font-size: 0.75rem; letter-spacing: 0.5px; }
-    .btn-group .btn { border-radius: 8px; }
-    .badge { font-weight: 500; }
-</style>
 {% endblock %}

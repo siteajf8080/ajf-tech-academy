@@ -1,258 +1,428 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="fr">
-
+<html lang="ht">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>AJF-Tech | Plateforme de Formation & Services à Les Cayes</title>
-    <meta name="description" content="AJF-Tech: Premye platfòm fòmasyon teknik nan Les Cayes. Aprann enstalasyon kamera, depannaj òdinatè, ak Graphic Design ak Jonathan François Alcena.">
-    <meta name="keywords" content="AJF-Tech, Formation informatique Haiti, Les Cayes, caméra de surveillance, réparation ordinateur, Jonathan François Alcena, AJF Tech">
-    <meta name="author" content="Jonathan François Alcena">
-
-    <meta property="og:title" content="AJF-Tech | Fòme w pou demen">
-    <meta property="og:description" content="Vin pran yon fòmasyon pratik 100% nan teknoloji ak pwofesè kalifye nan vil Les Cayes.">
-    <meta property="og:image" content="{% static 'academy/img/logo.png' %}">
-    <meta property="og:url" content="https://www.ajftech.com">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
+    <title>AJF-Tech | Fòmasyon teknoloji ak sèvis pwofesyonèl</title>
+    <meta name="description" content="AJF-Tech se yon academy teknoloji pou kou, seminè, ak sèvis teknik an Ayiti.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
         :root {
-            --primary: #0d6efd;
-            --dark: #0b1c2c;
-            --gold: #f39c12;
-            --light-gray: #f5f7fa;
+            --ajf-navy: #081b33;
+            --ajf-navy-soft: #133156;
+            --ajf-sky: #1f75ff;
+            --ajf-gold: #f3bb49;
+            --ajf-surface: #ffffff;
+            --ajf-surface-soft: #f4f8fd;
+            --ajf-text: #10233e;
+            --ajf-muted: #6b7a90;
+            --ajf-shadow: 0 24px 80px rgba(8, 27, 51, 0.16);
         }
 
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            background: #f5f7fa; 
-            scroll-behavior: smooth; 
-            transition: background 0.4s, color 0.4s; 
+        body {
+            font-family: 'Manrope', sans-serif;
+            color: var(--ajf-text);
+            background:
+                radial-gradient(circle at top right, rgba(31, 117, 255, 0.12), transparent 28%),
+                linear-gradient(180deg, #f9fbff 0%, #eff5fb 100%);
         }
 
-        /* NAVBAR GLASSMORPHISM */
-        .navbar { 
-            background: rgba(11, 28, 44, 0.85) !important; 
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 12px 0; 
+        .hero-shell {
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(135deg, rgba(8, 27, 51, 0.96), rgba(19, 49, 86, 0.9)),
+                url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=80");
+            background-size: cover;
+            background-position: center;
+            color: #fff;
         }
-        
-        .logo-pill {
-            background-color: white;
-            padding: 6px 15px;
-            border-radius: 50px;
+
+        .hero-shell::before,
+        .hero-shell::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(8px);
+        }
+
+        .hero-shell::before {
+            width: 320px;
+            height: 320px;
+            right: -80px;
+            top: -60px;
+            background: rgba(31, 117, 255, 0.24);
+        }
+
+        .hero-shell::after {
+            width: 260px;
+            height: 260px;
+            left: -90px;
+            bottom: -80px;
+            background: rgba(243, 187, 73, 0.16);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 26px 0 110px;
+        }
+
+        .main-nav {
+            padding: 0.4rem 0 1rem;
+        }
+
+        .brand-badge {
             display: inline-flex;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            gap: 12px;
+            color: #fff;
         }
 
-        .nav-link { color: white !important; font-weight: 500; margin-left: 15px; transition: 0.3s; position: relative; }
-        .nav-link:hover { color: var(--gold) !important; }
-        
-        .notification-badge {
-            position: absolute;
-            top: 0;
-            right: -5px;
-            font-size: 10px;
-            padding: 2px 5px;
-            background: #dc3545;
-            color: white;
-            border-radius: 50%;
+        .brand-icon {
+            width: 46px;
+            height: 46px;
+            display: grid;
+            place-items: center;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--ajf-gold), #ffe08a);
+            color: var(--ajf-navy);
+            font-weight: 800;
         }
 
-        /* CEO SECTION */
-        .ceo-section { 
-            background: white; 
-            border-radius: 25px; 
-            overflow: hidden; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
-            display: flex; 
-            align-items: center; 
-            transition: 0.3s;
+        .hero-nav-link {
+            color: rgba(255, 255, 255, 0.82);
+            font-weight: 600;
+            padding: 0.75rem 1rem;
+            border-radius: 999px;
+            transition: 0.24s ease;
         }
 
-        .ceo-img { 
-            width: 120px; 
-            height: 120px; 
-            object-fit: cover; 
-            border: 4px solid var(--light-gray); 
-            flex-shrink: 0; 
+        .hero-nav-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
         }
 
-        /* DARK MODE STYLES */
-        body.dark-theme { background-color: #050b11 !important; color: #e0e0e0 !important; }
-        .dark-theme .bg-white, 
-        .dark-theme .service-box, 
-        .dark-theme .course-card, 
-        .dark-theme .ceo-section,
-        .dark-theme .news-card,
-        .dark-theme .testimonial-card { 
-            background-color: #0b1c2c !important; 
-            color: white !important; 
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .dark-theme .text-dark, .dark-theme h2, .dark-theme h4, .dark-theme h5 { color: white !important; }
-        .dark-theme .bg-light { background-color: #08131d !important; }
-
-        /* HERO & CARDS */
-        .hero {
-            background: linear-gradient(rgba(0,0,0,.75), rgba(0,0,0,.75)), 
-                        url("https://images.unsplash.com/photo-1498050108023-c5249f4df085");
-            background-size: cover; background-position: center; color: white; padding: 140px 0; text-align: center;
+        .hero-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.6rem 1rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #d9e6ff;
+            font-size: 0.92rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
         }
 
-        .service-box, .course-card, .news-card, .testimonial-card {
-            background: white; padding: 30px; border-radius: 20px; transition: .4s;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); height: 100%;
+        .hero-title {
+            font-size: clamp(2.4rem, 6vw, 5rem);
+            line-height: 0.98;
+            font-weight: 800;
+            margin: 1.4rem 0 1rem;
+            max-width: 720px;
         }
-        .service-box:hover, .course-card:hover, .news-card:hover { transform: translateY(-10px); }
 
-        .stat-number { font-size: 40px; font-weight: 800; color: var(--gold); }
-        .seminar-section { background: var(--dark); color: white; padding: 80px 0; }
-        .stats { background: linear-gradient(45deg, #0b1c2c, #162e44); color: white; padding: 60px 0; }
+        .hero-lead {
+            max-width: 620px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.08rem;
+            line-height: 1.75;
+        }
 
-        /* WHATSAPP FLOATING BUTTON */
-        .whatsapp-float {
-            position: fixed;
-            width: 60px;
-            height: 60px;
-            bottom: 40px;
-            right: 40px;
-            background-color: #25d366;
-            color: #FFF;
-            border-radius: 50px;
-            text-align: center;
-            font-size: 30px;
-            box-shadow: 2px 5px 15px rgba(0,0,0,0.3);
-            z-index: 1000;
+        .hero-actions {
             display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 2rem;
+        }
+
+        .btn-brand,
+        .btn-brand-outline {
+            display: inline-flex;
             align-items: center;
             justify-content: center;
+            gap: 10px;
+            padding: 0.95rem 1.35rem;
+            border-radius: 999px;
+            font-weight: 700;
             text-decoration: none;
-            transition: 0.3s;
         }
-        .whatsapp-float:hover { transform: scale(1.1); color: white; }
 
-        footer { background: #050b11; color: rgba(255,255,255,0.6); padding: 60px 0; }
-        
-        /* Modal Custom Styling */
-        .rounded-4 { border-radius: 1.5rem !important; }
+        .btn-brand {
+            background: linear-gradient(135deg, var(--ajf-gold), #ffd978);
+            color: var(--ajf-navy);
+            box-shadow: 0 18px 36px rgba(243, 187, 73, 0.22);
+        }
+
+        .btn-brand-outline {
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .hero-panel {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 28px;
+            padding: 24px;
+            backdrop-filter: blur(14px);
+            box-shadow: 0 16px 40px rgba(8, 27, 51, 0.25);
+        }
+
+        .metric-grid,
+        .service-grid,
+        .course-grid,
+        .post-grid,
+        .seminar-grid {
+            display: grid;
+            gap: 22px;
+        }
+
+        .metric-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            margin-top: 2rem;
+        }
+
+        .metric-card {
+            background: var(--ajf-surface);
+            border: 1px solid rgba(8, 27, 51, 0.07);
+            border-radius: 24px;
+            padding: 22px;
+            box-shadow: var(--ajf-shadow);
+        }
+
+        .metric-card strong {
+            font-size: 1.9rem;
+            color: var(--ajf-navy);
+        }
+
+        .section {
+            padding: 84px 0;
+        }
+
+        .section-heading {
+            max-width: 620px;
+            margin-bottom: 34px;
+        }
+
+        .section-heading h2 {
+            font-size: clamp(2rem, 4vw, 3.1rem);
+            font-weight: 800;
+            margin-bottom: 0.9rem;
+        }
+
+        .section-heading p {
+            color: var(--ajf-muted);
+            line-height: 1.8;
+            margin-bottom: 0;
+        }
+
+        .surface-card {
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(8, 27, 51, 0.08);
+            border-radius: 28px;
+            box-shadow: var(--ajf-shadow);
+        }
+
+        .service-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .service-card,
+        .course-card,
+        .post-card,
+        .seminar-card {
+            padding: 26px;
+            border-radius: 24px;
+            background: var(--ajf-surface);
+            border: 1px solid rgba(8, 27, 51, 0.07);
+            box-shadow: 0 18px 36px rgba(8, 27, 51, 0.08);
+            height: 100%;
+        }
+
+        .service-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 18px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, rgba(31, 117, 255, 0.14), rgba(243, 187, 73, 0.18));
+            color: var(--ajf-sky);
+            font-size: 1.35rem;
+            margin-bottom: 18px;
+        }
+
+        .course-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .course-card .course-meta,
+        .post-card .post-meta {
+            color: var(--ajf-muted);
+            font-size: 0.92rem;
+        }
+
+        .price-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.48rem 0.85rem;
+            border-radius: 999px;
+            background: rgba(31, 117, 255, 0.08);
+            color: var(--ajf-sky);
+            font-weight: 800;
+        }
+
+        .seminar-wrap {
+            background: linear-gradient(135deg, #091b31, #133156);
+            color: #fff;
+        }
+
+        .seminar-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .seminar-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            box-shadow: none;
+        }
+
+        .seminar-card p,
+        .seminar-card small {
+            color: rgba(255, 255, 255, 0.74);
+        }
+
+        .seminar-images {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .seminar-images img {
+            width: 100%;
+            height: 84px;
+            object-fit: cover;
+            border-radius: 14px;
+        }
+
+        .cta-panel {
+            padding: 36px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #0b2240, #183b69);
+            color: #fff;
+            box-shadow: var(--ajf-shadow);
+        }
+
+        footer {
+            background: #081b33;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 30px 0;
+        }
+
+        @media (max-width: 991px) {
+            .metric-grid,
+            .service-grid,
+            .course-grid,
+            .seminar-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-content {
+                padding-bottom: 72px;
+            }
+        }
     </style>
 </head>
-
 <body>
-
-    <nav class="navbar navbar-expand-lg sticky-top shadow">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <div class="logo-pill">
-                    <img src="{% static 'academy/img/logo.png' %}" height="35" alt="AJF-Tech">
+    <section class="hero-shell">
+        <div class="container hero-content">
+            <nav class="navbar navbar-expand-lg main-nav">
+                <a class="navbar-brand brand-badge" href="{% url 'home' %}">
+                    <span class="brand-icon">A</span>
+                    <span>
+                        <strong class="d-block">AJF-Tech</strong>
+                        <small class="text-white-50">Academy & Services</small>
+                    </span>
+                </a>
+                <button class="navbar-toggler border-0 shadow-none text-white" type="button" data-bs-toggle="collapse" data-bs-target="#landingNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="landingNav">
+                    <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                        <li class="nav-item"><a class="nav-link hero-nav-link" href="#courses">Kou yo</a></li>
+                        <li class="nav-item"><a class="nav-link hero-nav-link" href="#services">Sèvis</a></li>
+                        <li class="nav-item"><a class="nav-link hero-nav-link" href="#seminars">Seminè</a></li>
+                        <li class="nav-item"><a class="nav-link hero-nav-link" href="{% url 'news_list' %}">Nouvèl</a></li>
+                        {% if user.is_authenticated %}
+                            <li class="nav-item ms-lg-2"><a class="btn-brand-outline" href="{% url 'dashboard' %}">Dashboard</a></li>
+                        {% else %}
+                            <li class="nav-item ms-lg-2"><a class="btn-brand-outline" href="{% url 'login' %}">Konekte</a></li>
+                            <li class="nav-item"><a class="btn-brand" href="{% url 'signup' %}">Kreye kont</a></li>
+                        {% endif %}
+                    </ul>
                 </div>
-            </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-                <i class="fas fa-bars text-white fs-2"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="mainNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="/">Accueil</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#courses">Cours</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'forum_home' %}">Forum News</a></li>
-                    
-                    <li class="nav-item ms-lg-3">
-                        <button id="dark-mode-toggle" class="btn btn-outline-warning btn-sm rounded-circle" title="Changer le thème">
-                            <i class="fas fa-moon"></i>
-                        </button>
-                    </li>
+            </nav>
 
-                    {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'notifications' %}">
-                                <i class="fas fa-bell"></i>
-                                <span class="notification-badge">3</span>
-                            </a>
-                        </li>
-                        <li class="nav-item dropdown ms-lg-4">
-                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" data-bs-toggle="dropdown">
-                                {% if user.profile.photo %}
-                                    <img src="{{ user.profile.photo.url }}" style="width:35px;height:35px;border-radius:50%; border: 2px solid var(--gold);" class="me-2">
-                                {% else %}
-                                    <i class="fas fa-user-circle fs-4 me-2 text-warning"></i>
-                                {% endif %}
-                                <span>Mon Compte</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end shadow border-0">
-                                {% if user.is_superuser %}
-                                <li>
-                                    <a class="dropdown-item fw-bold text-danger" href="/admin/auth/user/" target="_blank">
-                                        <i class="fas fa-user-shield me-2"></i> Administration
-                                    </a>
-                                </li>
-                                <li><hr class="dropdown-divider"></li>
-                                {% endif %}
-
-                                <li><a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a></li>
-                                <li><a class="dropdown-item" href="{% url 'profile' %}">Mon Profil</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <form action="{% url 'logout' %}" method="post" class="px-3">
-                                        {% csrf_token %}
-                                        <button class="btn btn-danger btn-sm w-100">Déconnexion</button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
-                    {% else %}
-                        <li class="nav-item ms-lg-4 mt-3 mt-lg-0">
-                            <a href="{% url 'login' %}" class="nav-link d-inline">Connexion</a>
-                            <a href="{% url 'signup' %}" class="btn btn-warning rounded-pill px-4 ms-2 fw-bold shadow-sm">Inscription</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <section class="hero d-flex align-items-center">
-        <div class="container text-center" data-aos="zoom-in">
-            <h1 class="display-3 mb-3 fw-bold">Plateforme AJF-Tech</h1>
-            <p class="lead mb-5">Votre futur technologique commence ici à Les Cayes.</p>
-            <a href="#courses" class="btn btn-warning btn-lg rounded-pill px-5 py-3 fw-bold shadow">
-                Découvrir nos formations <i class="fas fa-rocket ms-2"></i>
-            </a>
-        </div>
-    </section>
-
-    <section id="about" class="py-5 overflow-hidden">
-        <div class="container">
-            <div class="row align-items-center g-5">
-                <div class="col-lg-6" data-aos="fade-right">
-                    <h6 class="text-primary fw-bold text-uppercase">À Propos de nous</h6>
-                    <h2 class="fw-bold mb-4">Innovation & Éducation au cœur du Sud</h2>
-                    <p class="text-muted fs-5 mb-4">
-                        AJF-Tech est bien plus qu'une plateforme : c'est un écosystème conçu pour propulser la jeunesse haïtienne dans l'ère numérique.
+            <div class="row align-items-center gy-5 pt-4">
+                <div class="col-lg-7">
+                    <span class="hero-kicker"><i class="fas fa-sparkles"></i> fòmasyon teknoloji ak sèvis pwo</span>
+                    <h1 class="hero-title">Nou pa vann kou sèlman. Nou bati kapasite teknik ki ka fè w travay.</h1>
+                    <p class="hero-lead">
+                        AJF-Tech se yon espas pou aprann metye teknoloji yo ak plis estrikti:
+                        kou, leson videyo, quiz, sètifika, seminè, ak yon kominote pou ede w avanse seryezman.
                     </p>
-                    <div class="ceo-section p-3">
-                        <img src="{% static 'academy/img/ceo.jpeg' %}" class="rounded-circle ceo-img me-3 shadow-sm" alt="Jonathan François Alcena">
-                        <div>
-                            <h5 class="fw-bold mb-0" style="font-size: 1.1rem;">Jonathan F. Alcena</h5>
-                            <p class="text-primary small mb-1 fw-bold">Fondateur & PDG</p>
-                            <p class="small text-muted mb-0" style="line-height: 1.3;">"La technologie est le levier qui transformera Haïti."</p>
+                    <div class="hero-actions">
+                        <a href="#courses" class="btn-brand"><i class="fas fa-graduation-cap"></i>Wè fòmasyon yo</a>
+                        <a href="https://wa.me/50934659454" target="_blank" rel="noopener noreferrer" class="btn-brand-outline"><i class="fab fa-whatsapp"></i>Pale sou WhatsApp</a>
+                    </div>
+                    <div class="metric-grid">
+                        <div class="metric-card">
+                            <strong>{{ courses|length }}+</strong>
+                            <div class="text-muted">kou vizib sou platfòm la</div>
+                        </div>
+                        <div class="metric-card">
+                            <strong>{{ seminars|length }}+</strong>
+                            <div class="text-muted">seminè ak aktivite resan</div>
+                        </div>
+                        <div class="metric-card">
+                            <strong>24/7</strong>
+                            <div class="text-muted">aksè sou leson ak pwogrè w</div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6" data-aos="fade-left">
-                    <div id="aboutCarousel" class="carousel slide carousel-fade shadow-lg rounded-4 overflow-hidden" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active"><img src="https://images.unsplash.com/photo-1531482615713-2afd69097998" class="d-block w-100" alt="..."></div>
-                            <div class="carousel-item"><img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952" class="d-block w-100" alt="..."></div>
+                <div class="col-lg-5">
+                    <div class="hero-panel">
+                        <small class="text-uppercase fw-bold text-warning d-block mb-3">Poukisa platfòm sa a itil</small>
+                        <div class="d-flex gap-3 mb-4">
+                            <div class="service-icon mb-0"><i class="fas fa-video"></i></div>
+                            <div>
+                                <strong class="d-block fs-5">Aprantisaj estriktire</strong>
+                                <span class="text-white-50">Kou yo òganize pa leson, egzamen, ak pwogrè.</span>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3 mb-4">
+                            <div class="service-icon mb-0"><i class="fas fa-certificate"></i></div>
+                            <div>
+                                <strong class="d-block fs-5">Sètifika apre validasyon</strong>
+                                <span class="text-white-50">Sa bay pwojè a yon vizyon academy reyèl, pa jis yon blog.</span>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3">
+                            <div class="service-icon mb-0"><i class="fas fa-users"></i></div>
+                            <div>
+                                <strong class="d-block fs-5">Kominote ak sipò</strong>
+                                <span class="text-white-50">Forum, nouvèl, ak AI chat la ka ogmante angajman elèv yo.</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -260,251 +430,168 @@
         </div>
     </section>
 
-    <section id="services" class="py-5 bg-white text-center" data-aos="fade-up">
+    <section class="section">
         <div class="container">
-            <h2 class="fw-bold mb-5">Nos Services Professionnels</h2>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="service-box">
-                        <div class="mb-3 text-primary"><i class="fa fa-video fa-3x"></i></div>
-                        <h4>Installation Caméra</h4>
-                        <p class="text-muted">Systèmes de surveillance CCTV intelligents.</p>
-                    </div>
+            <div class="section-heading">
+                <h2>AJF-Tech fèt pou melanje aprantisaj, sèvis, ak kredibilite pwofesyonèl.</h2>
+                <p>
+                    Pifò moun bezwen yon prezans ki sanble serye anvan yo menm eseye achte oswa enskri.
+                    Se poutèt sa nou mete yon direksyon vizyèl ki pi net, pi fò, ak pi “pro”.
+                </p>
+            </div>
+            <div class="service-grid" id="services">
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-camera"></i></div>
+                    <h4>Kamera & sekirite</h4>
+                    <p class="text-muted mb-0">Fòmasyon ak sèvis sou enstalasyon, siveyans, ak estrikti sekirite elektwonik.</p>
                 </div>
-                <div class="col-md-4">
-                    <div class="service-box">
-                        <div class="mb-3 text-primary"><i class="fa fa-laptop fa-3x"></i></div>
-                        <h4>Maintenance PC</h4>
-                        <p class="text-muted">Réparation et optimisation de vos équipements.</p>
-                    </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-laptop-code"></i></div>
+                    <h4>Maintenance & informatique</h4>
+                    <p class="text-muted mb-0">Depanaj, antretyen, ak baz pratik pou moun ki vle antre nan metye teknik yo.</p>
                 </div>
-                <div class="col-md-4">
-                    <div class="service-box">
-                        <div class="mb-3 text-primary"><i class="fa fa-pen-nib fa-3x"></i></div>
-                        <h4>Graphic Design</h4>
-                        <p class="text-muted">Identité visuelle et supports marketing.</p>
-                    </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-pen-ruler"></i></div>
+                    <h4>Design & branding</h4>
+                    <p class="text-muted mb-0">Canva, Photoshop, ak idantite vizyèl pou elèv ak ti biznis kap devlope.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="testimonials" class="py-5 bg-light">
-        <div class="container" data-aos="fade-up">
-            <h2 class="text-center fw-bold mb-5">Sa Elèv Nou Yo Di (Prèv Sosyal)</h2>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="testimonial-card">
-                        <div class="d-flex align-items-center mb-3">
-                            <img src="https://i.pravatar.cc/150?u=1" class="rounded-circle me-3" width="50">
-                            <div><h6 class="fw-bold mb-0">Jean Baptiste</h6><small class="text-primary">Ansyen Elèv (Kamera)</small></div>
-                        </div>
-                        <p class="text-muted small">"Gras ak AJF-Tech, mwen gen pwòp ti biznis mwen kounye a kote m ap enstale kamera nan zòn nan."</p>
-                        <div class="text-warning small"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="testimonial-card">
-                        <div class="d-flex align-items-center mb-3">
-                            <img src="https://i.pravatar.cc/150?u=2" class="rounded-circle me-3" width="50">
-                            <div><h6 class="fw-bold mb-0">Marie Claire D.</h6><small class="text-primary">Elèv (Design)</small></div>
-                        </div>
-                        <p class="text-muted small">"Pwofesè yo vrèman konn sa y ap fè a. Mwen aprann Photoshop nan yon nivo mwen pa t imajine."</p>
-                        <div class="text-warning small"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="testimonial-card">
-                        <div class="d-flex align-items-center mb-3">
-                            <img src="https://i.pravatar.cc/150?u=3" class="rounded-circle me-3" width="50">
-                            <div><h6 class="fw-bold mb-0">Ricardo P.</h6><small class="text-primary">Ansyen Elèv (PC)</small></div>
-                        </div>
-                        <p class="text-muted small">"Pratik la se sa ki fè diferans lan. Nou te travay sou vrè materyèl. Mwen rekòmande l!"</p>
-                        <div class="text-warning small"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="news" class="py-5 bg-white" data-aos="fade-up">
+    <section class="section pt-0" id="courses">
         <div class="container">
-            <div class="d-flex justify-content-between align-items-center mb-5">
-                <h2 class="fw-bold m-0">Actualités & Forum</h2>
-                <a href="{% url 'forum_home' %}" class="btn btn-outline-primary rounded-pill px-4">Tout voir</a>
-            </div>
-            <div class="row g-4">
-                {% for post in recent_posts %}
-                <div class="col-md-4">
-                    <div class="news-card border-0">
-                        <span class="badge bg-primary mb-2">Annonce</span>
-                        <h5 class="fw-bold">{{ post.title }}</h5>
-                        <p class="small text-muted mb-3">{{ post.content|truncatechars:80 }}</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="small text-muted"><i class="far fa-clock me-1"></i> {{ post.date_posted|date:"d M" }}</span>
-                            <a href="{% url 'post_detail' post.id %}" class="text-primary fw-bold text-decoration-none small">Lire la suite <i class="fas fa-chevron-right ms-1"></i></a>
-                        </div>
-                    </div>
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
+                <div class="section-heading mb-0">
+                    <h2>Kou ki vizib kounye a sou platfòm la</h2>
+                    <p>Sa yo se kou moun ap wè sou paj piblik la. Chak kou ka mennen sou leson, quiz, ak sètifika.</p>
                 </div>
-                {% empty %}
-                <div class="col-12 text-center">
-                    <p class="text-muted">Nouvo nouvèl yo ap vini talè konsa.</p>
-                </div>
-                {% endfor %}
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}" class="btn-brand">Ale sou dashboard mwen</a>
+                {% endif %}
             </div>
-        </div>
-    </section>
-
-    <section id="courses" class="py-5 bg-light" data-aos="fade-up">
-        <div class="container">
-            <h2 class="text-center fw-bold mb-5">Nos Formations Certifiées</h2>
-            <div class="row g-4">
+            <div class="course-grid">
                 {% for course in courses %}
-                <div class="col-md-4">
-                    <div class="course-card d-flex flex-column justify-content-between border-0 text-center">
-                        <div>
-                            <h4 class="fw-bold text-dark">{{ course.title }}</h4>
-                            <p class="text-muted small">{{ course.description|truncatewords:15 }}</p>
-                            <h5 class="text-primary fw-bold">{{ course.price }} HTG</h5>
+                    <article class="course-card">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <span class="price-chip">{{ course.price }} HTG</span>
+                            <span class="course-meta">{{ course.lessons.count }} leson</span>
                         </div>
-                        <div class="mt-4">
-                            <a href="{% url 'course_detail' course.id %}" class="btn btn-primary w-100 rounded-pill shadow-sm">Rezève Plas Mwen</a>
-                        </div>
-                    </div>
-                </div>
+                        <h4 class="fw-bold mb-2">{{ course.title }}</h4>
+                        <p class="text-muted mb-4">{{ course.description|truncatewords:24 }}</p>
+                        <a href="{% url 'course_detail' course.id %}" class="btn-brand w-100">Wè detay kou a</a>
+                    </article>
+                {% empty %}
+                    <article class="course-card">
+                        <h4 class="fw-bold">Pa gen kou pibliye ankò</h4>
+                        <p class="text-muted mb-0">Nou ka ajoute kèk kou depi admin nan pou katalòg la parèt pi rich.</p>
+                    </article>
                 {% endfor %}
             </div>
         </div>
     </section>
 
-    <section id="seminars" class="seminar-section" data-aos="zoom-in">
-        <div class="container text-center">
-            <h2 class="mb-5">Archives des Séminaires</h2>
-            <div class="row g-4">
-                {% for seminar in seminars %}
-                <div class="col-lg-6 mx-auto">
-                    <div class="bg-dark p-4 rounded-4 shadow-sm border border-secondary text-start">
-                        <h4 class="text-warning">{{ seminar.title }}</h4>
-                        <p class="opacity-75 small">{{ seminar.description }}</p>
-                        <div class="row g-2">
-                            {% for img in seminar.images.all %}
-                            <div class="col-3"><img src="{{ img.image.url }}" class="img-fluid rounded border border-secondary"></div>
+    <section class="section pt-0">
+        <div class="container">
+            <div class="cta-panel">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-8">
+                        <small class="text-uppercase fw-bold text-warning">Lansman rapid</small>
+                        <h3 class="fw-bold mt-2">Nou ka mete premye vèsyon sa a sou entènèt jodi a epi kontinye amelyore l apre.</h3>
+                        <p class="mb-0 text-white-50">Pou kòmansman an, objektif la se gen yon platfòm ki bèl, ki mache, ki enspire konfyans, epi ki pèmèt moun wè valè AJF-Tech la.</p>
+                    </div>
+                    <div class="col-lg-4 text-lg-end">
+                        <a href="{% url 'signup' %}" class="btn-brand">Kòmanse ak yon kont</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section pt-0">
+        <div class="container">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
+                <div class="section-heading mb-0">
+                    <h2>Nouvèl ak mizajou</h2>
+                    <p>Sa bay sit la yon santiman vivan, olye li parèt tankou yon paj ki pa janm bouje.</p>
+                </div>
+                <a href="{% url 'news_list' %}" class="btn-brand-outline text-dark border border-dark">Wè tout nouvèl yo</a>
+            </div>
+            <div class="post-grid" style="grid-template-columns: repeat(3, minmax(0, 1fr));">
+                {% for post in recent_posts %}
+                    <article class="post-card">
+                        <span class="post-meta d-block mb-3">{{ post.created_at|date:"d M Y" }}</span>
+                        <h4 class="fw-bold mb-2">{{ post.title }}</h4>
+                        <p class="text-muted mb-4">{{ post.content|truncatewords:24 }}</p>
+                        <a href="{% url 'post_detail' post.id %}" class="fw-bold text-decoration-none">Li plis <i class="fas fa-arrow-right ms-1"></i></a>
+                    </article>
+                {% empty %}
+                    <article class="post-card">
+                        <h4 class="fw-bold">Pa gen post ankò</h4>
+                        <p class="text-muted mb-0">Ajoute 2 oswa 3 pòs pou paj sa a santi l aktif depi premye vizit la.</p>
+                    </article>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="section seminar-wrap" id="seminars">
+        <div class="container">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
+                <div class="section-heading mb-0 text-white">
+                    <h2>Seminè ak aktivite AJF-Tech</h2>
+                    <p class="text-white-50">Achiv aktivite yo ede montre pwojè a deja gen lavi sou teren an, pa sèlman sou entènèt.</p>
+                </div>
+                {% if all_periods %}
+                    <form method="get" class="d-flex gap-2">
+                        <select name="periode" class="form-select rounded-pill px-3">
+                            <option value="">Tout peryòd</option>
+                            {% for period in all_periods %}
+                                <option value="{{ period }}" {% if selected_period == period %}selected{% endif %}>{{ period }}</option>
                             {% endfor %}
-                        </div>
-                    </div>
-                </div>
+                        </select>
+                        <button type="submit" class="btn btn-warning rounded-pill px-4 fw-bold">Filtre</button>
+                    </form>
+                {% endif %}
+            </div>
+            <div class="seminar-grid">
+                {% for seminar in seminars %}
+                    <article class="seminar-card">
+                        <small class="text-warning fw-bold text-uppercase">{{ seminar.period }}</small>
+                        <h4 class="fw-bold mt-2">{{ seminar.title }}</h4>
+                        <p class="mb-2">{{ seminar.description|truncatewords:32 }}</p>
+                        <small>{{ seminar.date_event|date:"d M Y" }}</small>
+                        {% if seminar.images.all %}
+                            <div class="seminar-images">
+                                {% for img in seminar.images.all|slice:":4" %}
+                                    <img src="{{ img.image.url }}" alt="{{ seminar.title }}">
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </article>
+                {% empty %}
+                    <article class="seminar-card">
+                        <h4 class="fw-bold">Pa gen seminè aktif pou kounye a</h4>
+                        <p class="mb-0">Ajoute youn oswa de aktivite pou seksyon sa a ranfòse kredibilite sit la.</p>
+                    </article>
                 {% endfor %}
             </div>
         </div>
     </section>
 
-    <section class="stats text-center" data-aos="fade-up">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-6 col-md-3">
-                    <div class="stat-number">500+</div>
-                    <div class="text-uppercase small opacity-75">Étudiants</div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="stat-number">20+</div>
-                    <div class="text-uppercase small opacity-75">Cours</div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="stat-number">5+</div>
-                    <div class="text-uppercase small opacity-75">Années</div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="stat-number">100%</div>
-                    <div class="text-uppercase small opacity-75">Pratique</div>
-                </div>
+    <footer>
+        <div class="container d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+            <div>
+                <strong class="text-white d-block">AJF-Tech</strong>
+                <span>Fòmasyon teknoloji, sèvis teknik, ak kominote pwofesyonèl.</span>
             </div>
-        </div>
-    </section>
-
-    <div class="modal fade" id="leadMagnetModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content rounded-4 border-0 shadow-lg">
-                <div class="modal-body p-5 text-center">
-                    <div class="mb-3"><i class="fas fa-file-pdf fa-4x text-danger animate__animated animate__bounceIn"></i></div>
-                    <h3 class="fw-bold">Kado pou ou! 🎁</h3>
-                    <p class="text-muted">Telechaje gid gratis nou an: <strong>"5 Sekrè pou w sekirize kay ou ak Kamera"</strong>.</p>
-                    <form action="#" method="POST">
-                        {% csrf_token %}
-                        <div class="mb-3 text-start">
-                            <label class="small fw-bold mb-1">Non konplè</label>
-                            <input type="text" class="form-control rounded-pill px-4" placeholder="Ex: Jean Bak" required>
-                        </div>
-                        <div class="mb-3 text-start">
-                            <label class="small fw-bold mb-1">WhatsApp</label>
-                            <input type="tel" class="form-control rounded-pill px-4" placeholder="+509..." required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100 rounded-pill fw-bold py-2 shadow mt-2">Mwen vle gid la kounye a!</button>
-                    </form>
-                    <button type="button" class="btn btn-link btn-sm text-muted mt-3 text-decoration-none" data-bs-dismiss="modal">Non mèsi, yon lòt fwa.</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <footer class="text-center">
-        <div class="container">
-            <div class="mb-4">
-                <div class="logo-pill">
-                    <img src="{% static 'academy/img/logo.png' %}" height="40" alt="AJF-Tech">
-                </div>
-            </div>
-            <p class="mb-2 text-white">AJF-Tech © 2026 | Alliance des Jeunes Formateurs en Technologie</p>
-            <p class="small">Les Cayes, Haïti | +509 3844-6051</p>
-            <div class="social-icons mt-4">
-                <a href="#" class="text-white mx-3 fs-5"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="text-white mx-3 fs-5"><i class="fab fa-instagram"></i></a>
-                <a href="https://wa.me/50938446051" class="text-white mx-3 fs-5"><i class="fab fa-whatsapp"></i></a>
+            <div class="d-flex gap-3">
+                <a class="text-white" href="https://wa.me/50934659454" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp me-1"></i>WhatsApp</a>
+                <a class="text-white" href="{% url 'forum_home' %}"><i class="fas fa-users me-1"></i>Forum</a>
             </div>
         </div>
     </footer>
 
-    <a href="https://wa.me/50938446051" class="whatsapp-float" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        // Init Scroll Animation
-        AOS.init({ duration: 1000, once: true });
-
-        // Dark Mode Logic
-        const toggleBtn = document.getElementById('dark-mode-toggle');
-        const body = document.body;
-
-        if (localStorage.getItem('theme') === 'dark') {
-            body.classList.add('dark-theme');
-            toggleBtn.querySelector('i').classList.replace('fa-moon', 'fa-sun');
-        }
-
-        toggleBtn.addEventListener('click', () => {
-            body.classList.toggle('dark-theme');
-            const icon = toggleBtn.querySelector('i');
-            
-            if(body.classList.contains('dark-theme')) {
-                icon.classList.replace('fa-moon', 'fa-sun');
-                localStorage.setItem('theme', 'dark');
-            } else {
-                icon.classList.replace('fa-sun', 'fa-moon');
-                localStorage.setItem('theme', 'light');
-            }
-        });
-
-        // POP-UP LEAD MAGNET (Apre 6 segonn)
-        window.addEventListener('load', function() {
-            if (!sessionStorage.getItem('modalShown')) {
-                setTimeout(function() {
-                    var myModal = new bootstrap.Modal(document.getElementById('leadMagnetModal'));
-                    myModal.show();
-                    sessionStorage.setItem('modalShown', 'true');
-                }, 6000); 
-            }
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

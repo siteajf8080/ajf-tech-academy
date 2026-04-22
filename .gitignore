@@ -1,5 +1,11 @@
+.venv/
 venv/
+.deps/
+/.deps/
 __pycache__/
-*.pyc
-db.sqlite3
+*.py[cod]
+*.log
+*.sqlite3
 .env
+media/
+staticfiles/
