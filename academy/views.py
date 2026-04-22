@@ -18,8 +18,7 @@ from django.template.loader import render_to_string
 from django.db.models import Sum, Count, Q
 from django.utils import timezone
 
-# Libreri pou PDF
-from xhtml2pdf import pisa
+
 
 # Enpòtasyon Modèl yo
 from .models import (
@@ -132,25 +131,33 @@ def send_certificate_email(user, course, qr_code_base64, ceo_signature, instruct
         'instructor_signature': instructor_signature,
         'date_today': timezone.now(),
     }
-    html_string = render_to_string('academy/certificate.html', context)
-    result = BytesIO()
-    pisa_status = pisa.CreatePDF(BytesIO(html_string.encode("UTF-8")), dest=result)
-    
-    if not pisa_status.err:
-        pdf_file = result.getvalue()
-        subject = f"Félicitations! Votre certificat AJF-Tech : {course.title} 🎉"
-        message = (f"Bonjour {user.first_name or user.username},\n\n"
-                   f"Félicitations ! Vous avez réussi l'examen pou kou '{course.title}' sou platfòm AJF-Tech la. "
-                   "Ou ap jwenn sètifika ou an tache ak imèl sa a.")
-        
-        email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
-        filename = f"Certificat_AJF_{user.username}.pdf"
-        email.attach(filename, pdf_file, 'application/pdf')
-        
-        try:
-            email.send()
-        except Exception as e:
-            print(f"Erè nan voye imel sètifika: {e}")
+
+    subject = f"Felisitasyon! Sètifika AJF-Tech ou pou {course.title}"
+    message = (
+        f"Bonjou {user.first_name or user.username},\n\n"
+        f"Felisitasyon! Ou reyisi egzamen pou kou '{course.title}' la."
+    )
+
+    email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
+
+    try:
+        from xhtml2pdf import pisa
+
+        html_string = render_to_string('academy/certificate.html', context)
+        result = BytesIO()
+        pisa_status = pisa.CreatePDF(BytesIO(html_string.encode("UTF-8")), dest=result)
+
+        if not pisa_status.err:
+            pdf_file = result.getvalue()
+            filename = f"Certificat_AJF_{user.username}.pdf"
+            email.attach(filename, pdf_file, 'application/pdf')
+    except Exception as e:
+        print(f"PDF certificate skipped: {e}")
+
+    try:
+        email.send()
+    except Exception as e:
+        print(f"Email send failed: {e}")
 
 # ======================================================
 # --- 3. VIEWS YO ---
