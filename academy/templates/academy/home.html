@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AJF-Tech | FÃ²masyon teknoloji ak sÃ¨vis pwofesyonÃ¨l</title>
-    <meta name="description" content="AJF-Tech se yon academy teknoloji pou kou, seminÃ¨, ak sÃ¨vis teknik an Ayiti.">
+    <title>AJF-Tech | Fòmasyon teknoloji ak sèvis pwofesyonèl</title>
+    <meta name="description" content="AJF-Tech se yon academy teknoloji pou kou, seminè, ak sèvis teknik an Ayiti.">
     <link rel="icon" type="image/png" href="{% static 'images/logo_ajf_tech.png' %}">
     <link rel="apple-touch-icon" href="{% static 'images/logo_ajf_tech.png' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -619,9 +619,9 @@
                     <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
                         <li class="nav-item"><a class="nav-link hero-nav-link" href="#apropos">Apropos</a></li>
                         <li class="nav-item"><a class="nav-link hero-nav-link" href="#courses">Kou yo</a></li>
-                        <li class="nav-item"><a class="nav-link hero-nav-link" href="#services">SÃ¨vis</a></li>
-                        <li class="nav-item"><a class="nav-link hero-nav-link" href="#seminars">SeminÃ¨</a></li>
-                        <li class="nav-item"><a class="nav-link hero-nav-link" href="{% url 'news_list' %}">NouvÃ¨l</a></li>
+                        <li class="nav-item"><a class="nav-link hero-nav-link" href="#services">Sèvis</a></li>
+                        <li class="nav-item"><a class="nav-link hero-nav-link" href="#seminars">Seminè</a></li>
+                        <li class="nav-item"><a class="nav-link hero-nav-link" href="{% url 'news_list' %}">Nouvèl</a></li>
                         {% if user.is_authenticated %}
                             <li class="nav-item ms-lg-2"><a class="btn-brand-outline" href="{% url 'dashboard' %}">Dashboard</a></li>
                         {% else %}
@@ -634,54 +634,54 @@
 
             <div class="row align-items-center gy-5 pt-4">
                 <div class="col-lg-7">
-                    <span class="hero-kicker"><i class="fas fa-sparkles"></i> fÃ²masyon teknoloji ak sÃ¨vis pwo</span>
-                    <h1 class="hero-title">Nou pa vann kou sÃ¨lman. Nou devlope konpetans teknik ou pou yon karyÃ¨ siksÃ¨.</h1>
+                    <span class="hero-kicker"><i class="fas fa-sparkles"></i> fòmasyon teknoloji ak sèvis pwo</span>
+                    <h1 class="hero-title">Nou pa vann kou sèlman. Nou devlope konpetans teknik ou pou yon karyè siksè.</h1>
                     <p class="hero-lead">
                         AJF-Tech se yon espas pou aprann metye teknoloji yo ak plis estrikti:
-                        kou, leson videyo, quiz, sÃ¨tifika, seminÃ¨, ak yon kominote ki la pou akonpaye w nan siksÃ¨ pwofesyonÃ¨l ou.
+                        kou, leson videyo, quiz, sètifika, seminè, ak yon kominote ki la pou akonpaye w nan siksè pwofesyonèl ou.
                     </p>
                     <div class="hero-actions">
-                        <a href="#courses" class="btn-brand"><i class="fas fa-graduation-cap"></i>WÃ¨ fÃ²masyon yo</a>
+                        <a href="#courses" class="btn-brand"><i class="fas fa-graduation-cap"></i>Wè fòmasyon yo</a>
                         <a href="https://wa.me/50934659454" target="_blank" rel="noopener noreferrer" class="btn-brand-outline"><i class="fab fa-whatsapp"></i>Pale sou WhatsApp</a>
                     </div>
                     <div class="metric-grid">
                         <div class="metric-card">
                             <strong>{{ courses|length }}+</strong>
-                            <div class="text-muted">kou vizib sou platfÃ²m la</div>
+                            <div class="text-muted">kou vizib sou platfòm la</div>
                         </div>
                         <div class="metric-card">
                             <strong>{{ seminars|length }}+</strong>
-                            <div class="text-muted">seminÃ¨ ak aktivite resan</div>
+                            <div class="text-muted">seminè ak aktivite resan</div>
                         </div>
                         <div class="metric-card">
                             <strong>24/7</strong>
-                            <div class="text-muted">aksÃ¨ sou leson ak pwogrÃ¨ w</div>
+                            <div class="text-muted">aksè sou leson ak pwogrè w</div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-5">
                     <div class="hero-panel">
-                        <small class="text-uppercase fw-bold text-warning d-block mb-3">Poukisa platfÃ²m sa a itil</small>
+                        <small class="text-uppercase fw-bold text-warning d-block mb-3">Poukisa platfòm sa a itil</small>
                         <div class="d-flex gap-3 mb-4">
                             <div class="service-icon mb-0"><i class="fas fa-video"></i></div>
                             <div>
                                 <strong class="d-block fs-5">Aprantisaj estriktire</strong>
-                                <span class="text-white-50">Kou yo Ã²ganize pa leson, egzamen, ak pwogrÃ¨.</span>
+                                <span class="text-white-50">Kou yo òganize pa leson, egzamen, ak pwogrè.</span>
                             </div>
                         </div>
                         <div class="d-flex gap-3 mb-4">
                             <div class="service-icon mb-0"><i class="fas fa-certificate"></i></div>
                             <div>
-                                <strong class="d-block fs-5">SÃ¨tifika apre validasyon</strong>
-                                <span class="text-white-50">SÃ¨tifika ki rekonÃ¨t sou mache travay la apre ou fin valide pwojÃ¨ pratik ou yo.
+                                <strong class="d-block fs-5">Sètifika apre validasyon</strong>
+                                <span class="text-white-50">Sètifika ki rekonnèt sou mache travay la apre ou fin valide pwojè pratik ou yo.
                                 </span>
                             </div>
                         </div>
                         <div class="d-flex gap-3">
                             <div class="service-icon mb-0"><i class="fas fa-users"></i></div>
                             <div>
-                                <strong class="d-block fs-5">Kominote ak sipÃ²</strong>
-                                <span class="text-white-50">Yon sistÃ¨m asistans entelijan ak yon fowÃ²m diskisyon pou reponn tout kesyon ou yo an tan reyÃ¨l.</span>
+                                <strong class="d-block fs-5">Kominote ak sipò</strong>
+                                <span class="text-white-50">Yon sistèm asistans entelijan ak yon fowòm diskisyon pou reponn tout kesyon ou yo an tan reyèl.</span>
                             </div>
                         </div>
                     </div>
@@ -693,17 +693,17 @@
     <section class="section">
         <div class="container">
             <div class="section-heading">
-                <h2><strong> AJF-Tech: </strong> Eksperyans, Inovasyon, ak Ekselans nan sÃ¨vis teknolojik.</h2>
+                <h2><strong> AJF-Tech: </strong> Eksperyans, Inovasyon, ak Ekselans nan sèvis teknolojik.</h2>
                 <p>
-                    PifÃ² moun bezwen yon prezans ki sanble serye anvan yo menm eseye achte oswa enskri.
-                    Se poutÃ¨t sa nou mete yon direksyon vizyÃ¨l ki pi net, pi fÃ², ak pi â€œproâ€.
+                    Pifò moun bezwen yon prezans ki sanble serye anvan yo menm eseye achte oswa enskri.
+                    Se poutèt sa nou mete yon direksyon vizyèl ki pi net, pi fò, ak pi "pro".
                 </p>
             </div>
             <div class="service-grid" id="services">
                 <div class="service-card">
                     <div class="service-icon"><i class="fas fa-camera"></i></div>
                     <h4>Kamera & sekirite</h4>
-                    <p class="text-muted mb-0">FÃ²masyon ak sÃ¨vis sou enstalasyon, siveyans, ak estrikti sekirite elektwonik.</p>
+                    <p class="text-muted mb-0">Fòmasyon ak sèvis sou enstalasyon, siveyans, ak estrikti sekirite elektwonik.</p>
                 </div>
                 <div class="service-card">
                     <div class="service-icon"><i class="fas fa-laptop-code"></i></div>
@@ -713,7 +713,7 @@
                 <div class="service-card">
                     <div class="service-icon"><i class="fas fa-pen-ruler"></i></div>
                     <h4>Design & branding</h4>
-                    <p class="text-muted mb-0">Canva, Photoshop, ak idantite vizyÃ¨l pou elÃ¨v ak ti biznis kap devlope.</p>
+                    <p class="text-muted mb-0">Canva, Photoshop, ak idantite vizyèl pou elèv ak ti biznis kap devlope.</p>
                 </div>
             </div>
         </div>
@@ -725,39 +725,39 @@
                 <div class="row align-items-center g-5">
                     <div class="col-lg-5">
                         <div class="about-photo-shell">
-                            <img src="{% static 'academy/img/ceo.jpeg' %}" alt="Foto fondatÃ¨ AJF-Tech">
+                            <img src="{% static 'academy/img/ceo.jpeg' %}" alt="Foto fondatè AJF-Tech">
                         </div>
                     </div>
                     <div class="col-lg-7">
                         <div class="section-heading mb-0">
                             <h2>Apropos AJF-Tech</h2>
                             <p>
-                                AJF-Tech se yon pwojÃ¨ ak yon vizyon klÃ¨: ede moun aprann teknoloji,
-                                devlope konpetans pwofesyonÃ¨l, epi jwenn sÃ¨vis teknik yo ka fÃ¨ konfyans.
+                                AJF-Tech se yon pwojè ak yon vizyon klè: ede moun aprann teknoloji,
+                                devlope konpetans pwofesyonèl, epi jwenn sèvis teknik yo ka fè konfyans.
                             </p>
                         </div>
                         <div class="about-list">
                             <div class="about-list-item">
                                 <i class="fas fa-user-tie"></i>
                                 <div>
-                                    <strong class="d-block">Yon figi reyÃ¨l dÃ¨yÃ¨ mak la</strong>
+                                    <strong class="d-block">Yon figi reyèl dèyè mak la</strong>
                                     <span class="text-muted">
                                         <strong>Alcena Jonathan </strong>
-                                        Yon lidÃ¨chip ki angaje: Nou kwÃ¨ nan transparans ak yon relasyon dirÃ¨k ak chak elÃ¨v nou yo.</span>
+                                        Yon lidèchip ki angaje: Nou kwè nan transparans ak yon relasyon dirèk ak chak elèv nou yo.</span>
                                 </div>
                             </div>
                             <div class="about-list-item">
                                 <i class="fas fa-bullseye"></i>
                                 <div>
-                                    <strong class="d-block">Misyon an klÃ¨</strong>
-                                    <span class="text-muted">FÃ²masyon pratik, sÃ¨vis teknik, ak yon direksyon ki ka ede jÃ¨n ak pwofesyonÃ¨l avanse toutbon.</span>
+                                    <strong class="d-block">Misyon an klè</strong>
+                                    <span class="text-muted">Fòmasyon pratik, sèvis teknik, ak yon direksyon ki ka ede jèn ak pwofesyonèl avanse toutbon.</span>
                                 </div>
                             </div>
                             <div class="about-list-item">
                                 <i class="fas fa-people-group"></i>
                                 <div>
                                     <strong class="d-block">Yon kominote kap grandi</strong>
-                                    <span class="text-muted">PlatfÃ²m la la pou bati relasyon ak elÃ¨v, kliyan, ak patnÃ¨ ki bezwen yon espas serye pou evolye.</span>
+                                    <span class="text-muted">Platfòm la la pou bati relasyon ak elèv, kliyan, ak patnè ki bezwen yon espas serye pou evolye.</span>
                                 </div>
                             </div>
                         </div>
@@ -771,8 +771,8 @@
         <div class="container">
             <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
                 <div class="section-heading mb-0">
-                    <h2>Kou ki vizib kounye a sou platfÃ²m la</h2>
-                    <p>Sa yo se kou moun ap wÃ¨ sou paj piblik la. Chak kou ka mennen sou leson, quiz, ak sÃ¨tifika.</p>
+                    <h2>Kou ki vizib kounye a sou platfòm la</h2>
+                    <p>Sa yo se kou moun ap wè sou paj piblik la. Chak kou ka mennen sou leson, quiz, ak sètifika.</p>
                 </div>
                 {% if user.is_authenticated %}
                     <a href="{% url 'dashboard' %}" class="btn-brand">Ale sou dashboard mwen</a>
@@ -787,12 +787,12 @@
                         </div>
                         <h4 class="fw-bold mb-2">{{ course.title }}</h4>
                         <p class="text-muted mb-4">{{ course.description|truncatewords:24 }}</p>
-                        <a href="{% url 'course_detail' course.id %}" class="btn-brand w-100">WÃ¨ detay kou a</a>
+                        <a href="{% url 'course_detail' course.id %}" class="btn-brand w-100">Wè detay kou a</a>
                     </article>
                 {% empty %}
                     <article class="course-card">
-                        <h4 class="fw-bold">Pa gen kou pibliye ankÃ²</h4>
-                        <p class="text-muted mb-0">Nou ka ajoute kÃ¨k kou depi admin nan pou katalÃ²g la parÃ¨t pi rich.</p>
+                        <h4 class="fw-bold">Pa gen kou pibliye ankò</h4>
+                        <p class="text-muted mb-0">Nou ka ajoute kèk kou depi admin nan pou katalòg la parèt pi rich.</p>
                     </article>
                 {% endfor %}
             </div>
@@ -805,8 +805,8 @@
                 <div class="row align-items-center g-4">
                     <div class="col-lg-8">
                         <small class="text-uppercase fw-bold text-warning">REJWENN NOU JODI A</small>
-                        <h3 class="fw-bold mt-2">KÃ²manse fÃ²masyon w lan epi bay karyÃ¨ w yon lÃ²t nivo.</h3>
-                        <p class="mb-0 text-white-50">Enskri sou platfÃ²m nan pou w gen aksÃ¨ ak kou pratik, sÃ¨tifika entÃ¨nasyonal, ak yon kominote ekspÃ¨ k ap ede w grandi chak jou.</p>
+                        <h3 class="fw-bold mt-2">Kòmanse fòmasyon w lan epi bay karyè w yon lòt nivo.</h3>
+                        <p class="mb-0 text-white-50">Enskri sou platfòm nan pou w gen aksè ak kou pratik, sètifika entènasyonal, ak yon kominote ekspè k ap ede w grandi chak jou.</p>
                     </div>
                     <div class="col-lg-4 text-lg-end">
                         <a href="{% url 'signup' %}" class="btn-brand">Kreye kont mwen</a>
@@ -820,10 +820,10 @@
         <div class="container">
             <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
                 <div class="section-heading mb-0">
-                    <h2>NouvÃ¨l ak mizajou</h2>
-                    <p>Rete konekte ak dÃ¨nye inovasyon ak pwogram fÃ²masyon nou yo.</p>
+                    <h2>Nouvèl ak mizajou</h2>
+                    <p>Rete konekte ak dènye inovasyon ak pwogram fòmasyon nou yo.</p>
                 </div>
-                <a href="{% url 'news_list' %}" class="btn-brand-outline text-dark border border-dark">WÃ¨ tout nouvÃ¨l yo</a>
+                <a href="{% url 'news_list' %}" class="btn-brand-outline text-dark border border-dark">Wè tout nouvèl yo</a>
             </div>
             <div class="post-grid" style="grid-template-columns: repeat(3, minmax(0, 1fr));">
                 {% for post in recent_posts %}
@@ -835,8 +835,8 @@
                     </article>
                 {% empty %}
                     <article class="post-card">
-                        <h4 class="fw-bold">Pa gen post ankÃ²</h4>
-                        <p class="text-muted mb-0">Ajoute 2 oswa 3 pÃ²s pou paj sa a santi l aktif depi premye vizit la.</p>
+                        <h4 class="fw-bold">Pa gen post ankò</h4>
+                        <p class="text-muted mb-0">Ajoute 2 oswa 3 pòs pou paj sa a santi l aktif depi premye vizit la.</p>
                     </article>
                 {% endfor %}
             </div>
@@ -847,13 +847,13 @@
         <div class="container">
             <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
                 <div class="section-heading mb-0 text-white">
-                    <h2>SeminÃ¨ ak aktivite AJF-Tech</h2>
-                    <p class="text-white-50">Achiv aktivite yo ede montre pwojÃ¨ a deja gen lavi sou teren an, pa sÃ¨lman sou entÃ¨nÃ¨t.</p>
+                    <h2>Seminè ak aktivite AJF-Tech</h2>
+                    <p class="text-white-50">Achiv aktivite yo ede montre pwojè a deja gen lavi sou teren an, pa sèlman sou entènèt.</p>
                 </div>
                 {% if all_periods %}
                     <form method="get" class="d-flex gap-2">
                         <select name="periode" class="form-select rounded-pill px-3">
-                            <option value="">Tout peryÃ²d</option>
+                            <option value="">Tout peryòd</option>
                             {% for period in all_periods %}
                                 <option value="{{ period }}" {% if selected_period == period %}selected{% endif %}>{{ period }}</option>
                             {% endfor %}
@@ -879,8 +879,8 @@
                     </article>
                 {% empty %}
                     <article class="seminar-card">
-                        <h4 class="fw-bold">Pa gen seminÃ¨ aktif pou kounye a</h4>
-                        <p class="mb-0">Ajoute youn oswa de aktivite pou seksyon sa a ranfÃ²se kredibilite sit la.</p>
+                        <h4 class="fw-bold">Pa gen seminè aktif pou kounye a</h4>
+                        <p class="mb-0">Ajoute youn oswa de aktivite pou seksyon sa a ranfòse kredibilite sit la.</p>
                     </article>
                 {% endfor %}
             </div>
@@ -895,7 +895,7 @@
                 </div>
                 <div>
                 <strong class="text-white d-block">AJF-Tech</strong>
-                <span>FÃ²masyon teknoloji, sÃ¨vis teknik, ak kominote pwofesyonÃ¨l.</span>
+                <span>Fòmasyon teknoloji, sèvis teknik, ak kominote pwofesyonèl.</span>
                 </div>
             </div>
             <div class="social-links">
@@ -911,6 +911,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+
+
 
 
 
