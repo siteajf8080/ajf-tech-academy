@@ -1,13 +1,13 @@
-{% load static %}
+﻿{% load static %}
 <!DOCTYPE html>
 <html lang="ht">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="{% static 'academy/img/logo.png' %}">
-    <link rel="apple-touch-icon" href="{% static 'academy/img/logo.png' %}">
-    <title>AJF-Tech | Fòmasyon teknoloji ak sèvis pwofesyonèl</title>
-    <meta name="description" content="AJF-Tech se yon academy teknoloji pou kou, seminè, ak sèvis teknik an Ayiti.">
+    <title>AJF-Tech | FÃ²masyon teknoloji ak sÃ¨vis pwofesyonÃ¨l</title>
+    <meta name="description" content="AJF-Tech se yon academy teknoloji pou kou, seminÃ¨, ak sÃ¨vis teknik an Ayiti.">
+    <link rel="icon" type="image/png" href="{% static 'images/logo_ajf_tech.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'images/logo_ajf_tech.png' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -32,6 +32,7 @@
             background:
                 radial-gradient(circle at top right, rgba(31, 117, 255, 0.12), transparent 28%),
                 linear-gradient(180deg, #f9fbff 0%, #eff5fb 100%);
+            overflow-x: hidden;
         }
 
         .hero-shell {
@@ -72,11 +73,26 @@
         .hero-content {
             position: relative;
             z-index: 2;
-            padding: 26px 0 110px;
+            padding: 120px 0 110px;
         }
 
         .main-nav {
-            padding: 0.4rem 0 1rem;
+            padding: 0.7rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1050;
+            background: rgba(8, 27, 51, 0.88);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .main-nav .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
         }
 
         .brand-badge {
@@ -87,18 +103,35 @@
         }
 
         .brand-icon {
-            width: 46px;
-            height: 46px;
+            width: 56px;
+            height: 56px;
+            display: grid;
+            place-items: center;
             border-radius: 50%;
             background: #fff;
-            padding: 6px;
-            box-shadow: 0 10px 24px rgba(8, 27, 51, 0.18);
+            box-shadow: 0 16px 36px rgba(8, 27, 51, 0.18);
+            padding: 8px;
         }
 
-        .brand-icon img {
+        .brand-icon img,
+        .footer-logo-shell img,
+        .about-photo-shell img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
+        }
+
+        .brand-copy strong {
+            display: block;
+            font-size: 1rem;
+            letter-spacing: 0.02em;
+        }
+
+        .brand-copy small {
+            color: rgba(255, 255, 255, 0.7) !important;
+            font-size: 0.74rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
         }
 
         .hero-nav-link {
@@ -112,6 +145,45 @@
         .hero-nav-link:hover {
             color: #fff;
             background: rgba(255, 255, 255, 0.08);
+        }
+
+        .navbar-toggler {
+            margin-left: auto;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        .navbar-toggler-icon {
+            background-image: none;
+            width: 2rem;
+            height: 2rem;
+            position: relative;
+        }
+
+        .navbar-toggler-icon::before,
+        .navbar-toggler-icon::after,
+        .navbar-toggler-icon span {
+            content: "";
+            position: absolute;
+            left: 0.25rem;
+            right: 0.25rem;
+            height: 2px;
+            background: #fff;
+            border-radius: 999px;
+        }
+
+        .navbar-toggler-icon::before {
+            top: 0.45rem;
+        }
+
+        .navbar-toggler-icon span {
+            top: 0.92rem;
+        }
+
+        .navbar-toggler-icon::after {
+            top: 1.39rem;
         }
 
         .hero-kicker {
@@ -214,6 +286,41 @@
             padding: 84px 0;
         }
 
+        .about-shell {
+            padding: 32px;
+        }
+
+        .about-photo-shell {
+            width: min(100%, 360px);
+            aspect-ratio: 1 / 1;
+            border-radius: 34px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: var(--ajf-shadow);
+            margin-inline: auto;
+        }
+
+        .about-list {
+            display: grid;
+            gap: 14px;
+            margin-top: 1.5rem;
+        }
+
+        .about-list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px 18px;
+            border-radius: 20px;
+            background: var(--ajf-surface-soft);
+        }
+
+        .about-list-item i {
+            color: var(--ajf-sky);
+            font-size: 1.1rem;
+            margin-top: 3px;
+        }
+
         .section-heading {
             max-width: 620px;
             margin-bottom: 34px;
@@ -302,15 +409,6 @@
             box-shadow: none;
         }
 
-        .seminar-thumb {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            border-radius: 20px;
-            margin-bottom: 16px;
-            background: rgba(255, 255, 255, 0.08);
-        }
-
         .seminar-card p,
         .seminar-card small {
             color: rgba(255, 255, 255, 0.74);
@@ -344,16 +442,159 @@
             padding: 30px 0;
         }
 
+        .footer-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .footer-logo-shell {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #fff;
+            padding: 8px;
+            display: grid;
+            place-items: center;
+            box-shadow: 0 12px 26px rgba(8, 27, 51, 0.22);
+        }
+
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .social-link {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            transition: 0.25s ease;
+        }
+
+        .social-link:hover {
+            background: #fff;
+            color: var(--ajf-navy);
+        }
+
         @media (max-width: 991px) {
             .metric-grid,
             .service-grid,
             .course-grid,
+            .post-grid,
             .seminar-grid {
                 grid-template-columns: 1fr;
             }
 
             .hero-content {
-                padding-bottom: 72px;
+                padding: 104px 0 72px;
+            }
+
+            .main-nav {
+                padding: 0.85rem 0;
+            }
+
+            .brand-badge {
+                max-width: calc(100% - 70px);
+                gap: 10px;
+            }
+
+            .brand-icon {
+                width: 48px;
+                height: 48px;
+            }
+
+            .brand-copy strong {
+                font-size: 0.92rem;
+            }
+
+            .brand-copy small {
+                font-size: 0.66rem;
+                letter-spacing: 0.04em;
+            }
+
+            .main-nav .navbar-collapse {
+                margin-top: 1rem;
+                padding: 1rem;
+                border-radius: 24px;
+                background: rgba(7, 21, 40, 0.96);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.28);
+            }
+
+            .main-nav .navbar-nav {
+                gap: 0.35rem !important;
+            }
+
+            .hero-nav-link,
+            .btn-brand,
+            .btn-brand-outline {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+            }
+
+            .about-shell,
+            .cta-panel,
+            .service-card,
+            .course-card,
+            .post-card,
+            .seminar-card {
+                padding: 22px;
+            }
+
+            .seminar-images {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .social-links {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 575px) {
+            .hero-shell .container,
+            .section .container,
+            footer .container {
+                padding-left: 18px;
+                padding-right: 18px;
+            }
+
+            .hero-content {
+                padding: 96px 0 64px;
+            }
+
+            .hero-title {
+                font-size: 2.55rem;
+            }
+
+            .hero-lead {
+                font-size: 1rem;
+            }
+
+            .metric-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .main-nav .container {
+                gap: 0.75rem;
+            }
+
+            .brand-copy small {
+                display: none;
+            }
+
+            .post-grid[style] {
+                grid-template-columns: 1fr !important;
             }
         }
     </style>
@@ -364,22 +605,23 @@
             <nav class="navbar navbar-expand-lg main-nav">
                 <a class="navbar-brand brand-badge" href="{% url 'home' %}">
                     <span class="brand-icon">
-                        <img src="{% static 'academy/img/logo.png' %}" alt="Logo AJF-Tech">
+                        <img src="{% static 'images/logo_ajf_tech.png' %}" alt="Logo AJF-Tech">
                     </span>
-                    <span>
+                    <span class="brand-copy">
                         <strong class="d-block">AJF-Tech</strong>
                         <small class="text-white-50">Academy & Services</small>
                     </span>
                 </a>
-                <button class="navbar-toggler border-0 shadow-none text-white" type="button" data-bs-toggle="collapse" data-bs-target="#landingNav">
-                    <span class="navbar-toggler-icon"></span>
+                <button class="navbar-toggler border-0 shadow-none text-white" type="button" data-bs-toggle="collapse" data-bs-target="#landingNav" aria-label="Ouvri meni navigasyon an">
+                    <span class="navbar-toggler-icon"><span></span></span>
                 </button>
                 <div class="collapse navbar-collapse" id="landingNav">
                     <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                        <li class="nav-item"><a class="nav-link hero-nav-link" href="#apropos">Apropos</a></li>
                         <li class="nav-item"><a class="nav-link hero-nav-link" href="#courses">Kou yo</a></li>
-                        <li class="nav-item"><a class="nav-link hero-nav-link" href="#services">Sèvis</a></li>
-                        <li class="nav-item"><a class="nav-link hero-nav-link" href="#seminars">Seminè</a></li>
-                        <li class="nav-item"><a class="nav-link hero-nav-link" href="{% url 'news_list' %}">Nouvèl</a></li>
+                        <li class="nav-item"><a class="nav-link hero-nav-link" href="#services">SÃ¨vis</a></li>
+                        <li class="nav-item"><a class="nav-link hero-nav-link" href="#seminars">SeminÃ¨</a></li>
+                        <li class="nav-item"><a class="nav-link hero-nav-link" href="{% url 'news_list' %}">NouvÃ¨l</a></li>
                         {% if user.is_authenticated %}
                             <li class="nav-item ms-lg-2"><a class="btn-brand-outline" href="{% url 'dashboard' %}">Dashboard</a></li>
                         {% else %}
@@ -392,53 +634,54 @@
 
             <div class="row align-items-center gy-5 pt-4">
                 <div class="col-lg-7">
-                    <span class="hero-kicker"><i class="fas fa-sparkles"></i> fòmasyon teknoloji ak sèvis pwo</span>
-                    <h1 class="hero-title">Nou pa vann kou sèlman. Nou bati kapasite teknik ki ka fè w travay.</h1>
+                    <span class="hero-kicker"><i class="fas fa-sparkles"></i> fÃ²masyon teknoloji ak sÃ¨vis pwo</span>
+                    <h1 class="hero-title">Nou pa vann kou sÃ¨lman. Nou devlope konpetans teknik ou pou yon karyÃ¨ siksÃ¨.</h1>
                     <p class="hero-lead">
                         AJF-Tech se yon espas pou aprann metye teknoloji yo ak plis estrikti:
-                        kou, leson videyo, quiz, sètifika, seminè, ak yon kominote pou ede w avanse seryezman.
+                        kou, leson videyo, quiz, sÃ¨tifika, seminÃ¨, ak yon kominote ki la pou akonpaye w nan siksÃ¨ pwofesyonÃ¨l ou.
                     </p>
                     <div class="hero-actions">
-                        <a href="#courses" class="btn-brand"><i class="fas fa-graduation-cap"></i>Wè fòmasyon yo</a>
+                        <a href="#courses" class="btn-brand"><i class="fas fa-graduation-cap"></i>WÃ¨ fÃ²masyon yo</a>
                         <a href="https://wa.me/50934659454" target="_blank" rel="noopener noreferrer" class="btn-brand-outline"><i class="fab fa-whatsapp"></i>Pale sou WhatsApp</a>
                     </div>
                     <div class="metric-grid">
                         <div class="metric-card">
                             <strong>{{ courses|length }}+</strong>
-                            <div class="text-muted">kou vizib sou platfòm la</div>
+                            <div class="text-muted">kou vizib sou platfÃ²m la</div>
                         </div>
                         <div class="metric-card">
                             <strong>{{ seminars|length }}+</strong>
-                            <div class="text-muted">seminè ak aktivite resan</div>
+                            <div class="text-muted">seminÃ¨ ak aktivite resan</div>
                         </div>
                         <div class="metric-card">
                             <strong>24/7</strong>
-                            <div class="text-muted">aksè sou leson ak pwogrè w</div>
+                            <div class="text-muted">aksÃ¨ sou leson ak pwogrÃ¨ w</div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-5">
                     <div class="hero-panel">
-                        <small class="text-uppercase fw-bold text-warning d-block mb-3">Poukisa platfòm sa a itil</small>
+                        <small class="text-uppercase fw-bold text-warning d-block mb-3">Poukisa platfÃ²m sa a itil</small>
                         <div class="d-flex gap-3 mb-4">
                             <div class="service-icon mb-0"><i class="fas fa-video"></i></div>
                             <div>
                                 <strong class="d-block fs-5">Aprantisaj estriktire</strong>
-                                <span class="text-white-50">Kou yo òganize pa leson, egzamen, ak pwogrè.</span>
+                                <span class="text-white-50">Kou yo Ã²ganize pa leson, egzamen, ak pwogrÃ¨.</span>
                             </div>
                         </div>
                         <div class="d-flex gap-3 mb-4">
                             <div class="service-icon mb-0"><i class="fas fa-certificate"></i></div>
                             <div>
-                                <strong class="d-block fs-5">Sètifika apre validasyon</strong>
-                                <span class="text-white-50">Sa bay pwojè a yon vizyon academy reyèl, pa jis yon blog.</span>
+                                <strong class="d-block fs-5">SÃ¨tifika apre validasyon</strong>
+                                <span class="text-white-50">SÃ¨tifika ki rekonÃ¨t sou mache travay la apre ou fin valide pwojÃ¨ pratik ou yo.
+                                </span>
                             </div>
                         </div>
                         <div class="d-flex gap-3">
                             <div class="service-icon mb-0"><i class="fas fa-users"></i></div>
                             <div>
-                                <strong class="d-block fs-5">Kominote ak sipò</strong>
-                                <span class="text-white-50">Forum, nouvèl, ak AI chat la ka ogmante angajman elèv yo.</span>
+                                <strong class="d-block fs-5">Kominote ak sipÃ²</strong>
+                                <span class="text-white-50">Yon sistÃ¨m asistans entelijan ak yon fowÃ²m diskisyon pou reponn tout kesyon ou yo an tan reyÃ¨l.</span>
                             </div>
                         </div>
                     </div>
@@ -450,17 +693,17 @@
     <section class="section">
         <div class="container">
             <div class="section-heading">
-                <h2>AJF-Tech fèt pou melanje aprantisaj, sèvis, ak kredibilite pwofesyonèl.</h2>
+                <h2><strong> AJF-Tech: </strong> Eksperyans, Inovasyon, ak Ekselans nan sÃ¨vis teknolojik.</h2>
                 <p>
-                    Pifò moun bezwen yon prezans ki sanble serye anvan yo menm eseye achte oswa enskri.
-                    Se poutèt sa nou mete yon direksyon vizyèl ki pi net, pi fò, ak pi “pro”.
+                    PifÃ² moun bezwen yon prezans ki sanble serye anvan yo menm eseye achte oswa enskri.
+                    Se poutÃ¨t sa nou mete yon direksyon vizyÃ¨l ki pi net, pi fÃ², ak pi â€œproâ€.
                 </p>
             </div>
             <div class="service-grid" id="services">
                 <div class="service-card">
                     <div class="service-icon"><i class="fas fa-camera"></i></div>
                     <h4>Kamera & sekirite</h4>
-                    <p class="text-muted mb-0">Fòmasyon ak sèvis sou enstalasyon, siveyans, ak estrikti sekirite elektwonik.</p>
+                    <p class="text-muted mb-0">FÃ²masyon ak sÃ¨vis sou enstalasyon, siveyans, ak estrikti sekirite elektwonik.</p>
                 </div>
                 <div class="service-card">
                     <div class="service-icon"><i class="fas fa-laptop-code"></i></div>
@@ -470,7 +713,55 @@
                 <div class="service-card">
                     <div class="service-icon"><i class="fas fa-pen-ruler"></i></div>
                     <h4>Design & branding</h4>
-                    <p class="text-muted mb-0">Canva, Photoshop, ak idantite vizyèl pou elèv ak ti biznis kap devlope.</p>
+                    <p class="text-muted mb-0">Canva, Photoshop, ak idantite vizyÃ¨l pou elÃ¨v ak ti biznis kap devlope.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section pt-0" id="apropos">
+        <div class="container">
+            <div class="surface-card about-shell">
+                <div class="row align-items-center g-5">
+                    <div class="col-lg-5">
+                        <div class="about-photo-shell">
+                            <img src="{% static 'academy/img/ceo.jpeg' %}" alt="Foto fondatÃ¨ AJF-Tech">
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="section-heading mb-0">
+                            <h2>Apropos AJF-Tech</h2>
+                            <p>
+                                AJF-Tech se yon pwojÃ¨ ak yon vizyon klÃ¨: ede moun aprann teknoloji,
+                                devlope konpetans pwofesyonÃ¨l, epi jwenn sÃ¨vis teknik yo ka fÃ¨ konfyans.
+                            </p>
+                        </div>
+                        <div class="about-list">
+                            <div class="about-list-item">
+                                <i class="fas fa-user-tie"></i>
+                                <div>
+                                    <strong class="d-block">Yon figi reyÃ¨l dÃ¨yÃ¨ mak la</strong>
+                                    <span class="text-muted">
+                                        <strong>Alcena Jonathan </strong>
+                                        Yon lidÃ¨chip ki angaje: Nou kwÃ¨ nan transparans ak yon relasyon dirÃ¨k ak chak elÃ¨v nou yo.</span>
+                                </div>
+                            </div>
+                            <div class="about-list-item">
+                                <i class="fas fa-bullseye"></i>
+                                <div>
+                                    <strong class="d-block">Misyon an klÃ¨</strong>
+                                    <span class="text-muted">FÃ²masyon pratik, sÃ¨vis teknik, ak yon direksyon ki ka ede jÃ¨n ak pwofesyonÃ¨l avanse toutbon.</span>
+                                </div>
+                            </div>
+                            <div class="about-list-item">
+                                <i class="fas fa-people-group"></i>
+                                <div>
+                                    <strong class="d-block">Yon kominote kap grandi</strong>
+                                    <span class="text-muted">PlatfÃ²m la la pou bati relasyon ak elÃ¨v, kliyan, ak patnÃ¨ ki bezwen yon espas serye pou evolye.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -480,8 +771,8 @@
         <div class="container">
             <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
                 <div class="section-heading mb-0">
-                    <h2>Kou ki vizib kounye a sou platfòm la</h2>
-                    <p>Sa yo se kou moun ap wè sou paj piblik la. Chak kou ka mennen sou leson, quiz, ak sètifika.</p>
+                    <h2>Kou ki vizib kounye a sou platfÃ²m la</h2>
+                    <p>Sa yo se kou moun ap wÃ¨ sou paj piblik la. Chak kou ka mennen sou leson, quiz, ak sÃ¨tifika.</p>
                 </div>
                 {% if user.is_authenticated %}
                     <a href="{% url 'dashboard' %}" class="btn-brand">Ale sou dashboard mwen</a>
@@ -496,12 +787,12 @@
                         </div>
                         <h4 class="fw-bold mb-2">{{ course.title }}</h4>
                         <p class="text-muted mb-4">{{ course.description|truncatewords:24 }}</p>
-                        <a href="{% url 'course_detail' course.id %}" class="btn-brand w-100">Wè detay kou a</a>
+                        <a href="{% url 'course_detail' course.id %}" class="btn-brand w-100">WÃ¨ detay kou a</a>
                     </article>
                 {% empty %}
                     <article class="course-card">
-                        <h4 class="fw-bold">Pa gen kou pibliye ankò</h4>
-                        <p class="text-muted mb-0">Nou ka ajoute kèk kou depi admin nan pou katalòg la parèt pi rich.</p>
+                        <h4 class="fw-bold">Pa gen kou pibliye ankÃ²</h4>
+                        <p class="text-muted mb-0">Nou ka ajoute kÃ¨k kou depi admin nan pou katalÃ²g la parÃ¨t pi rich.</p>
                     </article>
                 {% endfor %}
             </div>
@@ -513,12 +804,12 @@
             <div class="cta-panel">
                 <div class="row align-items-center g-4">
                     <div class="col-lg-8">
-                        <small class="text-uppercase fw-bold text-warning">Lansman rapid</small>
-                        <h3 class="fw-bold mt-2">Nou ka mete premye vèsyon sa a sou entènèt jodi a epi kontinye amelyore l apre.</h3>
-                        <p class="mb-0 text-white-50">Pou kòmansman an, objektif la se gen yon platfòm ki bèl, ki mache, ki enspire konfyans, epi ki pèmèt moun wè valè AJF-Tech la.</p>
+                        <small class="text-uppercase fw-bold text-warning">REJWENN NOU JODI A</small>
+                        <h3 class="fw-bold mt-2">KÃ²manse fÃ²masyon w lan epi bay karyÃ¨ w yon lÃ²t nivo.</h3>
+                        <p class="mb-0 text-white-50">Enskri sou platfÃ²m nan pou w gen aksÃ¨ ak kou pratik, sÃ¨tifika entÃ¨nasyonal, ak yon kominote ekspÃ¨ k ap ede w grandi chak jou.</p>
                     </div>
                     <div class="col-lg-4 text-lg-end">
-                        <a href="{% url 'signup' %}" class="btn-brand">Kòmanse ak yon kont</a>
+                        <a href="{% url 'signup' %}" class="btn-brand">Kreye kont mwen</a>
                     </div>
                 </div>
             </div>
@@ -529,10 +820,10 @@
         <div class="container">
             <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
                 <div class="section-heading mb-0">
-                    <h2>Nouvèl ak mizajou</h2>
-                    <p>Sa bay sit la yon santiman vivan, olye li parèt tankou yon paj ki pa janm bouje.</p>
+                    <h2>NouvÃ¨l ak mizajou</h2>
+                    <p>Rete konekte ak dÃ¨nye inovasyon ak pwogram fÃ²masyon nou yo.</p>
                 </div>
-                <a href="{% url 'news_list' %}" class="btn-brand-outline text-dark border border-dark">Wè tout nouvèl yo</a>
+                <a href="{% url 'news_list' %}" class="btn-brand-outline text-dark border border-dark">WÃ¨ tout nouvÃ¨l yo</a>
             </div>
             <div class="post-grid" style="grid-template-columns: repeat(3, minmax(0, 1fr));">
                 {% for post in recent_posts %}
@@ -544,8 +835,8 @@
                     </article>
                 {% empty %}
                     <article class="post-card">
-                        <h4 class="fw-bold">Pa gen post ankò</h4>
-                        <p class="text-muted mb-0">Ajoute 2 oswa 3 pòs pou paj sa a santi l aktif depi premye vizit la.</p>
+                        <h4 class="fw-bold">Pa gen post ankÃ²</h4>
+                        <p class="text-muted mb-0">Ajoute 2 oswa 3 pÃ²s pou paj sa a santi l aktif depi premye vizit la.</p>
                     </article>
                 {% endfor %}
             </div>
@@ -556,13 +847,13 @@
         <div class="container">
             <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
                 <div class="section-heading mb-0 text-white">
-                    <h2>Seminè ak aktivite AJF-Tech</h2>
-                    <p class="text-white-50">Achiv aktivite yo ede montre pwojè a deja gen lavi sou teren an, pa sèlman sou entènèt.</p>
+                    <h2>SeminÃ¨ ak aktivite AJF-Tech</h2>
+                    <p class="text-white-50">Achiv aktivite yo ede montre pwojÃ¨ a deja gen lavi sou teren an, pa sÃ¨lman sou entÃ¨nÃ¨t.</p>
                 </div>
                 {% if all_periods %}
                     <form method="get" class="d-flex gap-2">
                         <select name="periode" class="form-select rounded-pill px-3">
-                            <option value="">Tout peryòd</option>
+                            <option value="">Tout peryÃ²d</option>
                             {% for period in all_periods %}
                                 <option value="{{ period }}" {% if selected_period == period %}selected{% endif %}>{{ period }}</option>
                             {% endfor %}
@@ -574,28 +865,22 @@
             <div class="seminar-grid">
                 {% for seminar in seminars %}
                     <article class="seminar-card">
-                        {% if seminar.primary_image %}
-                            <img src="{{ seminar.primary_image.image.url }}" alt="{{ seminar.title }}" class="seminar-thumb" onerror="this.src='{% static 'academy/img/logo.png' %}'; this.onerror=null;">
-                        {% else %}
-                            <img src="{% static 'academy/img/logo.png' %}" alt="Logo AJF-Tech" class="seminar-thumb">
-                        {% endif %}
                         <small class="text-warning fw-bold text-uppercase">{{ seminar.period }}</small>
                         <h4 class="fw-bold mt-2">{{ seminar.title }}</h4>
                         <p class="mb-2">{{ seminar.description|truncatewords:32 }}</p>
-                        <small class="d-block mb-3">{{ seminar.date_event|date:"d M Y" }} · {{ seminar.registered_count }} enskri</small>
-                        <div class="d-flex flex-wrap gap-2 mt-3">
-                            <a href="{% url 'seminar_detail' seminar.id %}" class="btn-brand">Wè detay</a>
-                            {% if user.is_authenticated %}
-                                <a href="{% url 'seminar_detail' seminar.id %}" class="btn-brand-outline">Pran plas ou</a>
-                            {% else %}
-                                <a href="{% url 'login' %}?next={% url 'seminar_detail' seminar.id %}" class="btn-brand-outline">Konekte pou enskri</a>
-                            {% endif %}
-                        </div>
+                        <small>{{ seminar.date_event|date:"d M Y" }}</small>
+                        {% if seminar.images.all %}
+                            <div class="seminar-images">
+                                {% for img in seminar.images.all|slice:":4" %}
+                                    <img src="{{ img.image.url }}" alt="{{ seminar.title }}" onerror="this.src='{% static 'images/logo_ajf_tech.png' %}'; this.onerror=null;">
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     </article>
                 {% empty %}
                     <article class="seminar-card">
-                        <h4 class="fw-bold">Pa gen seminè aktif pou kounye a</h4>
-                        <p class="mb-0">Ajoute youn oswa de aktivite pou seksyon sa a ranfòse kredibilite sit la.</p>
+                        <h4 class="fw-bold">Pa gen seminÃ¨ aktif pou kounye a</h4>
+                        <p class="mb-0">Ajoute youn oswa de aktivite pou seksyon sa a ranfÃ²se kredibilite sit la.</p>
                     </article>
                 {% endfor %}
             </div>
@@ -604,28 +889,29 @@
 
     <footer>
         <div class="container d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
-            <div>
+            <div class="footer-brand">
+                <div class="footer-logo-shell">
+                    <img src="{% static 'images/logo_ajf_tech.png' %}" alt="Logo AJF-Tech">
+                </div>
+                <div>
                 <strong class="text-white d-block">AJF-Tech</strong>
-                <span>Fòmasyon teknoloji, sèvis teknik, ak kominote pwofesyonèl.</span>
+                <span>FÃ²masyon teknoloji, sÃ¨vis teknik, ak kominote pwofesyonÃ¨l.</span>
+                </div>
             </div>
-            <div class="d-flex gap-3">
+            <div class="social-links">
+                <a class="social-link" href="https://www.facebook.com/share/1AkQ1sd3ku/" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a class="social-link" href="https://www.instagram.com/ajf_tech?igsh=MTBuZnZremJpZnNm" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a class="social-link" href="https://x.com/AlcenaFrancois" aria-label="X"><i class="fab fa-x-twitter"></i></a>
                 <a class="text-white" href="https://wa.me/50934659454" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp me-1"></i>WhatsApp</a>
-                <a class="text-white" href="{% url 'contact_page' %}"><i class="fas fa-envelope me-1"></i>Contact</a>
-                <a class="text-white" href="{% url 'privacy_page' %}"><i class="fas fa-shield-halved me-1"></i>ConfidentialitÃ©</a>
                 <a class="text-white" href="{% url 'forum_home' %}"><i class="fas fa-users me-1"></i>Forum</a>
             </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            "name": "AJF-Tech",
-            "url": "https://ajftech.tech",
-            "logo": "https://ajftech.tech/static/academy/img/logo.png"
-        }
-    </script>
 </body>
 </html>
+
+
+
+
