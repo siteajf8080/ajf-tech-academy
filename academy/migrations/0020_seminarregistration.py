@@ -6,7 +6,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("academy", "0018_alter_lesson_options_lesson_content_lesson_order"),
+        ("academy", "0019_lesson_pdf_file"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
