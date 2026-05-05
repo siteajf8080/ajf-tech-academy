@@ -1,28 +1,332 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="ht">
 <head>
     <meta charset="UTF-8">
-    <title>Koneksyon | AJF-Tech</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konekte | AJF-Tech</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .login-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 350px; }
-        h2 { text-align: center; color: #2c3e50; }
-        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background: #2980b9; }
+        :root {
+            --ajf-navy: #081b33;
+            --ajf-navy-soft: #14345b;
+            --ajf-sky: #1f75ff;
+            --ajf-gold: #f4b942;
+            --ajf-surface: #ffffff;
+            --ajf-border: rgba(8, 27, 51, 0.12);
+            --ajf-text: #10233e;
+            --ajf-muted: #6c7a91;
+            --ajf-shadow: 0 30px 70px rgba(8, 27, 51, 0.16);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Manrope', sans-serif;
+            color: var(--ajf-text);
+            background:
+                radial-gradient(circle at top left, rgba(31, 117, 255, 0.16), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(244, 185, 66, 0.12), transparent 24%),
+                linear-gradient(180deg, #f6f9fe 0%, #ecf3fb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 28px 16px;
+        }
+
+        .auth-shell {
+            width: min(100%, 1080px);
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: var(--ajf-shadow);
+        }
+
+        .auth-showcase {
+            padding: 40px;
+            background:
+                linear-gradient(145deg, rgba(8, 27, 51, 0.95), rgba(20, 52, 91, 0.92)),
+                url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80");
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            position: relative;
+        }
+
+        .auth-showcase::before {
+            content: "";
+            position: absolute;
+            inset: auto -80px -90px auto;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: rgba(244, 185, 66, 0.18);
+            filter: blur(8px);
+        }
+
+        .auth-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 48px;
+        }
+
+        .auth-brand-badge {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: #fff;
+            display: grid;
+            place-items: center;
+            padding: 8px;
+            box-shadow: 0 18px 30px rgba(8, 27, 51, 0.22);
+        }
+
+        .auth-brand-badge img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .auth-brand strong {
+            display: block;
+            font-size: 1.08rem;
+        }
+
+        .auth-brand span {
+            font-size: 0.78rem;
+            color: rgba(255, 255, 255, 0.72);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .auth-kicker {
+            display: inline-flex;
+            padding: 0.65rem 1rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.12);
+            font-size: 0.82rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 18px;
+        }
+
+        .auth-showcase h1 {
+            margin: 0 0 16px;
+            font-size: clamp(2.2rem, 4vw, 3.5rem);
+            line-height: 0.98;
+        }
+
+        .auth-showcase p {
+            margin: 0;
+            max-width: 520px;
+            line-height: 1.75;
+            color: rgba(255, 255, 255, 0.82);
+        }
+
+        .auth-points {
+            display: grid;
+            gap: 16px;
+            margin-top: 34px;
+        }
+
+        .auth-point {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px 18px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .auth-point-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            background: rgba(244, 185, 66, 0.18);
+            color: #ffd978;
+            font-weight: 800;
+        }
+
+        .auth-card {
+            padding: 44px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.92);
+        }
+
+        .auth-card h2 {
+            margin: 0 0 10px;
+            font-size: 2rem;
+        }
+
+        .auth-card p {
+            margin: 0 0 28px;
+            color: var(--ajf-muted);
+            line-height: 1.7;
+        }
+
+        form p {
+            margin: 0 0 18px;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: var(--ajf-text);
+        }
+
+        form input {
+            width: 100%;
+            padding: 0.95rem 1rem;
+            border-radius: 16px;
+            border: 1px solid var(--ajf-border);
+            background: #fff;
+            color: var(--ajf-text);
+            font: inherit;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        form input:focus {
+            outline: none;
+            border-color: rgba(31, 117, 255, 0.42);
+            box-shadow: 0 0 0 4px rgba(31, 117, 255, 0.12);
+        }
+
+        form ul.errorlist {
+            list-style: none;
+            padding: 0;
+            margin: 6px 0 0;
+            color: #c0392b;
+            font-size: 0.92rem;
+        }
+
+        .auth-submit {
+            width: 100%;
+            border: 0;
+            border-radius: 18px;
+            padding: 1rem 1.25rem;
+            font: inherit;
+            font-weight: 800;
+            color: #fff;
+            background: linear-gradient(135deg, var(--ajf-sky), #4b92ff);
+            box-shadow: 0 18px 30px rgba(31, 117, 255, 0.2);
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .auth-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .auth-links a {
+            color: var(--ajf-sky);
+            font-weight: 700;
+        }
+
+        .auth-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 18px;
+            color: var(--ajf-muted);
+            font-weight: 700;
+        }
+
+        @media (max-width: 900px) {
+            .auth-shell {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-showcase,
+            .auth-card {
+                padding: 30px 22px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="login-card">
-        <h2>AJF-Tech</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Konekte</button>
-        </form>
+    <div class="auth-shell">
+        <section class="auth-showcase">
+            <div class="auth-brand">
+                <div class="auth-brand-badge">
+                    <img src="{% static 'images/logo_ajf_tech.png' %}" alt="Logo AJF-Tech">
+                </div>
+                <div>
+                    <strong>AJF-Tech</strong>
+                    <span>Academy & services</span>
+                </div>
+            </div>
+
+            <div class="auth-kicker">Konekte ak platfòm nan</div>
+            <h1>Retounen sou espas fòmasyon ou a.</h1>
+            <p>
+                Antre nan kont ou pou w suiv kou yo, tcheke pwogrè w, jwenn sipò,
+                epi kontinye bati avni pwofesyonèl ou ak AJF-Tech.
+            </p>
+
+            <div class="auth-points">
+                <div class="auth-point">
+                    <div class="auth-point-icon">1</div>
+                    <div>
+                        <strong>Kont ou rete aktif 24/7</strong>
+                        <div>Retounen sou leson yo nenpòt lè ou bezwen revize yo.</div>
+                    </div>
+                </div>
+                <div class="auth-point">
+                    <div class="auth-point-icon">2</div>
+                    <div>
+                        <strong>Swiv pwogrè w fasil</strong>
+                        <div>Dashboard la montre avansman w sou chak kou ak chak modil.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="auth-card">
+            <h2>Konekte</h2>
+            <p>Byenveni ankò. Antre enfòmasyon ou yo pou w kontinye sou platfòm la.</p>
+
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <p>
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.errors %}
+                            {{ field.errors }}
+                        {% endif %}
+                    </p>
+                {% endfor %}
+                <button type="submit" class="auth-submit">Antre sou kont mwen</button>
+            </form>
+
+            <div class="auth-links">
+                <a href="{% url 'password_reset' %}">Ou bliye modpas ou?</a>
+                <a href="{% url 'signup' %}">Kreye yon nouvo kont</a>
+            </div>
+
+            <a href="{% url 'home' %}" class="auth-back">Retounen sou sit la</a>
+        </section>
     </div>
 </body>
 </html>
-
-
-

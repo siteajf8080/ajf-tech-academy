@@ -1,36 +1,300 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ht">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enskripsyon | AJF-Tech</title>
+    <title>Kreye kont | AJF-Tech</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .signup-container { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
-        h2 { text-align: center; color: #2c3e50; margin-bottom: 30px; }
-        form p { margin-bottom: 15px; }
-        input { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background-color: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background 0.3s; }
-        button:hover { background-color: #219150; }
-        .footer-links { text-align: center; margin-top: 20px; }
-        .footer-links a { color: #3498db; text-decoration: none; font-size: 14px; }
+        :root {
+            --ajf-navy: #081b33;
+            --ajf-navy-soft: #14345b;
+            --ajf-sky: #1f75ff;
+            --ajf-gold: #f4b942;
+            --ajf-surface: #ffffff;
+            --ajf-border: rgba(8, 27, 51, 0.12);
+            --ajf-text: #10233e;
+            --ajf-muted: #6c7a91;
+            --ajf-shadow: 0 30px 70px rgba(8, 27, 51, 0.16);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Manrope', sans-serif;
+            color: var(--ajf-text);
+            background:
+                radial-gradient(circle at top left, rgba(31, 117, 255, 0.16), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(244, 185, 66, 0.12), transparent 24%),
+                linear-gradient(180deg, #f6f9fe 0%, #ecf3fb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 28px 16px;
+        }
+
+        .auth-shell {
+            width: min(100%, 1120px);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: var(--ajf-shadow);
+        }
+
+        .auth-card {
+            padding: 42px;
+            background: rgba(255, 255, 255, 0.96);
+        }
+
+        .auth-showcase {
+            padding: 42px;
+            background:
+                linear-gradient(145deg, rgba(8, 27, 51, 0.95), rgba(20, 52, 91, 0.92)),
+                url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1400&q=80");
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+        }
+
+        .auth-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 38px;
+        }
+
+        .auth-brand-badge {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: #fff;
+            display: grid;
+            place-items: center;
+            padding: 8px;
+        }
+
+        .auth-brand-badge img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .auth-brand strong {
+            display: block;
+            font-size: 1.08rem;
+        }
+
+        .auth-brand span {
+            font-size: 0.78rem;
+            color: rgba(255, 255, 255, 0.72);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .auth-kicker {
+            display: inline-flex;
+            padding: 0.65rem 1rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.12);
+            font-size: 0.82rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 18px;
+        }
+
+        .auth-showcase h1 {
+            margin: 0 0 16px;
+            font-size: clamp(2.1rem, 4vw, 3.4rem);
+            line-height: 1.02;
+        }
+
+        .auth-showcase p {
+            margin: 0;
+            max-width: 520px;
+            line-height: 1.75;
+            color: rgba(255, 255, 255, 0.82);
+        }
+
+        .auth-benefits {
+            display: grid;
+            gap: 16px;
+            margin-top: 34px;
+        }
+
+        .auth-benefit {
+            padding: 16px 18px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .auth-card h2 {
+            margin: 0 0 10px;
+            font-size: 2rem;
+        }
+
+        .auth-card p.lead {
+            margin: 0 0 24px;
+            color: var(--ajf-muted);
+            line-height: 1.7;
+        }
+
+        .field-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        form p {
+            margin: 0;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        form input {
+            width: 100%;
+            padding: 0.95rem 1rem;
+            border-radius: 16px;
+            border: 1px solid var(--ajf-border);
+            background: #fff;
+            color: var(--ajf-text);
+            font: inherit;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        form input:focus {
+            outline: none;
+            border-color: rgba(31, 117, 255, 0.42);
+            box-shadow: 0 0 0 4px rgba(31, 117, 255, 0.12);
+        }
+
+        form ul.errorlist {
+            list-style: none;
+            padding: 0;
+            margin: 6px 0 0;
+            color: #c0392b;
+            font-size: 0.92rem;
+        }
+
+        .auth-submit {
+            width: 100%;
+            border: 0;
+            border-radius: 18px;
+            padding: 1rem 1.25rem;
+            font: inherit;
+            font-weight: 800;
+            color: #fff;
+            background: linear-gradient(135deg, #0f5de0, #4392ff);
+            box-shadow: 0 18px 30px rgba(31, 117, 255, 0.2);
+            cursor: pointer;
+            margin-top: 18px;
+        }
+
+        .auth-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .auth-links a {
+            color: var(--ajf-sky);
+            font-weight: 700;
+        }
+
+        .auth-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 18px;
+            color: var(--ajf-muted);
+            font-weight: 700;
+        }
+
+        @media (max-width: 960px) {
+            .auth-shell {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-card,
+            .auth-showcase {
+                padding: 30px 22px;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="auth-shell">
+        <section class="auth-card">
+            <h2>Kreye kont ou</h2>
+            <p class="lead">Louvri pòt ou sou fòmasyon teknoloji AJF-Tech yo epi kòmanse aprann ak yon estrikti ki serye.</p>
 
-<div class="signup-container">
-    <h2>Kreye Kont AJF-Tech</h2>
-    
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Kòmanse Aprann</button>
-    </form>
+            <form method="post">
+                {% csrf_token %}
+                <div class="field-grid">
+                    {% for field in form %}
+                        <p>
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}
+                                {{ field.errors }}
+                            {% endif %}
+                        </p>
+                    {% endfor %}
+                </div>
+                <button type="submit" class="auth-submit">Kòmanse aprann kounye a</button>
+            </form>
 
-    <div class="footer-links">
-        <a href="{% url 'login' %}">Ou gen yon kont deja? Konekte w</a>
+            <div class="auth-links">
+                <a href="{% url 'login' %}">Ou gen yon kont deja?</a>
+                <a href="{% url 'home' %}">Retounen sou sit la</a>
+            </div>
+        </section>
+
+        <section class="auth-showcase">
+            <div class="auth-brand">
+                <div class="auth-brand-badge">
+                    <img src="{% static 'images/logo_ajf_tech.png' %}" alt="Logo AJF-Tech">
+                </div>
+                <div>
+                    <strong>AJF-Tech</strong>
+                    <span>Academy & services</span>
+                </div>
+            </div>
+
+            <div class="auth-kicker">Nouvo manm</div>
+            <h1>Bay avni dijital ou yon pi bon baz.</h1>
+            <p>
+                Avèk kont ou a, w ap ka jwenn aksè ak kou yo, leson videyo yo,
+                quiz yo, seminè yo, ak sipò ki ede w grandi etap pa etap.
+            </p>
+
+            <div class="auth-benefits">
+                <div class="auth-benefit">
+                    <strong>Kou pratik ak estrikti</strong>
+                    <div>Chak modil fèt pou ede w metrize yon konpetans reyèl sou mache a.</div>
+                </div>
+                <div class="auth-benefit">
+                    <strong>Sètifika ak kominote</strong>
+                    <div>Aprann, valide pwogrè w, epi rete konekte ak lòt moun k ap avanse menm jan ak ou.</div>
+                </div>
+            </div>
+        </section>
     </div>
-</div>
-
 </body>
 </html>
