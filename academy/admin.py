@@ -8,7 +8,7 @@ from django.contrib.admin import DateFieldListFilter
 from .models import (
     Course, Lesson, Profile, Comment, Progress, 
     Quiz, Question, Choice, QuizAttempt, Enrollment,
-    Seminar, SeminarImage, Notification, Post,
+    Seminar, SeminarImage, SeminarRegistration, Notification, Post,
     ForumTopic, ForumPost, Payout
 )
 
@@ -21,10 +21,22 @@ class SeminarImageInline(admin.TabularInline):
 
 @admin.register(Seminar)
 class SeminarAdmin(admin.ModelAdmin):
-    list_display = ('title', 'period', 'date_event', 'is_active')
+    list_display = ('title', 'period', 'date_event', 'is_active', 'registered_count')
     list_filter = ('period', 'is_active')
     search_fields = ('title', 'description')
     inlines = [SeminarImageInline]
+
+    def registered_count(self, obj):
+        return obj.registrations.count()
+    registered_count.short_description = 'Enskri yo'
+
+
+@admin.register(SeminarRegistration)
+class SeminarRegistrationAdmin(admin.ModelAdmin):
+    list_display = ('user', 'seminar', 'created_at')
+    list_filter = ('seminar', 'created_at')
+    search_fields = ('user__username', 'user__email', 'seminar__title', 'motivation')
+    readonly_fields = ('created_at',)
 
 # ======================================================
 # --- 2. SISTÈM PEMAN & ENSKRIPSYON ---

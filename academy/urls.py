@@ -1,4 +1,4 @@
-from django.urls import path
+﻿from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
@@ -7,12 +7,16 @@ urlpatterns = [
     # --- PAJ PRENSIPAL ---
     path('', views.home, name='home'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('contact/', views.contact_page, name='contact_page'),
+    path('conditions-confidentialite/', views.privacy_page, name='privacy_page'),
     
-    # --- SISTÈM AKTYALITE (Blog) ---
+    # --- SISTÃˆM AKTYALITE (Blog) ---
     path('news/', views.news_list, name='news_list'),
     path('news/<int:post_id>/', views.post_detail, name='post_detail'),
+    path('seminars/<int:seminar_id>/', views.seminar_detail, name='seminar_detail'),
+    path('seminars/<int:seminar_id>/register/', views.register_for_seminar, name='register_for_seminar'),
 
-    # --- TI REZO SOSYAL / FOWÒM ---
+    # --- TI REZO SOSYAL / FOWÃ’M ---
     path('forum/', views.forum_home, name='forum_home'),
     path('forum/topic/<int:topic_id>/', views.topic_detail, name='topic_detail'),
 
@@ -23,7 +27,7 @@ urlpatterns = [
     path('lesson/<int:lesson_id>/pdf/', views.lesson_pdf_view, name='lesson_pdf_view'),
     path('lesson/<int:lesson_id>/complete/', views.complete_lesson, name='complete_lesson'),
 
-    # --- QUIZ & SÈTIFIKA ---
+    # --- QUIZ & SÃˆTIFIKA ---
     path('course/<int:course_id>/quiz/', views.take_quiz, name='take_quiz'),
     path('course/<int:course_id>/certificate/', views.view_certificate, name='view_certificate'),
 
@@ -39,7 +43,8 @@ urlpatterns = [
     path('instructor/quiz/<int:quiz_id>/add-question/', views.add_question, name='add_question'),
 ]
 
-# Liy sa a enpòtan anpil pou Django ka afiche siyati ak foto ou upload yo
+# Liy sa a enpÃ²tan anpil pou Django ka afiche siyati ak foto ou upload yo
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+

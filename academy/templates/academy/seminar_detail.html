@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ seminar.title }} | AJF-Tech{% endblock %}
+
+{% block extra_head %}
+<meta name="description" content="{{ seminar.description|truncatewords:28 }}">
+<script type="application/ld+json">{{ event_schema|safe }}</script>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-xl-10">
+        <div class="page-card p-4 p-lg-5">
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Akey</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ seminar.title }}</li>
+                </ol>
+            </nav>
+
+            <div class="row g-4 align-items-start">
+                <div class="col-lg-7">
+                    <span class="badge rounded-pill text-bg-warning text-dark fw-semibold px-3 py-2">{{ seminar.period }}</span>
+                    <h1 class="display-5 fw-bold mt-3 mb-3">{{ seminar.title }}</h1>
+                    <div class="d-flex flex-wrap gap-3 text-secondary mb-4">
+                        <span><i class="fas fa-calendar-days me-2"></i>{{ seminar.date_event|date:"d F Y" }}</span>
+                        <span><i class="fas fa-users me-2"></i>{{ seminar.registered_count }} enskri</span>
+                    </div>
+
+                    {% if seminar.primary_image %}
+                        <img src="{{ seminar.primary_image.image.url }}" alt="{{ seminar.title }}" class="img-fluid rounded-4 shadow-sm mb-4" onerror="this.src='{% static 'academy/img/logo.png' %}'; this.onerror=null;">
+                    {% else %}
+                        <div class="rounded-4 border bg-light d-flex align-items-center justify-content-center mb-4" style="min-height: 280px;">
+                            <img src="{% static 'academy/img/logo.png' %}" alt="Logo AJF-Tech" style="width: 120px; height: 120px; object-fit: contain;">
+                        </div>
+                    {% endif %}
+
+                    <div class="fs-5 lh-lg">{{ seminar.description|linebreaks }}</div>
+
+                    {% if seminar.images.all %}
+                        <div class="row g-3 mt-3">
+                            {% for image in seminar.images.all|slice:":6" %}
+                                <div class="col-6 col-md-4">
+                                    <img src="{{ image.image.url }}" alt="{{ seminar.title }}" class="img-fluid rounded-4 shadow-sm" onerror="this.src='{% static 'academy/img/logo.png' %}'; this.onerror=null;">
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="border rounded-4 p-4 bg-light">
+                        <h3 class="fw-bold mb-3">Pran plas ou</h3>
+                        <p class="text-secondary mb-4">
+                            Lojik la senp: moun nan kreye kont sou AJF-Tech, li konekte, epi li enskri pou seminè a.
+                            Konsa ou kenbe lis patisipan yo sou platfòm la menm.
+                        </p>
+
+                        {% if user.is_authenticated %}
+                            {% if registration %}
+                                <div class="alert alert-success rounded-4">
+                                    Ou deja enskri pou seminè sa a ak kont <strong>{{ user.username }}</strong>.
+                                </div>
+                            {% endif %}
+
+                            <form method="post" action="{% url 'register_for_seminar' seminar.id %}" class="d-grid gap-3">
+                                {% csrf_token %}
+                                <div>
+                                    <label class="form-label fw-semibold" for="motivation">Ti mesaj oswa kestyon (opsyonèl)</label>
+                                    <textarea class="form-control rounded-4" name="motivation" id="motivation" rows="4" placeholder="Di nou ki sa w ta renmen aprann nan seminè sa a...">{% if registration %}{{ registration.motivation }}{% endif %}</textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary rounded-pill px-4 py-3 fw-semibold">
+                                    {% if registration %}Mete enskripsyon mwen ajou{% else %}Enskri pou seminè sa a{% endif %}
+                                </button>
+                            </form>
+                        {% else %}
+                            <div class="alert alert-info rounded-4">
+                                Pou enskri, moun nan dwe gen yon kont sou platfòm la dabò.
+                            </div>
+                            <div class="d-grid gap-2">
+                                <a href="{% url 'login' %}?next={% url 'seminar_detail' seminar.id %}" class="btn btn-primary rounded-pill px-4 py-3 fw-semibold">Konekte pou enskri</a>
+                                <a href="{% url 'signup' %}" class="btn btn-outline-primary rounded-pill px-4 py-3 fw-semibold">Kreye yon kont</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

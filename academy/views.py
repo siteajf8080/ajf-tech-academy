@@ -1,6 +1,7 @@
-import qrcode
+﻿import qrcode
 import base64
 import random
+import json
 from io import BytesIO
 from datetime import timedelta
 from decimal import Decimal
@@ -18,19 +19,21 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.db.models import Sum, Count, Q
 from django.utils import timezone
+from django.urls import reverse
 
+# Libreri pou PDF
+from xhtml2pdf import pisa
 
-
-# Enpòtasyon Modèl yo
+# EnpÃ²tasyon ModÃ¨l yo
 from .models import (
     Course, Lesson, Profile, Comment, Progress, 
     Quiz, Question, Choice, QuizAttempt, Enrollment,
-    Notification, Seminar, SeminarImage, Post,
+    Notification, Seminar, SeminarImage, SeminarRegistration, Post,
     ForumTopic, ForumPost, Payout
 )
 
 # ======================================================
-# --- 1. FÒM YO (FORMS) ---
+# --- 1. FÃ’M YO (FORMS) ---
 # ======================================================
 
 class SignupForm(UserCreationForm):
@@ -77,7 +80,7 @@ class LessonForm(forms.ModelForm):
             'title': 'Tit Leson an',
             'content': 'Kontni (Teks/Deskripsyon)',
             'video_url': 'Link Videyo (YouTube)',
-            'order': 'Nimewo lòd (Egz: 1, 2...)'
+            'order': 'Nimewo lÃ²d (Egz: 1, 2...)'
         }
         widgets = {
             'course': forms.Select(attrs={'class': 'form-control'}),
@@ -100,7 +103,7 @@ class QuizForm(forms.ModelForm):
         labels = {
             'course': 'Chwazi Kou a',
             'title': 'Tit Quiz la',
-            'pass_score': 'Nòt pou pasaj (%)',
+            'pass_score': 'NÃ²t pou pasaj (%)',
         }
 
     def __init__(self, *args, **kwargs):
@@ -109,7 +112,7 @@ class QuizForm(forms.ModelForm):
         if user:
             self.fields['course'].queryset = Course.objects.filter(instructor=user)
 
-# NOUVO FÒM POU KESYON
+# NOUVO FÃ’M POU KESYON
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
@@ -132,33 +135,25 @@ def send_certificate_email(user, course, qr_code_base64, ceo_signature, instruct
         'instructor_signature': instructor_signature,
         'date_today': timezone.now(),
     }
-
-    subject = f"Felisitasyon! Sètifika AJF-Tech ou pou {course.title}"
-    message = (
-        f"Bonjou {user.first_name or user.username},\n\n"
-        f"Felisitasyon! Ou reyisi egzamen pou kou '{course.title}' la."
-    )
-
-    email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
-
-    try:
-        from xhtml2pdf import pisa
-
-        html_string = render_to_string('academy/certificate.html', context)
-        result = BytesIO()
-        pisa_status = pisa.CreatePDF(BytesIO(html_string.encode("UTF-8")), dest=result)
-
-        if not pisa_status.err:
-            pdf_file = result.getvalue()
-            filename = f"Certificat_AJF_{user.username}.pdf"
-            email.attach(filename, pdf_file, 'application/pdf')
-    except Exception as e:
-        print(f"PDF certificate skipped: {e}")
-
-    try:
-        email.send()
-    except Exception as e:
-        print(f"Email send failed: {e}")
+    html_string = render_to_string('academy/certificate.html', context)
+    result = BytesIO()
+    pisa_status = pisa.CreatePDF(BytesIO(html_string.encode("UTF-8")), dest=result)
+    
+    if not pisa_status.err:
+        pdf_file = result.getvalue()
+        subject = f"FÃ©licitations! Votre certificat AJF-Tech : {course.title} ðŸŽ‰"
+        message = (f"Bonjour {user.first_name or user.username},\n\n"
+                   f"FÃ©licitations ! Vous avez rÃ©ussi l'examen pou kou '{course.title}' sou platfÃ²m AJF-Tech la. "
+                   "Ou ap jwenn sÃ¨tifika ou an tache ak imÃ¨l sa a.")
+        
+        email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
+        filename = f"Certificat_AJF_{user.username}.pdf"
+        email.attach(filename, pdf_file, 'application/pdf')
+        
+        try:
+            email.send()
+        except Exception as e:
+            print(f"ErÃ¨ nan voye imel sÃ¨tifika: {e}")
 
 # ======================================================
 # --- 3. VIEWS YO ---
@@ -183,10 +178,84 @@ def home(request):
         'selected_period': periode_filter
     })
 
+
+def contact_page(request):
+    return render(request, 'academy/contact.html')
+
+
+def privacy_page(request):
+    return render(request, 'academy/privacy.html')
+
+
+def seminar_detail(request, seminar_id):
+    seminar = get_object_or_404(Seminar, id=seminar_id, is_active=True)
+    registration = None
+    if request.user.is_authenticated:
+        registration = SeminarRegistration.objects.filter(user=request.user, seminar=seminar).first()
+
+    event_image = seminar.primary_image.image.url if seminar.primary_image else None
+    event_schema = {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": seminar.title,
+        "description": seminar.description,
+        "startDate": seminar.date_event.isoformat(),
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "organizer": {
+            "@type": "Organization",
+            "name": "AJF-Tech",
+            "url": "https://ajftech.tech",
+        },
+        "location": {
+            "@type": "Place",
+            "name": "AJF-Tech Seminar",
+            "address": {
+                "@type": "PostalAddress",
+                "addressCountry": "HT",
+            },
+        },
+        "url": request.build_absolute_uri(reverse('seminar_detail', args=[seminar.id])),
+    }
+    if event_image:
+        event_schema["image"] = [request.build_absolute_uri(event_image)]
+
+    return render(request, 'academy/seminar_detail.html', {
+        'seminar': seminar,
+        'registration': registration,
+        'event_schema': json.dumps(event_schema),
+    })
+
+
+@login_required
+def register_for_seminar(request, seminar_id):
+    seminar = get_object_or_404(Seminar, id=seminar_id, is_active=True)
+    registration, created = SeminarRegistration.objects.get_or_create(
+        user=request.user,
+        seminar=seminar,
+    )
+
+    if request.method == 'POST':
+        registration.motivation = request.POST.get('motivation', '').strip()
+        registration.save()
+        if created:
+            Notification.objects.create(
+                user=request.user,
+                title="Enskripsyon seminÃ¨ konfime",
+                message=f"Ou enskri pou seminÃ¨ '{seminar.title}' la pou dat {seminar.date_event:%d/%m/%Y}.",
+                url=reverse('seminar_detail', args=[seminar.id]),
+            )
+            messages.success(request, "Enskripsyon ou anrejistre. N ap tann ou nan seminÃ¨ a.")
+        else:
+            messages.success(request, "Enskripsyon seminÃ¨ a deja sou kont ou. Nou mete mesaj ou a ajou.")
+        return redirect('seminar_detail', seminar_id=seminar.id)
+
+    return redirect('seminar_detail', seminar_id=seminar.id)
+
 @login_required
 def instructor_dashboard(request):
     if not request.user.is_staff:
-        messages.error(request, "Ou pa gen pèmisyon pou wè paj sa a.")
+        messages.error(request, "Ou pa gen pÃ¨misyon pou wÃ¨ paj sa a.")
         return redirect('home')
 
     my_courses = Course.objects.filter(instructor=request.user).annotate(
@@ -212,14 +281,14 @@ def instructor_dashboard(request):
 @login_required
 def add_lesson(request):
     if not request.user.is_staff:
-        messages.error(request, "Ou pa gen pèmisyon pou ajoute leson.")
+        messages.error(request, "Ou pa gen pÃ¨misyon pou ajoute leson.")
         return redirect('home')
 
     if request.method == 'POST':
         form = LessonForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
             lesson = form.save()
-            messages.success(request, f"Leson '{lesson.title}' la ajoute ak siksè!")
+            messages.success(request, f"Leson '{lesson.title}' la ajoute ak siksÃ¨!")
             return redirect('instructor_dashboard')
     else:
         form = LessonForm(user=request.user)
@@ -228,7 +297,7 @@ def add_lesson(request):
 @login_required
 def add_quiz(request):
     if not request.user.is_staff:
-        messages.error(request, "Ou pa gen pèmisyon.")
+        messages.error(request, "Ou pa gen pÃ¨misyon.")
         return redirect('home')
 
     if request.method == 'POST':
@@ -236,7 +305,7 @@ def add_quiz(request):
         if form.is_valid():
             quiz = form.save()
             messages.success(request, "Quiz la kreye! Kounye a, ajoute kesyon yo.")
-            # Redireksyon dirèk pou pwofesè a ka kòmanse ajoute kesyon yo
+            # Redireksyon dirÃ¨k pou pwofesÃ¨ a ka kÃ²manse ajoute kesyon yo
             return redirect('add_question', quiz_id=quiz.id)
     else:
         form = QuizForm(user=request.user)
@@ -247,7 +316,7 @@ def add_quiz(request):
 def add_question(request, quiz_id):
     quiz = get_object_or_404(Quiz, id=quiz_id)
     
-    # Sekirite: Sèlman mèt kou a ki ka modifye
+    # Sekirite: SÃ¨lman mÃ¨t kou a ki ka modifye
     if quiz.course.instructor != request.user:
         messages.error(request, "Ou pa gen dwa modifye quiz sa a.")
         return redirect('instructor_dashboard')
@@ -259,9 +328,9 @@ def add_question(request, quiz_id):
             question.quiz = quiz
             question.save()
 
-            # Rekipere lis repons yo ak radyo bouton ki di kilès ki bon an
+            # Rekipere lis repons yo ak radyo bouton ki di kilÃ¨s ki bon an
             choice_texts = request.POST.getlist('choice_text')
-            correct_choice_index = request.POST.get('is_correct') # valè ap "0", "1", "2" etc.
+            correct_choice_index = request.POST.get('is_correct') # valÃ¨ ap "0", "1", "2" etc.
 
             for i, text in enumerate(choice_texts):
                 if text.strip(): # si bwat la pa vid
@@ -350,10 +419,10 @@ def request_enrollment(request, course_id):
             
             Notification.objects.create(
                 user=request.user, 
-                title="Prèv voye 📩", 
-                message=f"Nou resevwa prèv peman ou pou '{course.title}'."
+                title="PrÃ¨v voye ðŸ“©", 
+                message=f"Nou resevwa prÃ¨v peman ou pou '{course.title}'."
             )
-            messages.success(request, "Prèv peman voye! Tann validasyon.")
+            messages.success(request, "PrÃ¨v peman voye! Tann validasyon.")
             return redirect('dashboard')
         else:
             messages.error(request, "Chwazi yon screenshot.")
@@ -401,7 +470,7 @@ def lesson_pdf_view(request, lesson_id):
         return redirect('request_enrollment', course_id=lesson.course.id)
 
     if not lesson.pdf_file:
-        raise Http404("PDF sa a pa disponib.")
+        raise Http404('PDF sa a pa disponib.')
 
     response = FileResponse(lesson.pdf_file.open('rb'), content_type='application/pdf')
     response['Content-Disposition'] = f'inline; filename="{lesson.pdf_file.name.split("/")[-1]}"'
@@ -499,7 +568,7 @@ def take_quiz(request, course_id):
         
         if percentage >= quiz.pass_score:
             qr = qrcode.QRCode(version=1, box_size=10, border=2)
-            qr.add_data(f"Vérification AJF-Tech: {request.user.username} - ID: {request.user.id}")
+            qr.add_data(f"VÃ©rification AJF-Tech: {request.user.username} - ID: {request.user.id}")
             qr.make(fit=True)
             img = qr.make_image(fill_color="#0b1c2c", back_color="white")
             buffer = BytesIO()
@@ -534,7 +603,7 @@ def view_certificate(request, course_id):
     ).exists()
     
     if not has_passed:
-        messages.warning(request, "Ou dwe pase quiz la anvan pou w wè sètifika a.")
+        messages.warning(request, "Ou dwe pase quiz la anvan pou w wÃ¨ sÃ¨tifika a.")
         return redirect('course_detail', course_id=course.id)
 
     qr = qrcode.QRCode(version=1, box_size=5, border=1)
@@ -557,3 +626,4 @@ def view_certificate(request, course_id):
         'ceo_signature': ceo_sig,
         'instructor_signature': inst_sig
     })
+

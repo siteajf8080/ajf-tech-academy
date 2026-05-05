@@ -1,3 +1,4 @@
+{% load static %}
 {% extends 'base.html' %}
 
 {% block content %}
@@ -13,7 +14,7 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100 shadow-sm border-0" style="border-radius: 15px; overflow: hidden;">
                 {% if post.image %}
-                <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}" style="height: 200px; object-fit: cover;">
+                <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}" style="height: 200px; object-fit: cover;" onerror="this.src='{% static 'academy/img/logo.png' %}'; this.onerror=null;">
                 {% else %}
                 <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
                     <i class="fas fa-newspaper fa-3x"></i>

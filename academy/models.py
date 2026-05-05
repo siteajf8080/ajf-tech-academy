@@ -1,11 +1,11 @@
-from django.db import models
+﻿from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-from datetime import timedelta
 from django.core.validators import FileExtensionValidator
+from datetime import timedelta
 
 # ======================================================
-# --- 1. MODÈL POU KOU YO ---
+# --- 1. MODÃˆL POU KOU YO ---
 # ======================================================
 class Course(models.Model):
     title = models.CharField(max_length=200)
@@ -18,21 +18,15 @@ class Course(models.Model):
         return self.title
 
 # ======================================================
-# --- 2. MODÈL POU LESON YO (MIZAJOU) ---
+# --- 2. MODÃˆL POU LESON YO (MIZAJOU) ---
 # ======================================================
 class Lesson(models.Model):
     course = models.ForeignKey(Course, related_name='lessons', on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
-    content = models.TextField(blank=True, null=True, help_text="Deskripsyon oswa kontni tèks leson an")
+    content = models.TextField(blank=True, null=True, help_text="Deskripsyon oswa kontni tÃ¨ks leson an")
     video_url = models.URLField(help_text="Lien Youtube la")
-    pdf_file = models.FileField(
-        upload_to='lesson_pdfs/',
-        blank=True,
-        null=True,
-        validators=[FileExtensionValidator(['pdf'])],
-        help_text="Ajoute yon dokiman PDF pou leson an si sa nesesÃ¨."
-    )
-    order = models.PositiveIntegerField(default=0, help_text="Lòd leson an nan kou a (egz: 1, 2, 3...)")
+    pdf_file = models.FileField(upload_to='lesson_pdfs/', blank=True, null=True, validators=[FileExtensionValidator(['pdf'])], help_text="Ajoute yon dokiman PDF pou leson an si sa nesese.")
+    order = models.PositiveIntegerField(default=0, help_text="LÃ²d leson an nan kou a (egz: 1, 2, 3...)")
 
     class Meta:
         ordering = ['order']
@@ -41,12 +35,12 @@ class Lesson(models.Model):
         return f"{self.course.title} - {self.title}"
 
 # ======================================================
-# --- 3. MODÈL PWOFIL ---
+# --- 3. MODÃˆL PWOFIL ---
 # ======================================================
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     photo = models.ImageField(default='default.jpg', upload_to='profile_pics')
-    signature = models.ImageField(upload_to='signatures/', blank=True, null=True, help_text="Paraf nimerik (PNG transparan rekòmande)")
+    signature = models.ImageField(upload_to='signatures/', blank=True, null=True, help_text="Paraf nimerik (PNG transparan rekÃ²mande)")
     bio = models.TextField(blank=True)
     telephone = models.CharField(max_length=20, blank=True)
 
@@ -54,7 +48,7 @@ class Profile(models.Model):
         return f'Profil de {self.user.username}'
 
 # ======================================================
-# --- 4. MODÈL POU KÒMANTÈ ---
+# --- 4. MODÃˆL POU KÃ’MANTÃˆ ---
 # ======================================================
 class Comment(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='comments')
@@ -64,10 +58,10 @@ class Comment(models.Model):
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
 
     def __str__(self):
-        return f'Kòmantè {self.user.username} sou {self.lesson.title}'
+        return f'KÃ²mantÃ¨ {self.user.username} sou {self.lesson.title}'
 
 # ======================================================
-# --- 5. MODÈL FOWÒM ---
+# --- 5. MODÃˆL FOWÃ’M ---
 # ======================================================
 class ForumTopic(models.Model):
     title = models.CharField(max_length=255)
@@ -85,26 +79,48 @@ class ForumPost(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 # ======================================================
-# --- 6. MODÈL SEMINÈ AK GALRI ---
+# --- 6. MODÃˆL SEMINÃˆ AK GALRI ---
 # ======================================================
 class Seminar(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     date_event = models.DateField()
     period = models.CharField(max_length=100, help_text="Ex: Janvye - Mas 2026")
-    video_url = models.URLField(blank=True, null=True, help_text="Link Youtube videyo seminè a")
+    video_url = models.URLField(blank=True, null=True, help_text="Link Youtube videyo seminÃ¨ a")
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.title} ({self.period})"
 
+    @property
+    def primary_image(self):
+        return self.images.first()
+
+    @property
+    def registered_count(self):
+        return self.registrations.count()
+
 class SeminarImage(models.Model):
     seminar = models.ForeignKey(Seminar, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='seminars/')
 
+
+class SeminarRegistration(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='seminar_registrations')
+    seminar = models.ForeignKey(Seminar, on_delete=models.CASCADE, related_name='registrations')
+    motivation = models.TextField(blank=True, help_text="Poukisa ou vle patisipe nan seminÃ¨ sa a?")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'seminar')
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.user.username} - {self.seminar.title}"
+
 # ======================================================
-# --- 7. MODÈL POU PWOGRÈ ---
+# --- 7. MODÃˆL POU PWOGRÃˆ ---
 # ======================================================
 class Progress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -115,7 +131,7 @@ class Progress(models.Model):
         unique_together = ('user', 'lesson')
 
 # ======================================================
-# --- 8. SISTÈM QUIZ ---
+# --- 8. SISTÃˆM QUIZ ---
 # ======================================================
 class Quiz(models.Model):
     course = models.OneToOneField(Course, on_delete=models.CASCADE, related_name='quiz')
@@ -196,7 +212,7 @@ class Post(models.Model):
         return self.title
 
 # ======================================================
-# --- 12. SÈTIFIKA ---
+# --- 12. SÃˆTIFIKA ---
 # ======================================================
 class Certificate(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -210,20 +226,22 @@ class Certificate(models.Model):
         super().save(*args, **kwargs)
 
 # ======================================================
-# --- 13. SISTÈM PEMAN PWOFEZÈ ---
+# --- 13. SISTÃˆM PEMAN PWOFEZÃˆ ---
 # ======================================================
 class Payout(models.Model):
-    instructor = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Pwofesè")
+    instructor = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="PwofesÃ¨")
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Kou")
     amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Montan Peye")
     month = models.DateField(help_text="Chwazi mwa w ap peye a (egz: 2026-04-01)", verbose_name="Pou mwa")
     date_paid = models.DateTimeField(auto_now_add=True, verbose_name="Dat Peman")
 
     class Meta:
-        verbose_name = "Peman Pwofesè"
-        verbose_name_plural = "Peman Pwofesè yo"
+        verbose_name = "Peman PwofesÃ¨"
+        verbose_name_plural = "Peman PwofesÃ¨ yo"
 
     def __str__(self):
         return f"{self.instructor.username} - {self.amount} HTG"
 
 Event = Seminar
+
+
