@@ -3,7 +3,7 @@
 <div style="max-width: 700px; margin: 50px auto; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
     <h2 style="color: #2c3e50; margin-bottom: 25px;"><i class="fas fa-plus-circle"></i> Ajoute yon Leson</h2>
     
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% for field in form %}
             <div style="margin-bottom: 15px;">

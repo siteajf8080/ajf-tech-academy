@@ -37,6 +37,9 @@
         .complete-btn:hover { background: #27ae60; transform: translateY(-2px); }
 
         .description { line-height: 1.8; color: #333; margin-top: 20px; background: #f9f9f9; padding: 20px; border-radius: 8px; border-left: 4px solid #3498db; }
+        .pdf-section { line-height: 1.8; color: #333; margin-top: 24px; background: #f8fbff; padding: 20px; border-radius: 8px; border-left: 4px solid #f4b942; }
+        .pdf-frame { width: 100%; height: 720px; border: 0; border-radius: 10px; background: #eef3f8; margin-top: 15px; }
+        .pdf-note { margin: 12px 0 0; color: #6b7a90; font-size: 14px; }
         
         /* Style pou Diskisyon */
         .discussion-section { margin-top: 50px; }
@@ -82,6 +85,15 @@
             <h3 style="margin-top:0; color: #2c3e50;">Kisa n ap aprann?</h3>
             <p>{{ lesson.content|linebreaks }}</p>
         </div>
+
+        {% if lesson.pdf_file %}
+        <div class="pdf-section">
+            <h3 style="margin-top:0; color: #2c3e50;">Dokiman PDF pou leson sa a</h3>
+            <p style="margin: 0;">Ou ka li dokiman an dirèk sou platfòm la san bouton download nòmal la.</p>
+            <iframe class="pdf-frame" src="{% url 'lesson_pdf_view' lesson.id %}#toolbar=0&navpanes=0&scrollbar=1"></iframe>
+            <p class="pdf-note">Remak: sou entènèt la nou ka bloke download fasil la, men okenn PDF pa ka vin 100% enposib pou sove si yon moun vrèman ap chèche pran li.</p>
+        </div>
+        {% endif %}
 
         <div class="discussion-section" id="discussion">
             <h3 style="color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px;">Espace Discussion ({{ comments.count }})</h3>

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import timedelta
+from django.core.validators import FileExtensionValidator
 
 # ======================================================
 # --- 1. MODÈL POU KOU YO ---
@@ -24,6 +25,13 @@ class Lesson(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField(blank=True, null=True, help_text="Deskripsyon oswa kontni tèks leson an")
     video_url = models.URLField(help_text="Lien Youtube la")
+    pdf_file = models.FileField(
+        upload_to='lesson_pdfs/',
+        blank=True,
+        null=True,
+        validators=[FileExtensionValidator(['pdf'])],
+        help_text="Ajoute yon dokiman PDF pou leson an si sa nesesÃ¨."
+    )
     order = models.PositiveIntegerField(default=0, help_text="Lòd leson an nan kou a (egz: 1, 2, 3...)")
 
     class Meta:

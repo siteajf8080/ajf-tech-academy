@@ -20,6 +20,7 @@ urlpatterns = [
     path('course/<int:course_id>/', views.course_detail, name='course_detail'),
     path('course/<int:course_id>/enroll/', views.request_enrollment, name='request_enrollment'),
     path('lesson/<int:lesson_id>/', views.lesson_detail, name='lesson_detail'),
+    path('lesson/<int:lesson_id>/pdf/', views.lesson_pdf_view, name='lesson_pdf_view'),
     path('lesson/<int:lesson_id>/complete/', views.complete_lesson, name='complete_lesson'),
 
     # --- QUIZ & SÈTIFIKA ---

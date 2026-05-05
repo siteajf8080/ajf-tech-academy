@@ -6,6 +6,7 @@ from datetime import timedelta
 from decimal import Decimal
 
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import FileResponse, Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django import forms
@@ -70,7 +71,7 @@ class ForumPostForm(forms.ModelForm):
 class LessonForm(forms.ModelForm):
     class Meta:
         model = Lesson
-        fields = ['course', 'title', 'content', 'video_url', 'order']
+        fields = ['course', 'title', 'content', 'video_url', 'pdf_file', 'order']
         labels = {
             'course': 'Chwazi Kou a',
             'title': 'Tit Leson an',
@@ -215,7 +216,7 @@ def add_lesson(request):
         return redirect('home')
 
     if request.method == 'POST':
-        form = LessonForm(request.POST, user=request.user)
+        form = LessonForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
             lesson = form.save()
             messages.success(request, f"Leson '{lesson.title}' la ajoute ak siksè!")
@@ -391,6 +392,23 @@ def lesson_detail(request, lesson_id):
             lesson.video_url = f"https://www.youtube.com/embed/{video_id}"
 
     return render(request, 'academy/lesson_detail.html', {'lesson': lesson, 'comments': comments, 'form': form})
+
+@login_required
+def lesson_pdf_view(request, lesson_id):
+    lesson = get_object_or_404(Lesson, id=lesson_id)
+    enrollment = Enrollment.objects.filter(user=request.user, course=lesson.course, is_active=True).exists()
+    if not enrollment:
+        return redirect('request_enrollment', course_id=lesson.course.id)
+
+    if not lesson.pdf_file:
+        raise Http404("PDF sa a pa disponib.")
+
+    response = FileResponse(lesson.pdf_file.open('rb'), content_type='application/pdf')
+    response['Content-Disposition'] = f'inline; filename="{lesson.pdf_file.name.split("/")[-1]}"'
+    response['X-Frame-Options'] = 'SAMEORIGIN'
+    response['Cache-Control'] = 'private, no-store, no-cache, must-revalidate, max-age=0'
+    response['Pragma'] = 'no-cache'
+    return response
 
 def signup(request):
     if request.method == 'POST':
