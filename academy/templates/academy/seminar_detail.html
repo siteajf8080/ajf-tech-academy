@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}{{ seminar.title }} | AJF-Tech{% endblock %}
@@ -29,20 +29,28 @@
                     </div>
 
                     {% if seminar.primary_image %}
-                        <img src="{{ seminar.primary_image.image.url }}" alt="{{ seminar.title }}" class="img-fluid rounded-4 shadow-sm mb-4" onerror="this.src='{% static 'academy/img/logo.png' %}'; this.onerror=null;">
+                        <img src="{{ seminar.primary_image.image.url }}" alt="{{ seminar.title }}" class="img-fluid rounded-4 shadow-sm mb-4" onerror="this.src='{% static 'images/logo_ajf_tech.png' %}'; this.onerror=null;">
                     {% else %}
                         <div class="rounded-4 border bg-light d-flex align-items-center justify-content-center mb-4" style="min-height: 280px;">
-                            <img src="{% static 'academy/img/logo.png' %}" alt="Logo AJF-Tech" style="width: 120px; height: 120px; object-fit: contain;">
+                            <img src="{% static 'images/logo_ajf_tech.png' %}" alt="Logo AJF-Tech" style="width: 120px; height: 120px; object-fit: contain;">
                         </div>
                     {% endif %}
 
                     <div class="fs-5 lh-lg">{{ seminar.description|linebreaks }}</div>
 
+                    {% if seminar.video_url %}
+                        <div class="mt-4 mb-4">
+                            <a href="{{ seminar.video_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-danger rounded-pill px-4 py-2 fw-semibold">
+                                <i class="fab fa-youtube me-2"></i>Gade videyo evènman an
+                            </a>
+                        </div>
+                    {% endif %}
+
                     {% if seminar.images.all %}
                         <div class="row g-3 mt-3">
-                            {% for image in seminar.images.all|slice:":6" %}
+                            {% for image in seminar.images.all %}
                                 <div class="col-6 col-md-4">
-                                    <img src="{{ image.image.url }}" alt="{{ seminar.title }}" class="img-fluid rounded-4 shadow-sm" onerror="this.src='{% static 'academy/img/logo.png' %}'; this.onerror=null;">
+                                    <img src="{{ image.image.url }}" alt="{{ seminar.title }}" class="img-fluid rounded-4 shadow-sm" onerror="this.src='{% static 'images/logo_ajf_tech.png' %}'; this.onerror=null;">
                                 </div>
                             {% endfor %}
                         </div>
@@ -90,3 +98,4 @@
     </div>
 </div>
 {% endblock %}
+
