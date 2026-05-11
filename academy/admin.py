@@ -9,7 +9,8 @@ from .models import (
     Course, Lesson, Profile, Comment, Progress, 
     Quiz, Question, Choice, QuizAttempt, Enrollment,
     Seminar, SeminarImage, SeminarRegistration, Notification, Post,
-    ForumTopic, ForumPost, Payout, ServiceOffering, ServiceInquiry, CourseReview, Product, VisitorSession
+    ForumTopic, ForumPost, Payout, ServiceOffering, ServiceInquiry, CourseReview, Product, VisitorSession,
+    GalleryAlbum, GalleryImage
 )
 
 # ======================================================
@@ -19,9 +20,14 @@ class SeminarImageInline(admin.TabularInline):
     model = SeminarImage
     extra = 1
 
+
+class GalleryImageInline(admin.TabularInline):
+    model = GalleryImage
+    extra = 1
+
 @admin.register(Seminar)
 class SeminarAdmin(admin.ModelAdmin):
-    list_display = ('title', 'period', 'date_event', 'is_active', 'registered_count')
+    list_display = ('title', 'period', 'date_event', 'is_active', 'registered_count', 'registration_link')
     list_filter = ('period', 'is_active')
     search_fields = ('title', 'description')
     inlines = [SeminarImageInline]
@@ -37,6 +43,14 @@ class SeminarRegistrationAdmin(admin.ModelAdmin):
     list_filter = ('seminar', 'created_at')
     search_fields = ('user__username', 'user__email', 'seminar__title', 'motivation')
     readonly_fields = ('created_at',)
+
+
+@admin.register(GalleryAlbum)
+class GalleryAlbumAdmin(admin.ModelAdmin):
+    list_display = ('title', 'event_date', 'is_active', 'created_at')
+    list_filter = ('is_active', 'event_date')
+    search_fields = ('title', 'description')
+    inlines = [GalleryImageInline]
 
 # ======================================================
 # --- 2. SISTÈM PEMAN & ENSKRIPSYON ---

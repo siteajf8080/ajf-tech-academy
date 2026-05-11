@@ -87,6 +87,7 @@ class Seminar(models.Model):
     date_event = models.DateField()
     period = models.CharField(max_length=100, help_text="Ex: Janvye - Mas 2026")
     video_url = models.URLField(blank=True, null=True, help_text="Link Youtube videyo seminÃ¨ a")
+    registration_link = models.URLField(blank=True, null=True, help_text="Lyen ekst?n oubyen paj enskripsyon pou semin? a")
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -104,6 +105,40 @@ class Seminar(models.Model):
 class SeminarImage(models.Model):
     seminar = models.ForeignKey(Seminar, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='seminars/')
+
+
+class GalleryAlbum(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    cover_image = models.ImageField(upload_to='gallery/covers/', blank=True, null=True)
+    event_date = models.DateField(blank=True, null=True)
+    video_url = models.URLField(blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-event_date', '-created_at']
+        verbose_name = 'Galerie'
+        verbose_name_plural = 'Galeries'
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def primary_image(self):
+        if self.cover_image:
+            return self.cover_image
+        first_image = self.images.first()
+        return first_image.image if first_image else None
+
+
+class GalleryImage(models.Model):
+    album = models.ForeignKey(GalleryAlbum, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='gallery/items/')
+    caption = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        return f"{self.album.title} - image"
 
 
 class SeminarRegistration(models.Model):

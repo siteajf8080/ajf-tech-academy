@@ -18,6 +18,7 @@ from django.conf import settings
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.db.models import Sum, Count, Q, Avg
+from django.db.utils import OperationalError, ProgrammingError
 from django.utils import timezone
 from django.urls import reverse
 
@@ -26,7 +27,8 @@ from .models import (
     Course, Lesson, Profile, Comment, Progress, 
     Quiz, Question, Choice, QuizAttempt, Enrollment,
     Notification, Seminar, SeminarImage, SeminarRegistration, Post,
-    ForumTopic, ForumPost, Payout, ServiceOffering, ServiceInquiry, CourseReview, Product, VisitorSession
+    ForumTopic, ForumPost, Payout, ServiceOffering, ServiceInquiry, CourseReview, Product, VisitorSession,
+    GalleryAlbum
 )
 
 # ======================================================
@@ -194,18 +196,21 @@ def track_site_visit(request):
     if request.path.startswith('/admin') or request.path.startswith('/static') or request.path.startswith('/media'):
         return
 
-    ip_address = get_client_ip(request)
-    user_agent = (request.META.get('HTTP_USER_AGENT', '') or '')[:500]
-    visitor, created = VisitorSession.objects.get_or_create(
-        ip_address=ip_address,
-        user_agent=user_agent,
-        defaults={'user': request.user if request.user.is_authenticated else None}
-    )
-    if not created:
-        visitor.visits_count += 1
-        if request.user.is_authenticated and visitor.user_id is None:
-            visitor.user = request.user
-        visitor.save(update_fields=['visits_count', 'last_seen', 'user'])
+    try:
+        ip_address = get_client_ip(request)
+        user_agent = (request.META.get('HTTP_USER_AGENT', '') or '')[:500]
+        visitor, created = VisitorSession.objects.get_or_create(
+            ip_address=ip_address,
+            user_agent=user_agent,
+            defaults={'user': request.user if request.user.is_authenticated else None}
+        )
+        if not created:
+            visitor.visits_count += 1
+            if request.user.is_authenticated and visitor.user_id is None:
+                visitor.user = request.user
+            visitor.save(update_fields=['visits_count', 'last_seen', 'user'])
+    except (OperationalError, ProgrammingError):
+        return
 
 
 def get_default_services():
@@ -237,6 +242,7 @@ def home(request):
     if not services:
         services = get_default_services()
 
+    gallery_albums = GalleryAlbum.objects.filter(is_active=True).prefetch_related('images').order_by('-event_date', '-created_at')[:3]
     featured_products = Product.objects.filter(is_active=True, is_featured=True)[:4]
     all_periods = Seminar.objects.values_list('period', flat=True).distinct()
 
@@ -244,6 +250,7 @@ def home(request):
         'courses': courses,
         'recent_posts': recent_posts,
         'seminars': seminars,
+        'gallery_albums': gallery_albums,
         'all_periods': all_periods,
         'selected_period': periode_filter,
         'services': services,
