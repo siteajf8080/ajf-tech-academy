@@ -1,0 +1,51 @@
+﻿{% load static %}
+{% extends 'base.html' %}
+
+{% block title %}Produits | AJF-Tech{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-xl-11">
+        <div class="page-card p-4 p-lg-5">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
+                <div>
+                    <h1 class="fw-bold mb-2">Produits AJF-Tech</h1>
+                    <p class="text-secondary fs-5 mb-0">Pwodwi teknik, ekipman, ak resous ou ka achte atravè AJF-Tech.</p>
+                </div>
+                <a href="https://wa.me/50934659454" target="_blank" rel="noopener noreferrer" class="btn btn-success rounded-pill px-4 py-3 fw-semibold">Kòmande sou WhatsApp</a>
+            </div>
+
+            <div class="row g-4">
+                {% for product in products %}
+                    <div class="col-md-6 col-xl-4">
+                        <div class="border rounded-4 p-3 h-100 bg-white shadow-sm">
+                            <div class="rounded-4 overflow-hidden bg-light d-flex align-items-center justify-content-center mb-3" style="height: 240px;">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-100 h-100" style="object-fit: cover;" onerror="this.src='{% static 'images/logo_ajf_tech.png' %}'; this.onerror=null;">
+                                {% else %}
+                                    <img src="{% static 'images/logo_ajf_tech.png' %}" alt="Logo AJF-Tech" style="width: 120px; height: 120px; object-fit: contain;">
+                                {% endif %}
+                            </div>
+                            <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
+                                <h3 class="h5 fw-bold mb-0">{{ product.name }}</h3>
+                                <span class="badge rounded-pill bg-warning text-dark px-3 py-2">{{ product.price }} HTG</span>
+                            </div>
+                            <p class="text-secondary">{{ product.description|truncatewords:28 }}</p>
+                            <div class="d-flex flex-wrap gap-2 mt-3">
+                                <a href="{{ product.whatsapp_link|default:'https://wa.me/50934659454' }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary rounded-pill px-4">Achte / Rezève</a>
+                                <a href="{% url 'contact_page' %}?service={{ product.name|urlencode }}" class="btn btn-outline-secondary rounded-pill px-4">Poze kestyon</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12 text-center py-5">
+                        <h3 class="fw-bold">Pa gen pwodwi aktif pou kounye a</h3>
+                        <p class="text-secondary mb-0">Ou ka ajoute pwodwi yo depi nan admin lan epi yo ap parèt la otomatikman.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

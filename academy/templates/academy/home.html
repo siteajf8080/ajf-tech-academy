@@ -623,6 +623,7 @@
                         <li class="nav-item"><a class="nav-link hero-nav-link" href="#seminars">Seminè</a></li>
                         <li class="nav-item"><a class="nav-link hero-nav-link" href="{% url 'news_list' %}">Nouvèl</a></li>
                         {% if user.is_authenticated %}
+                            {% if user.is_superuser %}<li class="nav-item"><a class="nav-link hero-nav-link" href="{% url 'admin_report' %}">Rapport</a></li>{% endif %}
                             <li class="nav-item ms-lg-2"><a class="btn-brand-outline" href="{% url 'dashboard' %}">Dashboard</a></li>
                         {% else %}
                             <li class="nav-item ms-lg-2"><a class="btn-brand-outline" href="{% url 'login' %}">Konekte</a></li>
@@ -911,6 +912,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
 
 
 

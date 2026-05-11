@@ -9,7 +9,7 @@ from .models import (
     Course, Lesson, Profile, Comment, Progress, 
     Quiz, Question, Choice, QuizAttempt, Enrollment,
     Seminar, SeminarImage, SeminarRegistration, Notification, Post,
-    ForumTopic, ForumPost, Payout
+    ForumTopic, ForumPost, Payout, ServiceOffering, ServiceInquiry, CourseReview, Product, VisitorSession
 )
 
 # ======================================================
@@ -209,3 +209,41 @@ admin.site.register(Comment)
 admin.site.register(Progress)
 admin.site.register(ForumTopic)
 admin.site.register(ForumPost)
+
+
+@admin.register(ServiceOffering)
+class ServiceOfferingAdmin(admin.ModelAdmin):
+    list_display = ('title', 'display_order', 'is_active')
+    list_editable = ('display_order', 'is_active')
+    search_fields = ('title', 'short_description', 'details')
+
+
+@admin.register(ServiceInquiry)
+class ServiceInquiryAdmin(admin.ModelAdmin):
+    list_display = ('full_name', 'requested_service', 'phone', 'email', 'status', 'created_at')
+    list_filter = ('status', 'created_at')
+    search_fields = ('full_name', 'email', 'phone', 'requested_service', 'message')
+    readonly_fields = ('created_at',)
+
+
+@admin.register(CourseReview)
+class CourseReviewAdmin(admin.ModelAdmin):
+    list_display = ('course', 'user', 'stars', 'updated_at')
+    list_filter = ('stars', 'updated_at')
+    search_fields = ('course__title', 'user__username', 'comment')
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('name', 'price', 'is_featured', 'is_active', 'created_at')
+    list_filter = ('is_active', 'is_featured', 'created_at')
+    search_fields = ('name', 'description')
+    list_editable = ('is_featured', 'is_active')
+
+
+@admin.register(VisitorSession)
+class VisitorSessionAdmin(admin.ModelAdmin):
+    list_display = ('ip_address', 'user', 'visits_count', 'last_seen')
+    list_filter = ('last_seen',)
+    search_fields = ('ip_address', 'user_agent', 'user__username')
+    readonly_fields = ('first_seen', 'last_seen')

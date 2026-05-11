@@ -17,7 +17,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
-from django.db.models import Sum, Count, Q
+from django.db.models import Sum, Count, Q, Avg
 from django.utils import timezone
 from django.urls import reverse
 
@@ -26,7 +26,7 @@ from .models import (
     Course, Lesson, Profile, Comment, Progress, 
     Quiz, Question, Choice, QuizAttempt, Enrollment,
     Notification, Seminar, SeminarImage, SeminarRegistration, Post,
-    ForumTopic, ForumPost, Payout
+    ForumTopic, ForumPost, Payout, ServiceOffering, ServiceInquiry, CourseReview, Product, VisitorSession
 )
 
 # ======================================================
@@ -92,6 +92,29 @@ class LessonForm(forms.ModelForm):
         super(LessonForm, self).__init__(*args, **kwargs)
         if user:
             self.fields['course'].queryset = Course.objects.filter(instructor=user)
+
+class ServiceInquiryForm(forms.ModelForm):
+    class Meta:
+        model = ServiceInquiry
+        fields = ['full_name', 'email', 'phone', 'company', 'message']
+        widgets = {
+            'full_name': forms.TextInput(attrs={'class': 'form-control rounded-4', 'placeholder': 'Non konpl? ou'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control rounded-4', 'placeholder': 'Email ou'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control rounded-4', 'placeholder': 'Telef?n / WhatsApp'}),
+            'company': forms.TextInput(attrs={'class': 'form-control rounded-4', 'placeholder': 'Biznis / ?ganizasyon (opsyon?l)'}),
+            'message': forms.Textarea(attrs={'class': 'form-control rounded-4', 'rows': 5, 'placeholder': 'Eksplike bezwen ou la'}),
+        }
+
+
+class CourseReviewForm(forms.ModelForm):
+    class Meta:
+        model = CourseReview
+        fields = ['stars', 'comment']
+        widgets = {
+            'stars': forms.Select(attrs={'class': 'form-select rounded-4'}),
+            'comment': forms.Textarea(attrs={'class': 'form-control rounded-4', 'rows': 4, 'placeholder': 'Kijan eksperyans ou te ye ak kou sa a?'}),
+        }
+
 
 class QuizForm(forms.ModelForm):
     class Meta:
@@ -160,11 +183,48 @@ def send_certificate_email(user, course, qr_code_base64, ceo_signature, instruct
     except Exception as e:
         print(f"ErÃ¨ nan voye imel sÃ¨tifika: {e}")
 
+def get_client_ip(request):
+    forwarded = request.META.get('HTTP_X_FORWARDED_FOR')
+    if forwarded:
+        return forwarded.split(',')[0].strip()
+    return request.META.get('REMOTE_ADDR', '0.0.0.0')
+
+
+def track_site_visit(request):
+    if request.path.startswith('/admin') or request.path.startswith('/static') or request.path.startswith('/media'):
+        return
+
+    ip_address = get_client_ip(request)
+    user_agent = (request.META.get('HTTP_USER_AGENT', '') or '')[:500]
+    visitor, created = VisitorSession.objects.get_or_create(
+        ip_address=ip_address,
+        user_agent=user_agent,
+        defaults={'user': request.user if request.user.is_authenticated else None}
+    )
+    if not created:
+        visitor.visits_count += 1
+        if request.user.is_authenticated and visitor.user_id is None:
+            visitor.user = request.user
+        visitor.save(update_fields=['visits_count', 'last_seen', 'user'])
+
+
+def get_default_services():
+    return [
+        {'title': 'Kamera & sekirite', 'short_description': 'F?masyon ak s?vis sou enstalasyon, siveyans, ak estrikti sekirite elektwonik.', 'icon_class': 'fas fa-camera'},
+        {'title': 'Maintenance & informatique', 'short_description': 'Depanaj, antretyen, ak baz pratik pou moun ki vle antre nan metye teknik yo.', 'icon_class': 'fas fa-laptop-code'},
+        {'title': 'Design & branding', 'short_description': 'Canva, Photoshop, ak idantite vizy?l pou el?v ak ti biznis kap devlope.', 'icon_class': 'fas fa-pen-ruler'},
+        {'title': 'Enstalasyon rezo', 'short_description': 'Mise en place routeur, switch, kablaj, ak sekirite rezo pou kay ak biznis.', 'icon_class': 'fas fa-network-wired'},
+        {'title': 'Formasyon bureautique', 'short_description': 'Word, Excel, PowerPoint, ak itilizasyon zouti dijital pou etid ak travay.', 'icon_class': 'fas fa-file-lines'},
+        {'title': 'Asistans teknik sou plas', 'short_description': 'Ent?vansyon rapid pou pwobl?m ?dinat?, kamera, enprimant, ak ekipman teknik.', 'icon_class': 'fas fa-screwdriver-wrench'},
+    ]
+
+
 # ======================================================
 # --- 3. VIEWS YO ---
 # ======================================================
 
 def home(request):
+    track_site_visit(request)
     courses = Course.objects.all().order_by('-id')[:6]
     recent_posts = Post.objects.all().order_by('-created_at')[:3]
     periode_filter = request.GET.get('periode')
@@ -172,27 +232,57 @@ def home(request):
         seminars = Seminar.objects.filter(period=periode_filter, is_active=True).order_by('-date_event')
     else:
         seminars = Seminar.objects.filter(is_active=True).order_by('-date_event')[:3]
-    
+
+    services = list(ServiceOffering.objects.filter(is_active=True).order_by('display_order', 'title'))
+    if not services:
+        services = get_default_services()
+
+    featured_products = Product.objects.filter(is_active=True, is_featured=True)[:4]
     all_periods = Seminar.objects.values_list('period', flat=True).distinct()
-    
+
     return render(request, 'academy/home.html', {
         'courses': courses,
         'recent_posts': recent_posts,
         'seminars': seminars,
         'all_periods': all_periods,
-        'selected_period': periode_filter
+        'selected_period': periode_filter,
+        'services': services,
+        'featured_products': featured_products,
     })
 
 
 def contact_page(request):
-    return render(request, 'academy/contact.html')
+    track_site_visit(request)
+    requested_service = request.GET.get('service', '').strip()
+    if request.method == 'POST':
+        form = ServiceInquiryForm(request.POST)
+        requested_service = request.POST.get('requested_service', '').strip()
+        if form.is_valid():
+            inquiry = form.save(commit=False)
+            inquiry.requested_service = requested_service
+            service_match = ServiceOffering.objects.filter(title=requested_service).first()
+            if service_match:
+                inquiry.service = service_match
+            inquiry.save()
+            messages.success(request, 'Demann ou a byen anrejistre. Nou ap kontakte ou rapid.')
+            return redirect(f"{reverse('contact_page')}?service={requested_service}")
+    else:
+        form = ServiceInquiryForm()
+
+    return render(request, 'academy/contact.html', {
+        'form': form,
+        'requested_service': requested_service,
+        'services': ServiceOffering.objects.filter(is_active=True).order_by('display_order', 'title')
+    })
 
 
 def privacy_page(request):
+    track_site_visit(request)
     return render(request, 'academy/privacy.html')
 
 
 def seminar_detail(request, seminar_id):
+    track_site_visit(request)
     seminar = get_object_or_404(Seminar, id=seminar_id, is_active=True)
     registration = None
     if request.user.is_authenticated:
@@ -355,10 +445,12 @@ def add_question(request, quiz_id):
     return render(request, 'academy/add_question.html', {'q_form': q_form, 'quiz': quiz})
 
 def news_list(request):
+    track_site_visit(request)
     posts = Post.objects.all().order_by('-created_at')
     return render(request, 'academy/news_list.html', {'posts': posts})
 
 def post_detail(request, post_id):
+    track_site_visit(request)
     post = get_object_or_404(Post, id=post_id)
     return render(request, 'academy/post_detail.html', {'post': post})
 
@@ -395,15 +487,21 @@ def course_detail(request, course_id):
     enrollment = Enrollment.objects.filter(user=request.user, course=course, is_active=True).first()
     if not enrollment:
         return redirect('request_enrollment', course_id=course.id)
-    
+
     lessons = course.lessons.all()
-    quiz_exists = hasattr(course, 'quiz') 
+    quiz_exists = hasattr(course, 'quiz')
     has_passed = False
     if quiz_exists:
         has_passed = QuizAttempt.objects.filter(user=request.user, quiz=course.quiz, score__gte=course.quiz.pass_score).exists()
 
+    review = CourseReview.objects.filter(user=request.user, course=course).first()
+    review_form = CourseReviewForm(instance=review)
+    reviews = course.reviews.select_related('user').all()[:10]
+    average_rating = course.reviews.aggregate(avg=Avg('stars'))['avg'] or 0
+
     return render(request, 'academy/course_detail.html', {
-        'course': course, 'lessons': lessons, 'quiz_exists': quiz_exists, 'has_passed': has_passed
+        'course': course, 'lessons': lessons, 'quiz_exists': quiz_exists, 'has_passed': has_passed,
+        'review_form': review_form, 'reviews': reviews, 'average_rating': average_rating
     })
 
 @login_required
@@ -483,6 +581,78 @@ def lesson_pdf_view(request, lesson_id):
     response['Cache-Control'] = 'private, no-store, no-cache, must-revalidate, max-age=0'
     response['Pragma'] = 'no-cache'
     return response
+
+
+
+@login_required
+def submit_course_review(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    enrollment = Enrollment.objects.filter(user=request.user, course=course, is_active=True).exists()
+    if not enrollment:
+        messages.error(request, 'Ou dwe enskri aktif nan kou a anvan pou w evalye li.')
+        return redirect('course_detail', course_id=course.id)
+
+    review = CourseReview.objects.filter(user=request.user, course=course).first()
+    if request.method == 'POST':
+        form = CourseReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            review_obj = form.save(commit=False)
+            review_obj.user = request.user
+            review_obj.course = course
+            review_obj.save()
+            messages.success(request, 'Evalyasyon ou an sove. M?si anpil!')
+        else:
+            messages.error(request, 'Tanpri verifye evalyasyon an epi eseye ank?.')
+    return redirect('course_detail', course_id=course.id)
+
+
+def products_page(request):
+    track_site_visit(request)
+    products = Product.objects.filter(is_active=True)
+    return render(request, 'academy/products.html', {'products': products})
+
+
+@login_required
+def admin_report(request):
+    if not request.user.is_superuser:
+        messages.error(request, 'Ou pa gen p?misyon pou w? rap? sa a.')
+        return redirect('home')
+
+    active_enrollments = Enrollment.objects.filter(is_active=True).select_related('course', 'user')
+    unique_students = active_enrollments.values('user').distinct().count()
+    course_stats = []
+    for course in Course.objects.all():
+        students = active_enrollments.filter(course=course).count()
+        revenue = students * course.price
+        avg_rating = course.reviews.aggregate(avg=Avg('stars'))['avg'] or 0
+        course_stats.append({
+            'course': course,
+            'students': students,
+            'revenue': revenue,
+            'avg_rating': avg_rating,
+            'reviews_count': course.reviews.count(),
+        })
+
+    top_course_by_students = max(course_stats, key=lambda x: x['students'], default=None)
+    top_course_by_revenue = max(course_stats, key=lambda x: x['revenue'], default=None)
+    total_revenue = sum((item['revenue'] for item in course_stats), Decimal('0.00'))
+    top_rated_courses = sorted(course_stats, key=lambda x: (x['avg_rating'], x['reviews_count']), reverse=True)[:5]
+
+    context = {
+        'total_active_students': unique_students,
+        'top_course_by_students': top_course_by_students,
+        'top_course_by_revenue': top_course_by_revenue,
+        'total_revenue': total_revenue,
+        'total_visitors': VisitorSession.objects.count(),
+        'total_visits': VisitorSession.objects.aggregate(total=Sum('visits_count'))['total'] or 0,
+        'seminar_registrations': SeminarRegistration.objects.count(),
+        'service_inquiries': ServiceInquiry.objects.count(),
+        'products_count': Product.objects.filter(is_active=True).count(),
+        'top_rated_courses': top_rated_courses,
+        'course_stats': sorted(course_stats, key=lambda x: x['students'], reverse=True),
+    }
+    return render(request, 'academy/admin_report.html', context)
+
 
 def signup(request):
     if request.method == 'POST':

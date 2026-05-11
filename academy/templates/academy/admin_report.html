@@ -1,0 +1,97 @@
+﻿{% extends 'base.html' %}
+
+{% block title %}Rapport général | AJF-Tech{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-xl-11">
+        <div class="page-card p-4 p-lg-5">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+                <div>
+                    <h1 class="fw-bold mb-2">Rapport général AJF-Tech</h1>
+                    <p class="text-secondary fs-5 mb-0">Paj sa a rezève pou super admin lan sèlman.</p>
+                </div>
+                <a href="{% url 'admin:index' %}" class="btn btn-outline-secondary rounded-pill px-4 py-3 fw-semibold">Ale nan admin</a>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <div class="col-md-6 col-xl-3"><div class="border rounded-4 p-4 h-100 bg-light"><small class="text-uppercase text-secondary fw-semibold">Elèv aktif</small><h2 class="fw-bold mt-2 mb-0">{{ total_active_students }}</h2></div></div>
+                <div class="col-md-6 col-xl-3"><div class="border rounded-4 p-4 h-100 bg-light"><small class="text-uppercase text-secondary fw-semibold">Vizitè</small><h2 class="fw-bold mt-2 mb-0">{{ total_visitors }}</h2><p class="text-secondary small mb-0">{{ total_visits }} vizit total</p></div></div>
+                <div class="col-md-6 col-xl-3"><div class="border rounded-4 p-4 h-100 bg-light"><small class="text-uppercase text-secondary fw-semibold">Revni total</small><h2 class="fw-bold mt-2 mb-0">{{ total_revenue }} HTG</h2></div></div>
+                <div class="col-md-6 col-xl-3"><div class="border rounded-4 p-4 h-100 bg-light"><small class="text-uppercase text-secondary fw-semibold">Enskripsyon seminè</small><h2 class="fw-bold mt-2 mb-0">{{ seminar_registrations }}</h2></div></div>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <div class="col-lg-6">
+                    <div class="border rounded-4 p-4 h-100">
+                        <h3 class="h5 fw-bold">Kou ki gen plis elèv</h3>
+                        {% if top_course_by_students %}
+                            <p class="mb-1"><strong>{{ top_course_by_students.course.title }}</strong></p>
+                            <p class="text-secondary mb-0">{{ top_course_by_students.students }} elèv aktif</p>
+                        {% else %}
+                            <p class="text-secondary mb-0">Pa gen done ankò.</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="border rounded-4 p-4 h-100">
+                        <h3 class="h5 fw-bold">Kou ki fè plis lajan</h3>
+                        {% if top_course_by_revenue %}
+                            <p class="mb-1"><strong>{{ top_course_by_revenue.course.title }}</strong></p>
+                            <p class="text-secondary mb-0">{{ top_course_by_revenue.revenue }} HTG</p>
+                        {% else %}
+                            <p class="text-secondary mb-0">Pa gen done ankò.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <div class="border rounded-4 p-4 h-100">
+                        <h3 class="h5 fw-bold mb-3">Eta kou yo</h3>
+                        <div class="table-responsive">
+                            <table class="table align-middle">
+                                <thead>
+                                    <tr><th>Kou</th><th>Elèv</th><th>Revni</th><th>Rating</th></tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in course_stats %}
+                                        <tr>
+                                            <td>{{ item.course.title }}</td>
+                                            <td>{{ item.students }}</td>
+                                            <td>{{ item.revenue }} HTG</td>
+                                            <td>{{ item.avg_rating|floatformat:1 }} / 5</td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr><td colspan="4" class="text-secondary">Pa gen done kou ankò.</td></tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="border rounded-4 p-4 h-100 bg-light">
+                        <h3 class="h5 fw-bold mb-3">Kou ki pi byen note</h3>
+                        {% for item in top_rated_courses %}
+                            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                <div>
+                                    <strong>{{ item.course.title }}</strong>
+                                    <div class="small text-secondary">{{ item.reviews_count }} evalyasyon</div>
+                                </div>
+                                <span class="badge rounded-pill bg-dark">{{ item.avg_rating|floatformat:1 }}★</span>
+                            </div>
+                        {% empty %}
+                            <p class="text-secondary mb-0">Poko gen evalyasyon kou yo.</p>
+                        {% endfor %}
+                        <hr>
+                        <p class="mb-1"><strong>Demand sèvis:</strong> {{ service_inquiries }}</p>
+                        <p class="mb-1"><strong>Pwodwi aktif:</strong> {{ products_count }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

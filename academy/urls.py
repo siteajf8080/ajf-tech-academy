@@ -8,7 +8,9 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('contact/', views.contact_page, name='contact_page'),
+    path('products/', views.products_page, name='products_page'),
     path('conditions-confidentialite/', views.privacy_page, name='privacy_page'),
+    path('rapport-general-site/', views.admin_report, name='admin_report'),
     
     # --- SISTÃˆM AKTYALITE (Blog) ---
     path('news/', views.news_list, name='news_list'),
@@ -22,6 +24,7 @@ urlpatterns = [
 
     # --- JESTYON KOU & LESON ---
     path('course/<int:course_id>/', views.course_detail, name='course_detail'),
+    path('course/<int:course_id>/review/', views.submit_course_review, name='submit_course_review'),
     path('course/<int:course_id>/enroll/', views.request_enrollment, name='request_enrollment'),
     path('lesson/<int:lesson_id>/', views.lesson_detail, name='lesson_detail'),
     path('lesson/<int:lesson_id>/pdf/', views.lesson_pdf_view, name='lesson_pdf_view'),

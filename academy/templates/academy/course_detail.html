@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block title %}{{ course.title }} | AJF-Tech{% endblock %}
 
@@ -113,7 +113,53 @@
         </div>
     </section>
 
-    {% if quiz_exists %}
+        <section class="course-content">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+            <div>
+                <h3 class="fw-bold mb-1">Evalyasyon kou a</h3>
+                <p class="text-muted mb-0">Nòt mwayèn: {{ average_rating|floatformat:1 }} / 5 sou baz opinyon elèv yo.</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-5">
+                <div class="border rounded-4 p-4 h-100 bg-light">
+                    <h4 class="fw-bold mb-3">Bay evalyasyon pa w la</h4>
+                    <form method="post" action="{% url 'submit_course_review' course.id %}" class="d-grid gap-3">
+                        {% csrf_token %}
+                        <div>
+                            <label class="form-label fw-semibold">Konbyen etwal ou bay kou a?</label>
+                            {{ review_form.stars }}
+                        </div>
+                        <div>
+                            <label class="form-label fw-semibold">Kòmantè ou</label>
+                            {{ review_form.comment }}
+                        </div>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 py-3 fw-semibold">Sove evalyasyon mwen</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="border rounded-4 p-4 h-100 bg-white">
+                    <h4 class="fw-bold mb-3">Sa elèv yo di</h4>
+                    <div class="d-grid gap-3">
+                        {% for review in reviews %}
+                            <div class="border rounded-4 p-3">
+                                <div class="d-flex justify-content-between align-items-center gap-3 mb-2">
+                                    <strong>{{ review.user.username }}</strong>
+                                    <span class="badge rounded-pill bg-dark">{{ review.stars }}★</span>
+                                </div>
+                                {% if review.comment %}<p class="text-muted mb-0">{{ review.comment }}</p>{% else %}<p class="text-muted mb-0">Pa gen kòmantè ekri.</p>{% endif %}
+                            </div>
+                        {% empty %}
+                            <p class="text-muted mb-0">Poko gen evalyasyon pou kou sa a.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% if quiz_exists %}
         <section class="quiz-box">
             {% if has_passed %}
                 <small class="text-success text-uppercase fw-bold">Egzamen fini</small>
@@ -130,3 +176,4 @@
     {% endif %}
 </div>
 {% endblock %}
+

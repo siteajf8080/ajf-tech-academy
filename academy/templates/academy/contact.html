@@ -1,29 +1,82 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block title %}Contact | AJF-Tech{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-xl-8">
+    <div class="col-xl-10">
         <div class="page-card p-4 p-lg-5">
-            <h1 class="fw-bold mb-3">Contact AJF-Tech</h1>
-            <p class="text-secondary fs-5 mb-4">
-                Pou kestyon sou kou yo, seminè yo, oswa sèvis teknik yo, ou ka ekri nou dirèkteman.
-            </p>
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <div class="border rounded-4 p-4 h-100">
+            <div class="row g-4 align-items-start">
+                <div class="col-lg-5">
+                    <h1 class="fw-bold mb-3">Contact AJF-Tech</h1>
+                    <p class="text-secondary fs-5 mb-4">
+                        Ranpli ti fòm sa a pou kestyon sou sèvis, seminè, pwodwi, oswa pwojè teknik ou yo. N ap retounen jwenn ou rapid.
+                    </p>
+
+                    <div class="border rounded-4 p-4 mb-3 bg-light">
                         <h3 class="h5 fw-bold">WhatsApp</h3>
-                        <p class="text-secondary">Pi rapid pou kestyon sou enskripsyon, seminè, oswa asistans.</p>
+                        <p class="text-secondary mb-3">Pi rapid pou kestyon sou enskripsyon, sèvis teknik, oswa asistans prese.</p>
                         <a href="https://wa.me/50934659454" target="_blank" rel="noopener noreferrer" class="btn btn-success rounded-pill px-4">Ekri nou sou WhatsApp</a>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="border rounded-4 p-4 h-100">
-                        <h3 class="h5 fw-bold">Email ofisyèl</h3>
-                        <p class="text-secondary">Pou dokiman, patenarya, ak kestyon fòmèl.</p>
+
+                    <div class="border rounded-4 p-4 bg-light">
+                        <h3 class="h5 fw-bold">Imèl ofisyèl</h3>
+                        <p class="text-secondary mb-3">Pou patenarya, dokiman, devis, oswa kestyon pwofesyonèl.</p>
                         <a href="mailto:ajftech.infos@gmail.com" class="btn btn-outline-primary rounded-pill px-4">ajftech.infos@gmail.com</a>
                     </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="border rounded-4 p-4 p-lg-5 bg-white shadow-sm">
+                        <h2 class="h4 fw-bold mb-3">Fòmilè demann sèvis</h2>
+                        {% if requested_service %}
+                            <div class="alert alert-info rounded-4">Sèvis chwazi a: <strong>{{ requested_service }}</strong></div>
+                        {% endif %}
+                        <form method="post" class="row g-3">
+                            {% csrf_token %}
+                            <input type="hidden" name="requested_service" value="{{ requested_service }}">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Non konplè</label>
+                                {{ form.full_name }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Email</label>
+                                {{ form.email }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Telefòn / WhatsApp</label>
+                                {{ form.phone }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Biznis / Òganizasyon</label>
+                                {{ form.company }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Mesaj ou</label>
+                                {{ form.message }}
+                            </div>
+                            <div class="col-12 d-flex flex-wrap gap-2">
+                                <button type="submit" class="btn btn-primary rounded-pill px-4 py-3 fw-semibold">Voye demann mwen</button>
+                                <a href="{% url 'home' %}#services" class="btn btn-outline-secondary rounded-pill px-4 py-3 fw-semibold">Tounen sou sèvis yo</a>
+                            </div>
+                        </form>
+                    </div>
+
+                    {% if services %}
+                        <div class="mt-4">
+                            <h3 class="h5 fw-bold mb-3">Sèvis ou ka mande yo</h3>
+                            <div class="row g-3">
+                                {% for service in services %}
+                                    <div class="col-md-6">
+                                        <div class="border rounded-4 p-3 h-100 bg-light">
+                                            <strong class="d-block mb-2">{{ service.title }}</strong>
+                                            <p class="text-secondary mb-0 small">{{ service.short_description|default:service.details|truncatewords:16 }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
